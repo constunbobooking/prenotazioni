@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Consolato Tunisia Bologna — Prenota un servizio</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+@font-face{font-family:'Calibri';src:local('Calibri'),local('Calibri Regular');}
+:root{
+  --font-calibri:'Calibri','Gill Sans','Trebuchet MS',Arial,sans-serif;
+  --font-arabic:'Calibri','Segoe UI','Tahoma','Arial Unicode MS',sans-serif;
+  --font-mono:'Courier New',Courier,monospace;
+  --color-text-primary:#1a1a2e;
+  --color-text-secondary:#555;
+  --color-text-tertiary:#999;
+  --color-text-info:#1a4a8a;
+  --color-background-primary:#fff;
+  --color-background-secondary:#f5f5f7;
+  --color-background-tertiary:#eee;
+  --color-background-info:#e8f0fe;
+  --color-border-tertiary:#e0e0e0;
+  --color-border-secondary:#ccc;
+  --color-border-info:#b3c8f5;
+  --border-radius-lg:12px;
+  --border-radius-md:8px;
+}
+[dir="rtl"],[dir="rtl"] *{font-family:var(--font-arabic)!important;line-height:1.7;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start;padding:20px 0;}
+.app{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;max-width:650px;width:100%;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,0.10);}
+.hdr{background:#C8102E;padding:18px 20px 14px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.hdr img{width:90px;height:90px;border-radius:8px;object-fit:contain;background:#fff;padding:4px;border:2px solid rgba(255,255,255,0.6);box-shadow:0 2px 8px rgba(0,0,0,0.25);}
+.hdr-title{color:#fff;font-size:18px;font-weight:600;text-align:center;font-family:var(--font-calibri);}
+.hdr-sub{color:rgba(255,255,255,0.85);font-size:14px;text-align:center;font-family:var(--font-calibri);}
+.hdr-admin-btn{position:absolute;right:14px;top:14px;background:rgba(255,255,255,0.15);border:0.5px solid rgba(255,255,255,0.3);color:#fff;border-radius:var(--border-radius-md);padding:6px 14px;font-size:13px;cursor:pointer;font-family:var(--font-calibri);z-index:10;}
+.hdr-admin-btn:hover{background:rgba(255,255,255,0.25);}
+.hdr-wrap{position:relative;width:100%;background:#C8102E;}
+.lang-bar{background:#a00d25;display:flex;padding:0 20px;}
+.lb{background:none;border:none;color:rgba(255,255,255,0.7);font-size:14px;padding:8px 14px;cursor:pointer;font-family:var(--font-calibri);border-bottom:2px solid transparent;}
+.lb.active{color:#fff;border-bottom:2px solid #fff;}
+.steps{display:flex;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);padding:0 20px;}
+.si{display:flex;align-items:center;gap:7px;padding:12px 0;margin-right:20px;font-size:14px;color:var(--color-text-tertiary);font-family:var(--font-calibri);}
+.si.active{color:#C8102E;font-weight:600;}
+.si.done{color:var(--color-text-secondary);}
+.sn{width:22px;height:22px;border-radius:50%;background:var(--color-border-tertiary);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--color-text-secondary);flex-shrink:0;}
+.si.active .sn{background:#C8102E;color:#fff;}
+.si.done .sn{background:#2d8a4e;color:#fff;}
+.panel{padding:20px;}
+.sec-title{font-size:13px;font-weight:600;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:14px;font-family:var(--font-calibri);}
+
+/* Gruppi servizi */
+.svc-group{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);overflow:hidden;margin-bottom:6px;}
+.svc-group-hdr{padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#fff;transition:background 0.15s;}
+.svc-group-hdr:hover{background:var(--color-background-secondary);}
+.svc-group-hdr.open{background:#fff0f3;}
+.svc-group-label{font-size:15px;font-weight:600;color:var(--color-text-primary);font-family:var(--font-calibri);display:flex;align-items:center;gap:9px;}
+.svc-group-label i{color:#C8102E;font-size:17px;}
+.svc-group-arrow{color:var(--color-text-tertiary);font-size:16px;transition:transform 0.2s;flex-shrink:0;}
+.svc-group-body{border-top:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);padding:6px 8px;}
+.service-card-sub{margin-bottom:4px;padding:11px 14px;background:#fff;}
+.service-card-sub:last-child{margin-bottom:0;}
+[dir="rtl"] .svc-group-hdr{flex-direction:row-reverse;}
+[dir="rtl"] .svc-group-label{flex-direction:row-reverse;}
+
+/* Servizi list - nuova UI senza sportelli */
+.services-list{display:flex;flex-direction:column;gap:6px;}
+.service-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:14px 16px;cursor:pointer;transition:all 0.2s;background:#fff;display:flex;justify-content:space-between;align-items:center;}
+.service-card:hover{background:var(--color-background-secondary);border-color:#C8102E;}
+.service-card.selected{border-color:#C8102E;background:#fff0f3;}
+.service-name{font-size:15px;font-weight:500;color:var(--color-text-primary);font-family:var(--font-calibri);}
+.service-badge{background:#f0f0f0;border-radius:20px;padding:4px 10px;font-size:12px;color:var(--color-text-secondary);font-family:var(--font-calibri);}
+
+.day-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.dt{padding:8px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:14px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);font-family:var(--font-calibri);}
+.dt.sel{background:#C8102E;color:#fff;border-color:#C8102E;font-weight:600;}
+.dt.off{color:var(--color-text-tertiary);background:var(--color-background-secondary);cursor:not-allowed;text-decoration:line-through;}
+.time-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;}
+.ts{padding:10px 4px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:14px;text-align:center;cursor:pointer;color:var(--color-text-primary);background:var(--color-background-primary);font-family:var(--font-calibri);}
+.ts:hover{border-color:#C8102E;color:#C8102E;}
+.ts.sel{background:#C8102E;color:#fff;border-color:#C8102E;font-weight:600;}
+.ts.taken{color:var(--color-text-tertiary);cursor:not-allowed;background:var(--color-background-secondary);text-decoration:line-through;}
+.confirm-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;}
+.cc-hdr{background:#C8102E;padding:13px 18px;color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;font-family:var(--font-calibri);}
+.cc-body{padding:18px;}
+.cc-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:15px;font-family:var(--font-calibri);}
+.cc-row:last-child{border-bottom:none;}
+.cc-lbl{color:var(--color-text-secondary);font-size:14px;font-family:var(--font-calibri);}
+.cc-val{font-weight:600;color:var(--color-text-primary);text-align:right;max-width:60%;font-family:var(--font-calibri);}
+.code-box{background:var(--color-background-secondary);border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:22px;text-align:center;margin:14px 0;}
+.code-lbl{font-size:13px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-family:var(--font-calibri);}
+.code-val{font-size:32px;font-weight:600;letter-spacing:5px;color:#C8102E;font-family:var(--font-mono);}
+.code-sub{font-size:13px;color:var(--color-text-tertiary);margin-top:6px;font-family:var(--font-calibri);}
+.sportello-box{background:linear-gradient(135deg,#C8102E,#a00d25);color:#fff;border-radius:var(--border-radius-md);padding:12px 18px;text-align:center;margin:10px 0;}
+.sportello-box .sp-label{font-size:12px;opacity:.8;text-transform:uppercase;letter-spacing:.06em;font-family:var(--font-calibri);}
+.sportello-box .sp-num{font-size:22px;font-weight:700;font-family:var(--font-calibri);}
+.btn-p{background:#C8102E;color:#fff;border:none;border-radius:var(--border-radius-md);padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-calibri);width:100%;margin-top:14px;}
+.btn-p:hover{background:#a00d25;}
+.btn-p:disabled{background:var(--color-border-tertiary);color:var(--color-text-tertiary);cursor:not-allowed;}
+.btn-s{background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:10px 18px;font-size:14px;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-calibri);}
+.btn-s:hover{background:var(--color-background-secondary);}
+.btn-print{background:#2d8a4e;color:#fff;border:none;border-radius:var(--border-radius-md);padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-calibri);width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-print:hover{background:#1e6b38;}
+.nav{display:flex;gap:8px;margin-top:16px;}
+.nav .btn-p{margin-top:0;}
+.ok-icon{width:54px;height:54px;border-radius:50%;background:#e6f5eb;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;color:#2d8a4e;}
+.alert-i{background:var(--color-background-info);border:0.5px solid var(--color-border-info);border-radius:var(--border-radius-md);padding:10px 14px;font-size:14px;color:var(--color-text-info);margin-top:10px;display:flex;gap:8px;align-items:flex-start;font-family:var(--font-calibri);}
+.docs-section{margin-top:20px;border-top:1px solid var(--color-border-tertiary);padding-top:16px;text-align:left;}
+.docs-title{font-size:14px;font-weight:700;color:var(--color-text-primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;font-family:var(--font-calibri);}
+.docs-list{list-style:none;padding-left:8px;}
+.docs-list li{font-size:13px;color:var(--color-text-secondary);margin-bottom:6px;display:flex;align-items:flex-start;gap:8px;font-family:var(--font-calibri);}
+.docs-list li i{color:#C8102E;font-size:14px;margin-top:2px;}
+
+/* ADMIN styles */
+.pwd-box{max-width:320px;margin:36px auto;text-align:center;padding:28px 24px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);background:#fff;}
+.pwd-box h3{font-size:17px;font-weight:600;margin-bottom:6px;font-family:var(--font-calibri);}
+.pwd-input{width:100%;font-size:15px;padding:10px 12px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-family:var(--font-calibri);background:#fff;color:#1a1a2e;margin-bottom:10px;text-align:center;letter-spacing:2px;}
+.pwd-err{font-size:13px;color:#C8102E;margin-top:6px;display:none;font-family:var(--font-calibri);}
+.tab-bar{display:flex;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);overflow-x:auto;}
+.tab{padding:11px 16px;font-size:14px;cursor:pointer;color:var(--color-text-secondary);border-bottom:2px solid transparent;font-family:var(--font-calibri);white-space:nowrap;}
+.tab.active{color:#C8102E;border-bottom:2px solid #C8102E;font-weight:600;}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+.admin-wrap{padding:18px 20px;}
+.admin-section{margin-bottom:20px;}
+.admin-title{font-size:15px;font-weight:600;color:var(--color-text-primary);margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:7px;font-family:var(--font-calibri);}
+.days-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:5px;margin-bottom:10px;}
+.day-toggle{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:8px 3px;text-align:center;cursor:pointer;font-size:13px;color:var(--color-text-secondary);background:#fff;user-select:none;font-family:var(--font-calibri);}
+.day-toggle.on{background:#C8102E;color:#fff;border-color:#C8102E;font-weight:600;}
+.holiday-row{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
+.holiday-row input[type=date]{font-size:13px;padding:7px 9px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;color:#1a1a2e;font-family:var(--font-calibri);}
+.holiday-row input[type=text]{flex:1;font-size:13px;padding:7px 9px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;color:#1a1a2e;font-family:var(--font-calibri);}
+.del-btn{background:none;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:6px 10px;cursor:pointer;color:var(--color-text-tertiary);font-size:13px;font-family:var(--font-calibri);}
+.add-btn{background:none;border:0.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 16px;cursor:pointer;color:var(--color-text-secondary);font-size:13px;font-family:var(--font-calibri);width:100%;margin-top:6px;}
+.svc-config-row{display:flex;align-items:center;gap:8px;padding:8px 12px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;margin-bottom:4px;}
+.svc-config-name{flex:1;font-size:14px;color:var(--color-text-primary);font-family:var(--font-calibri);}
+.dur-select{width:96px;font-size:13px;padding:5px 7px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;color:#1a1a2e;font-family:var(--font-calibri);}
+.time-input{width:88px;font-size:13px;padding:6px 8px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;color:#1a1a2e;font-family:var(--font-calibri);}
+.save-banner{background:#e6f5eb;border:0.5px solid #a3d9b1;border-radius:var(--border-radius-md);padding:10px 14px;font-size:14px;color:#2d8a4e;display:none;align-items:center;gap:7px;margin-top:12px;font-family:var(--font-calibri);}
+.appt-row{display:flex;align-items:center;gap:8px;padding:10px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;margin-bottom:5px;flex-wrap:wrap;}
+.appt-code{font-family:var(--font-mono);font-size:14px;color:#C8102E;font-weight:600;min-width:86px;}
+.appt-info{flex:1;font-size:14px;color:var(--color-text-primary);font-family:var(--font-calibri);}
+.appt-meta{font-size:13px;color:var(--color-text-tertiary);font-family:var(--font-calibri);}
+.appt-actions{display:flex;gap:5px;}
+.appt-btn{background:none;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:6px 10px;cursor:pointer;font-size:13px;color:var(--color-text-secondary);font-family:var(--font-calibri);}
+.filter-bar{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;}
+.filter-bar input,.filter-bar select{font-size:14px;padding:7px 11px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;color:#1a1a2e;font-family:var(--font-calibri);}
+.badge-status{font-size:12px;padding:3px 10px;border-radius:20px;font-weight:600;font-family:var(--font-calibri);}
+.badge-ok{background:#e6f5eb;color:#2d8a4e;}
+.badge-cancel{background:#ffeef0;color:#C8102E;}
+.empty-state{text-align:center;padding:28px 20px;color:var(--color-text-tertiary);font-size:15px;font-family:var(--font-calibri);}
+[dir="rtl"] .services-list{direction:rtl;}
+[dir="rtl"] .service-card{direction:rtl;text-align:right;}
+[dir="rtl"] .docs-list li{direction:rtl;}
+[dir="rtl"] .docs-list li i{margin-left:8px;margin-right:0;}
+@media print{
+  body{background:#fff;padding:0;}
+  .app{box-shadow:none;border:none;max-width:100%;}
+  .no-print{display:none!important;}
+  #booking-flow > *:not(#p4){display:none!important;}
+  #p4{display:block!important;padding:0;}
+  .print-receipt{display:block!important;}
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+<div class="hdr-wrap">
+  <button class="hdr-admin-btn no-print" onclick="openAdmin()"><i class="ti ti-settings"></i> Admin</button>
+  <div class="hdr">
+    <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAEvASwDASIAAhEBAxEB/8QAHQAAAQQDAQEAAAAAAAAAAAAAAAUGBwgDBAkBAv/EAFcQAAEDAwIDBQQFBAYHBAYLAAECAwQFBhEABxIhMQgTQVFhFCJxgRUyQlKRCRYjcoKhscEkM2KSotEXNkN0wrTCJVOTlERUY3Oj0iYnNDVWZGWDw+Hw/8QAGwEBAAIDAQEAAAAAAAAAAAAAAAUGAgMEBwH/xAA8EQACAQMBBAcGBAUDBQAAAAAAAQIDBBEhBRIxQQYiUWFxgZETobHB0fAjMuHxFBUWM2IkkrJCUnKCov/aAAwDAQACEQMRAD8Aplo0aNAGjRo0AaNGjQBo0aNAGjRo0AaNGjQBo0aNAGjRo0AaNGjQBo0aNAGjRo0AaNKlGiVOp1KPTKVBkzZ8lYSzHjtqcccV5JSkEk/IaAV9GtBdOrLdYZpjlHqglvpK22jFeDywPEpSMkfPTytyzdwKzVYdMgWXW1zZTqWmUuw3GkqWTgDiUkJAz46A29uKJIuW/KPREGQYz8pC5bjP1m44IDhB8ySE59VjTutG3qrdd60m1qKAXZkhLbhKsluODlxw+QSgKV89XU2E7P1s7YwY9VnMs1a6HEDvJzqcljPNTLJOe7HmfH45A0NtZsjY+zMdVKsmjwoby0cEmYGgX5J+8tw81fPyxgdBpIqFvW/MnoiSbegMzXHfZFPLQhchfvYSlPQkkHkPTS3Rq1DqNw1y3Y7ii9Q3YzMgY+r3zBfTj5hQyPTSzIiR5DzLz7KHVsOcTSlJyUKIxkfEDQES3BclDqF+WnblNrdENNg1mHJqSpM6M3JBC1D3WlLyR+reLRTXlKQ3TZbjjhwlKWlEk+mNfaocVe/dNvNW6TWn6PIjRYkpLbsR4S+8K1pSAClQIHD8DnUjWe1Fkbm7r0WlWzUYFPokCv0+p1KQzySIrR71Ti8dOBLeVZ8j56AeCLejSG2PaZDRcfhpmsrCveYJUhOfHq2rPzGqfbYVurxN2dlY0+pTpEaVIvFtht99TiWw2t0o4QTgcISMDyGrhocCmWkJ+yP+OqM2dSrln9qyiJp1Mr6KPa3ts1p1yG80wVOr95QQcDJcUOTeSQnn8dAVF7PW3VsbqSq4i9aPOnsRKW2mGqPUmKfI7wOBsLiLACcZGc5yM/CpuuVX6Lm23ZtvW7Cbn0qoLqqqZx8Dy1N+wuNcXhn3l+PTUc2W5I243hKqtSp8imUr2t2mIkJbBju8S+AocRwnngZI8dSp2bqU7e/a1k1amO1e2mHZTkGTFcJCHG3FgKURgAgc+fjz1bVjUjZ7HvJ0IrnWj/AJAUnOQ2/wBKmGhtQJ16wIEWPJqMT6XbbjoKVIdSk8YH1ebg5c+uq0dqI2Nt1u5WbKZqFCtVXsnfyhVXoMFUoISHE8HGFHhJSkHHPHOtPYSjr2s3m2Zg3dDk0KpzqPMm3BQpPuqAelMvhDiPEEuyO78xkeOpO7ZWx9u74VpytUasR6RcS0KS4Uu/1kvgHCFnzVgDiycEDz1A+1l2Vibc9KtLcmO9JmWnUajSXFz3R3ndtzg2hTngngUzEcz4gBQHLw0BpXtsHsPRKpMpdVq1emSGULUuZRX0GCkpPBwK4UrCj8x8RrR2C3L282r2TgpdpddnU+tT5TzPsoQ2tSkuBsvrUo8KUgBIGRkqHx1IbT8O2rpuS6KzLaj0SdCn+yPISUxZk5tClMsJcP2P1j0xkjrmoTY2oOc3d3M9gR9Ht21U5cZlxSGgZJW52QMN+ChhI8cHr1OmWbMZJI6tVzuT5DCBqE9wdvrQrtK3YrVUteh1Q1QJmrkSWUPlTiGgkFBUDhISgYxgdeumXsnVe2K/u1BrH5zUKE/S6CzSWpUSomQtMpSsyEtISpX2BjIUcZHTnT07TDLUvaiTDQtwzKtUYkCIhoHjcddeQkDHyzpCjT3auze3m61jNR63Sac61Dn0n2dtUuLPhvRg0HmkOJz7uE5UjzI05sK2rxfs5RpeG4tT/UouSfiN/d+dctF3QhM2hVqU3W44hSqdRW66iU2OUh5RHHwqDRUSQnwJ1k2qptcp9wbnXCtpUKiRZ9FpCvamqsqW62G3n3ikqWvJUShPc4x07kDzOo/qO6O7FRv2n7ny7eu6r0igrUYW3jMWiFJkKI71cNsOEoU2CQBuMqynBHwGoXk3rctz7a3fVa/OkMVi4dyGbddcP9YzCjUoKbT54zJWR6oyPLQGy/QKjWKtuZWZMp1FMsauy3G1OJcVGKpbzSuH+0AsaUGnmrso1PTn4zrTElpz6RZWHQShwDkSnPn5EfDUGdpBdXvKvVi3rNuGmxU0S1XmKjTSpSTMmOuLUEpB/V4OGNnJwHOR6HVZ9lKldlR2n2/rFRq8lUdFJhNIdfXknDYAHPwA0B1utq8rbvHc/cK07an1Z2dbvtUad7c4O7U+zI7vib4QOCPjgSFfW4gRgalIqCUVLni7Y/66pTsTULSpnax3Rj0SuUauVCO/VJkhqlz0zUslUlBSlS0Ej2jr7pI5YyMajy4KzeFSuPcGKKrdbn6FQp0l2BQ1pU5U3wG+8Wl7GW2iFcQThOcHPLQEw0m6acLBvC/pO3k7duUxOKRUsWe9HqPs/EpSf6YsrPHyJA4U+WAQMaS7NqF+yri2Zq0TZ6nRI14RrnS89T3HoiHGGHnMqUteUuHhTkLA58OAMaiq+ZZm7BbuSdqbtVbm2KpHbqP5r2/Uo5lSlpVwpVHhKQ48UjKjwKOArAURjUi7NzLl2z2fuKp3VAuiFeFbbjzYUDdGM4ZUNBaWw32ZtSS43xcYwUnPonQEq0O9qDVrbqVwLkGjx6Q+9DqCZzRbdjOsqKHgoe8cYBIxz6edMq8N5rKg2DaO4VkU6uXXRLgqpil2A22hLrSJXduOFbidwlJUfojgUcYwcZ1Xu/d2N2roobiUy7LqRbS2U09mMipw/Q2pDLcRlaeoUpxvB87hCvVY8xrBVLUq9K2v2Tg3FUIUKDF3KqFNYgwqgFts97MnvgOyWUlScIaUCOIAHhJ0BdiiVGpu16rUZ1Gt+nx4TyGYkhiMlC2FtMJTgOAcVzmU4OAknJPiZJSpaC0Vs8KgCcfLno0aNAGjRo0BqVqe4hRix0gvqGST0bT4qP8B46VmQtLYSonOOfz+WkGMt+LgL5uHGVDqCfMn+Gkrby9pF6SNyWkoAaodajx4iQc+6mInKj6j3nPw0A/DnlqC+0ZbSV0Oq19i94G39xSWF0xp+tw1vkhThcwhCUDiHAjBIHUkDGp4P8dQT2vYAqb1s0BdWk0tNxVJugmSylJIbdUQTk8wMjBx66AtPRKRBoluUu27fqKocNlDcWJKMVRRjoS2EpxgjJwMZHPTD3d3TtHZ+TbkatXhIkVyY4w49FjMk+yxjwZfcwfdRy8Bn1wCPM2jTKVApUaFSoENLMaK2lxpllPClvAyCkDwIyRrLlGcfH/zrLmHzn4/9MfYhQN1L/Tu2ZFBuKgT6BTobMNoOJnRVPPNq4z3xSpJTyUABk+esPZ/teu2duzVEV9txiVMqsuoNx1fWYQ4scDZ+PCkZ9SdTHkZx8dGsfY0/NL1Y4lP4jaNLp/6SKtKJ/pnsPH+jlkjl2hT+kT8+Xu/Ot+tqfpMqnuU+qT/aW3QYzSUKWmYjGHEhKTzWeuRgjGOWpU0aPBn4mjo1UgQrWtq3KpS7TqNnUeLRiqJNQ1TVNAfpEhSFe6gIVjJUcKwnwIydKmyrK7d2Xte35XalNqUePIU2EnCv6d3q8o+GSrWpuA6pm3JWR7ziglKfHrklX4DVc+wzUVT9mBVKnJqMmLUalW+6WvyUBsOPMvFoEpyQ2lHdnhnmMkgZwNAXMqVxUeNUZFJk1FhqoR4pnuRisBbccEjnD1IAyR8DrHazFvzFvV+2otHfFUDMhEynx2irIaUpsKUBzwo5+JI1HF10miCNVKpWmKY0mLTnSZK6b3TwCAs5KwCojhBxnyOo67GtWnVvbCGqFUKrKpVKlz2IhqLikr4O/SThRxkAlaRzOQMcsAaAsHfVvU+36ZHuq2YdKj1hqUktLlxkLDnTulKI+rkZH4fLTP2svmbd6bkp1Ytul25X6C5T49VgwH+9QneWHEd2kDjKAPaOYIyAkcJxkZVTN7q0mj2GqA5UYFLcqT6KSzJk5TwhB73uRgc1KQk8vLNMPslbP0TbGk1yS2iRCuB51l15Tz6lNqCkIU2lwYCFtFXGQkDIUcHpoCU9obFkUq4LobqNtS6bKq1wTJvsr7XAl0yVpJKFITwOe8fDqD6HSXu7an0TfU+tT28+0Q5zLb4SAkPKQWgR+pylnIHQnTq3KvN+z5EVyJRC/HwO9mB1KfbF+HdpOVLSEgHhT06aY1T3Lk1ltqU5bCqYI8ht+fT+7cL/eMDiW044vHdpxyI64B+OgPlu2abVaGzNrn0lVn4Ex2T3D0xS2W1JQWwEpwEpABOBj5eGpJo0Sn3Zb1AXelGjU6dHZVLjrgM9ysoWAhWAMAZ4UknSJtne9r3HKp9v0aPFdTCpbTjZbGIskLJbWptXTK2+8Xj1zp//AEjR/wDR1+bv01TvZEzTNMf2hBeS+VlYBVyChnPPI+OgPq9KXAoFvzLhk29R5sGnvMORxIhocdUtTgQgAY5+8oH5DTV2jqE2rXJd1YqFx0eRVCqMzGp8CKG0Mxo7iUtIJUcngRgeZ5+ekzu6ZfNOekU+hV9yDUmFJWl+WzFKnVJQlJcKFZ4sgc+RyOR1F1a7LFm1e46hXLjq9RrL1Qd71cdmSqIyHh/i8KQFqB/tiT8CB46Au1o0aNAGjRo0AaY9sNyG78vmvMylJFbmNS4GSPrNxlMqHwJUtX/AA6fJ6a0O7XFX6D/AP3rI/7lt/8A92kAtkY0azNMraOcdeS2D4lRwNDUhDS+FSkk/AgnQHzEZgttqRJaYfSsqWUrSFYUTknB8zkg+fPQ7iMqMlA7sFwgeSDyJ+R5a2qYhkRyoR2XJCVqSpS0gnOemDpFqkp1uTMKUKcJQpCQc4TjgSCrwGScA+J0AYkjTzTBR3rkaOoNpHQrczj8D/HTnqdqXPSmQ5PpcphvxVjOPnjkPnpuNU6fI4ZkRlZLiitaVAtgDGMHwyPPw1jqBmPLcjSJwejnopB7zgT4hQ8D8D+0DQDxs23Kfc1xM0STKqUVEpK+4eiRFSAtYHMIQDknGTp0M2HbDNUcplSua4qS7HcU05Hk0ZaFlQOMgLGcHwONRPs/WajaF9QbpdepwTAlNr7hhR71tBKgpKkKJUgjI8hqy1q7hUyuUxqC/TKi/HbcUoWe2t2X3QTk5kR1AKB5ciDpDQDZhe2m3LMAJN33nSJCnH21pVSSylI4lZSrK8nKcEaU6lathxbjlwKpum9FNKjpkqS/CHDxLSCAdz1pUdlbh02h0uop2RukSjMiQ+2mImN3qULIAKm1N4CvcPMaTnLm2Yk1VynxbDmMvsBeFTG4/coWnmEkFzIyQrHLP0aT5Y1i5JeYJiTOoG31Mh09/8APOp1B2o3MumvP+zhLz/ChTaU8GNvFkkDkP5GvqBabGdpl6xWLZ3hkUiqPqKkwpMAL4khPEecYYwPDR3e3prbHdUy37lNRd91n2WpIAWCDg4DvgdLFFuS34+5M2S3SnIr8tLFJjUyK4HI8RvKnJDnAE/SgE8ePPQCpcNopk0inW27uTMiSSyAlqC8zIezHGAClCSoABI+oMAAYHXRX4G2dP2xodWrFz3REq1L9rRAlRmkpeaaD6uHj4mzjgpCQcDPXW5fFwLk7ewUxTBcU/ImMxUMYw20or7t0/lzTkgaYFdVQZ9RlQYF30R+gONQ3e/T7P7L3jzeGSlbhKx3igEcgP1sYwRoB0F+2KpsnULqotGvNxt+VTvZWnUqSApoAcXduowfe1uUe87as23n6VtHUnVplmU0Z7yY7iF8IIAHDwjxxqHt3ZtPtewIVsRajShJpNdfjR1U93vIr0dJDjuDk5TuYkZP2lfPVpdp6hQK/tzTKhblO9hprS3mO5WvjeQ+hZQ73nn76VZ9NAYdq9saHt7T503vIcuoVRIE2QwnhQRzwhJ8hkn4nStuFddKtTbSoV0XPDVUIbcl+NHktthbq+IhCgUj4jPrpauOZVodGfftqhN1+pJ/sSfZ1JGfP3VZx6ahGfLpG6cWBYsSqyTUkTWZtQZhuFaUJjL4vZlOKGCVJBPD5Hnz0BWTau/KVdO3tLr6Z8irzoqlMPl2QlK1rCsFwJSB3eVZHJIBIOnKyh+6dyoNWjSHfZqVTH4kzhdyplalDiBPn3gBCh4jdHlqF6HtXZtj7lXFAtusSEf8AZrNSnJY90KXhK2kAYRw8KVkrQACccsdTqyO0dNbpsCqS/Z24zFUlqSg9wgNvKQ23xbGM42Un46AUTbUj2bmaQ4Wn4deejOqcUPdU6pCk5+KVFP/AA/Gik1CqVnfWnW/IpEVm3KVS/aJJjMKYdD/ALY+yApXUEIbUR8E6ky/wRclN5AH2v8AqDqte4TlY276ptl2hBmzmkUSfT5ciGxxoaK5Ed5rvMfVQe7XzPQZ+OgLTzJIbbbZ44wU+nJPJLYyyptR9OJIUD8h8NJ8anr+pGZRHZGOThbKVqPxPIfs6hLYW5bjl3DcVlVxh2U1QJ7sVt9KSWnD7yFcJ/vApJScKGTjVgF/Z+OgPlhoJxgDPlpIutHfR4kUf/ABMhlk/9ZSQf4aVhyx8NKtyS2YUGNMkxZMptqWw6pEdoiQpIcBKmc4ysZ5DONAaW6tYhWhaFz3PR7cMmfTWS5TqUySlL/AAne8Tz7tJGVHhPHy5A6hqk3BcFc25tK4dtrKdXe+6NTRT7ccXPiPyXW0pUe6UwFJiIx73Eot/W2B4hpyVldz37uDdFw3tPqO0tOsRxIhUO4IbC5CiVozKdYT3qFKXllsAK91BIzkjTo2d23siry5V/be3tXqNahFSC/dj60BqT0LrENh0soV44Qc5yACNATLsyLkZ2xt1u7qP9GXKzAXKRHHeKbSXGwpI4vrHhORz6addNx9O1T/wDc/wD+zpKtlhhq37YbhtpabRDShpLYwEpCAAAPSgUBkveL/wC7Rf8Au2/8tAI7sVbLhWFFTDZA5AAYH7tLtNeZdYbcaKVJdQFDHiCNKFpMW7VtqYddtqmPTUKU2uS2jhcOD45/DTQbqyaVU4SfaUwH4TKkwqg6ruUvsJACEPK+y6jknP2gBz5gAp7rbhUNi4F27S6Smu3Iywl1mE1KLCW0qBw4pYB4U8s/Ppz0xbKfv+mM1eZVaVJaqU+Q5JbYS4ZPdNpQlPAEjOQnvgVKxjOAcnGso26uRi1mrqfq7sZ2ZPekBovltuK0tKzjKQOKMEcfNQ6nHTSuxs9HTVY1Qp98XVHp7iB/TI1UcTLJxjCXVZLCeX2efLJ1nBQf+S0cybO+7V7M2HcO2bVoSqzXLfD8aJOdCmWidnLbnzE4bXkeKcggkc9SDtK5bG4UJqRUrLhR5RTj2mOEMvpz9ofPWi7sjUmo8k0rdPcCbMLTnszUmYy4yXcEISo9yCkZxnn004dn0bmXi/AgQYluW3S4B7l9TseRKOG+SGwpTfvlLfDyVkkJSMg8jjFg0Niu0yRZ1xotqlTBWIr61uMFiUqIptJT1XgnIBOQQDkYxpnUS2LqZttyrUanU8PP1AUvM2sNOKaK1e0L4SlIPDnZOMYx8tWw/RkhqAh2myW2guTlqW25lSQsnI4ecADH8NdO2tv7RQdvfZe3jXUyEAAKkYOp4Y0gYf3UXJd9et5pmNKt2FGeuORJUoRIy2sKLraMlLai4AUA4GcJJI5Z0/tsNhnKdU27i3hSqdeV2x0oaWzKj5gQQAOGPFRhSUADGVFRHhgalilsoqVUjQnUjs2FpJccIIHI+g8TpCvS26/RKpDg1yD7FJmOFER7gUQ4QknAUnI8fPB0ys4YwR1uVuzuPcN3y6NtZtq9UoMN0sJnVyU3SoasHB4EuLSt34jhGnPYOxU6qzpdxbp3BMuiqOoKZbC6W1BjSxxZUy8y3gvbHhWUqI0q7MR71Zt4UrcS2PYYMdbaYnczUPuylKSVISlKVHhTxKxjGpK7RW9FO242/lVSoEtzGSqNT4yQAt97BwjPkABkny/hpJoMEa3pD28pHfU+3pds2+4hJSlh+G3GcSgcgnC0pyBpJsyWmDYUmVRJVMXImVJ+oOMsUFU3vE9ylDaMIdHvpSpPPHP4aTdnNnLr3o72+d1Iak0iUvjplEfPeworSkBJmOqGXHHuHhGCcIyQTnT13PtvZ/aGz/AKQs+3KPTX3H4lPi+zw0hT7iilKEAYyr9Y58s50B8VaryKfaSLnuuTQI0pttZcYgUwRZLxSng7pLZJUSRnlwxPE+JIOoIiVG5rkm1eRaVq1W0qy3RY9vRIc5hxtx1pbiZQeUqQhI5OJeB4zk++OnPU37U2tTtvtmLNp92Wm7UYlXp4hVh+IwqWX2pKloQUPAZTyydsDphOtc7P2zVV4d4NyNwYlKhUBcbsyKtPZjMpixkOltxK1PblalBxzuOPiPkCNMRMY5wQzQdk90albTNbcq1uW7YFDZiyxTfYpC6hIZjPcLSgh1IyiN3CgnHKCkHkM6spbds06gUin0unssQ4kFlLLMZgYW2AOaknqFEkkk+ZOrM1S+t5Y9ZbZtu1KFWIbUfLzr70htbkVfgtXchXAtABGApRBycHOpRqkqjQbVh1SgWzUZsVDsZNXfnQnHlLZbBAHtCVLwlWEpKQRnmSMjGgKJzI9nU+Gy4zTqPPUJCpKX2YNuNqUop4Ck5C+RKhzPXjT6EqX7WpO5m/V+2bZOxFpyYlHpFVbj+1U96pPMTCEuIzKhNvNhWVEcPUJJOl7tZ1Cz7t26tmLYtUXNcrtwRIqWYMJbUqD3znCpTwcShB4RxEJ4iTkk40i7Q9mjcbZqDDuN2i0mlVWVcE6UxUaqwLgXNjIdC4zskrHCwFlGTgADPXQDBt38nTc+XuXP3K2bplBpFp1OEy23SKmylqp91FYStpLjjhU0OKMSrClEJVg458g7S9Tsq6t4oi7O25ta4qfS5iH7qr8EwXKhMTn3O+DRPJCRjPJXsxOMnTz2H2noW2lk1qyYVzUqotVGXJlzZUKLJRHbdQ0zFwn2hTZxlrs+mMnJ00O0LdFZ27m0qJtPJhUqXWKaYFJqDxYjxGJq3lsLlAApDZUuRkAAYSoA5xoDt65UqdKpLNQqT1Hp7+MPPTUpbQMc+eQkD46+rbp0WTRKjVKjTqMKq6A+mC9H4gHPZHOHABGPrLQNQZtPQZ1wTKjTd9YtduRtyi06pU6HXUKyVurT7QePiaK06CQh8d1xpwktkYA4iEgbWZRrQ2tqNStWJEt2rv01cuMxJdCJDyXUnjTgOJWAcpC8A5x9D10AXVfFm2rEjVK4K9GhRVPOISt0KcQeEtkgFAJ5La/djz19WxW4FyW+1XKDNp82DJlLQxJaLhDoDqk8gUJHIpUPH6vnprb2QK/E2oqtWtCV7PcFOS4/BQAUl1RQEqR5BRSVDOcEjUC9kd+ozN7rzlUa7qvU6JDcgy5tOcUyxCjulbhW6wVAturIwCnngk5GMAS7cFvV+p23+TdPuq36TUH3EtyZzjZ72MgAkhsIJK1kADmSBn5a1b0dr1h2XGZ21pguZ6AhM2mQiUPtQFN8lOMn3lHhSrJ4Ukk+STpBvLa6j3Ml3cCl3VU5W47EhM2myyWo8NbyTgIDoCvZ21pAJCXFFQJIA56U7auul7WTpDNzVCoVqkIZYcFZg01cpxqSXWmFomR2kqIadWv3VsjgbVwHAJxoCFuyFcV712pboV/VRpypvT35tXp7Tr64jv6ZDTzQW6lKzjLKjyIPenUM7CUiBa25+4dLoSWWYlLqcaBwtTWZamXU8bzfG8lbqgMrKeLhnmTz1arcG1qRvTbVzU2xK7Gp9t1Jxj2evOBb3Fl1pxtaXGwSlPcdzjCVE8RORgaXrJ2csewoiYtAphjpU2gLlve/MeUgcPvPHmTge4kJSByCQNAUz3XpiLnvCrwotRj1FCwHmZnu8MsEZSs8JIJ9QSM4PnqaLHpzFGtCkU2KX1IjRENfprhTDoIHvBeVE8WSc8Xr5akW6rGt/6AlmDb9LjS22tquw0AOq8lKSOY/6aaW9UVlNp1RkICSIx97xOgInu+sx7VrNEuNp+PLjU+eiRUYxHvIt54sy2k58sh9PwI+P1JqjRrNlTp0W66ZPkPT6rVpLUKVLdWrlKdU44kZJwB3qfho0klmRkaYbKUXn4+Wlr9M/7T9P9V/7X7f7P3ftH2fpeY+rjjz4fb/V/lr5oXH3rniMY8P+en/F/o3+mv0T+g/zf+0ezcftH/s/t5/d97P2vhoxH+b8DFns+KZ06N+if8AaPof3u1fTf2PpO9nPZvt5x+uW88cvLHPTsuivWjbVvyKzUKrS6fS46UyVsvyUuRgQpIGUqcKSSVAcjz1H/wCiv5Qn2L2f2H6W7r2r2z2bs/tPaf63jx9n/u/f93n49dXg2Pq+0+4NmRKrcFqUetSpOGZ8aXGbfSlaQkFKkqSUkYVyI9NUDaEtnRq+xaScsPL24/T+XnJgXj7LaBJpwqE+iSqaF8KfapTKm0kny4jjU1UmhWr+RsSzl1Wg/oNtDYitSZSGkJSGwkJKioAYAHLy1Gcyh7b7f7T0TdGnWrRqc7S6rCQ5UqbTmkltRkIBLbrYyCQQfPX1ufYNh1Ta2u7jVm0aTVKitMmpMvSojbq+JLreCkqScEBeQRy0SjJ5fFjDMew0Hcu3VkPz9oKrdFpSoL87hkVNruxLK1LD/wD8MpBac5pPIFBxgYwRqWN1Nv7N2r2Pqdp23aFFhrqkZ2QlXszZDC3OIrWg4ylSlHORz58tSFWt8dw7KpbKIV8UOpy3YDT0t2UuzI8lky1Kx3UdASoDgwBzUok4yADzpNO3HdtuNalFpG3V2MLp7bapLVPpzDzS0kAuBLSlpCk8WU5GfdB8jqSdWLgsYyRR2RGKYaRSPpFp2NHMx3vG2w5w+5KxwgnGM5xpP3koFpW5tvcm1z1fhQ6XJiSip99xtQa4yo8SCo/a4z4dfLUo2TuBeFpX/ADrVueK9UxULm+gaM8xHQJDzS1ISh1xPDlCUuF/gdPmnKkrJxjJzUq6Pylt1a1dlXp5Y9nT6S9DSp6Sp3vHUJcIUoNjn7vvHwB8vHWP8AEpbF+sKScHtxviE0s+Z0a2//AJZLGVRoKmlkfPdPk6/Fp82lW/bMCvXLTKpUzUzTSYsRIUiNKCmkhxSUtx3N1IUTlPx0iXHdFj1G4ds6jcFv22hht+uMw36q3DaaTJUqPwMqbcUUIQQkjvE/BYPIHSFvB+UhuKqW/O2+j0el1G6ammRTJFNpzTqZLTzSjnhDpxhXHwpODkDkRpT292DpknbCzYG69q2fUazb7Tz0h1pSS4lxTi19xJYdSqO84OJfQsKxkDAxjZtfwUaKjVnuN9bnJ4x4m27vI0UnCjvJp8+XDgV2a2+vOt1hVCtK2LmrcnJCJMZ2SwPqn3lPykJaT8VLHy01N46eKDtjSWLllyqVTF3JUWX/AITnAG3ZTnr/AH/MfPXS+v39tHt8pikRoyYUdSG2YdKtyGFqTnxDTAHUeAGqy/lYKrTpOz1tz0VPuGofnHH9lYqVRKZSW3Bxx+EtylPe+AlJUSSeEAnpzgqNkK+EqkYxTfd24J5/RhePkPOxU7lPSDd23l1iBTrnpc+ZOD+OEWXWZixKQnusEbF+UjpSGmGjCqEphlCWkNqmpHAhIwEgey8gAMD0GlXZDeS3twqMmbTqdX6WiM/7PIYqkQMKZWAfD3zxDmMgka5s27WrCvDcanP2FIqNFnVaoNPy5dVcT33N0pC9yjiV7oIUDkAkZGnB2xLgt225lao1k16371gbrSI0hVx2nw+x0UxkKb4ZSW+FLiluLOBlRwOWrYraioOlLEm2t4/3z8i3HWWjzq9bFSpzNvUeTdu3lJpcaJGYhphSozEpiM8UklcZS+FzKiHAoE78x4DUIWp+XZQ4s9iPdNvVyCw4eF0Q5LcxTqB1cKOAJT4YQpXx1nl7cUrau5LMo9M2n3AuKfSmJTgqFHpzPezO6U04glpLThW2nu0Ed4kFJCUgnI0p9mnc6lTd0m7L2/smTt/RWpMlqNVbphM0mS73hOZX2XUoUMgZODy58tQ20dv/AFklODXGMcL/AFu67jNyikXUO1iKpTGbP2Zq7caTVp02GumXBwzIkVptzC1NuxwUoGBlJIyDjVkLz2D29viPSmK9FkJSzFKQ03JU12VKebiQy0nARhODjxxqIuwRIpJv6tC2a3Iti2YVEQmxYUyX7emK8t1LkhpzoQ4CQCQDyAzy1Z/c+qbnUqz6lUsR0Uu2y/VJrnCMsR0oJXg+A5E/umqnLZVChCrCpJuCXu47uTJ7S3cGpW7edj7f7c7fU233rUfWRMqra4hZhqLmUsJQjBcWkZGfAc88wNVB2t7bd6XDsFbNFsK3O9un2liqoUwEyIuZIyY6lK5sKbcTkOE/wBG8gU4Opq7NFo2dJ2XkbusU+vVCnVyM9U5iKtU3Y7jCG3CkhxhhRZyC2FJPPqDqGvyZK5UXbTeaLRqjCtiJKrbyY8KuVT6PjvRIzR/rnwrCAkYATn3zgHnpxlOvs2T2HSU2tOTfP9Z2rqWpSxFNfT/QcV9dk+0rbtiRckTfCGzAiJ7wvSagjvWwOY40KbBQc9OEk/LTz2Z3AiXhZNSvCivwFUC2GzTk1QyVOCfKbQCTygJygtghR5gnPXHpo9u3bfsJqDVVqxUxblwGqVK6Jq7qq61sTBUJBPeYkF0MqbWQnKPFPXBGkWxNvbX2q7MNm0m7KpQ7SrtzVGbUI1Zn1ZmbGbhSJLrI71iEpwupR3ZJUSeIBX2QUlNv2ZWVWNOMn1pLPRXLi1zyQV96FSPbcpqg0uZdUZjZpqa/Egiu9uWnVWVWoTMz6AjRkhPfx1HLAcVgvBaT+vxJGFfLS47t1t3ItOUibXKzHuZiPMdYhJirYapLDy3E9y0lrcrCEHhWTzPPSDclC28uKgbO1+JNp1ElUy4pFHbrn0gqOxFfeqYjMFcUqUHDGUPfBV4DHTU8ztsNkKUlNIfpMeXVYqplZkPIqTzqWOJReLq1pXgfW8+mrHtKNKMYXEdJN4XCXHR8GXzZ9mpr+Jm0ouCk2uTbT8Wek+zPw/8AtH+H7/f9X/0b84v/AHP/AG9o+z9T2f3v/r+z6jz8xqJO1P2bI9sWrUbisqBLTDmSHJVUSiWXFpWpRUoyC8ohQyfDhwPDljVqNpu/pa5KGpNQo9Kp0Cbxx2YMtqIxMbUyVh2O24eJLeMpVwjGVasJZV/7YXtXU0uJNoVUqKUIWpmm1Fp11QAAT3jYVjJxgHxPLUtCzpVobywmZ1rSlXgpxeUyqfY3uFhyyL9iUFqNTqjS6i1U5DCArmhxBCFeH2HE5+OkTtsdtW/3t7NwthKzdFRmPIuZMi4KkiS4yUQ2XGGwwC2QpC1nvCpKumG/HI1GvZq2/pe6ci/9s7wnSn7UqFLDUhpiUuOp1C5CW1rQsYKVHvADyBAIIIOdRzvBtnb1hOQ4tDk1GQwWllSpTvfLUpR4sqPwPIeQ0yvKpCNeOFhRby/n/APAPXserOb3fui6Lat+pyo0tNvOGnNLmrYUHXHXQVDChnHAjPx0aS9qXpVrXndT8mQ+zCaUy4spWUglS0pTnPz0aZSquKbTz4jDI3uGkXUzWZ1Qbui75c91X0imG4XRwLUTwEE4xxdPLLmgU6sZJ+lKz8PoyT/wDM6blQ3+28hPe+5fnNJbkuJdLMezHnG0LSeJJSQ5ghQOCD5jUtXJbFNUuE5FvsQqjMhIZdL0SOhxLzSVJIWVKJ6J+GnNcC4uO9hGSm/ca2w9CvJe31s2sL/uuBbaYbQqdsU2CEQkBPInDgWrpHac+15LmPYbQpNVTNW2zuTfdAubhWzuJWlTkyF7B7RwqKUJQvBU44E8X6inQn7IAzgi3MvaO1bBp0q7brmrkQ1KpRSy/UY4deU+UoQ00UADhHfugE93jHwRzx4QblgXbX7gnsVeixKfPWHWlSeFakDgSQUlSSDnCvPQFKLjvKnWpGrdG3os3a+qU1mPW/aGpNYjKnsS1oaHdKLfCkuHjwraI5nOdbVj7l2pfLdFrVIpzNq1ajyW4lgXXJpztN9gqUuO+4iUy8eFbSnXFuALQktkBeQrJzPVc2nqG586p0Z6dyH6GiBIOBk+zSlSE/9mQ0y4lLZptOp1JpgcFPgRWoUUKPEO7aQEJyTzOAM6BGiQNpbbYhU6yWq7U4sm6rBptXUiswZEYNxUyQlLiZLSisIcC05C8KPFkDlz1KTQYhrjxY7ZbbRlttAGB6gfz1nWkLRhWMKSoYIOkClQpFNkx4yqg9JhQ2+7iR3Ug+zo81KOVKJ5kqJJz44GgNA0t1u/6bV+/3CWh6nyoqIyL0a7hKXHVpcClj6R+oMp98JweWTjWC3LSseLcxtvdir+3NcqrjqmoMK/WZSHFgE4DeHlNlWATgAcgdTNSZtRZnuw5AlvQGmklqW3ELnE4eZDiQr+DR+ZOsuUfHTQQhqFtBYFZmUeDcW2e7tRqTcxhhH0rcUh5IWtaUjvYyZavZjjKihSUgDJwM6sC9StnXVVB2TsiqLq+UTVw9uJj3sxT9Uv4e7zUuY93GDnS/8AaV8f8dGyhXKPjpaAxbOq1rQd2d6PzUWmTLpRUnXK7Jj3EqciOo2NcCJLJOW1BQcHclJyk5GMaZ+5u2m0dA241uWpGt+jSA9KptLZVuvNmVqMiQtam20MvPFbLAwrcpUPE+Ovq3Ng7Wtm8KhdVnVGp2u5URIFSotKnPrt6orUsL7x2nPK7oKLiUOK7tsLRxHBxk6n+6b1sisbQu3tUn0QduwXaLPqlJpa3HpUVqQnuxHSGY4UHArmpCcpSrGccjHwlJ4TgnszeqX5QWbR6/HpdUqVkuwq2oiI62/W2i06ffACUoClJByjjwDnByNQQ5t5Z1v7j2BX3rVp1Kt+47jfhG2JtSrufYGkpfbC25MhTzy31pSUA8Sc9SrnpPft+t27Tr0s1CJtzzd9b0pFJTT0Kc9jfS+wwO9UOjTqT+r1JSoeRzmV2rdlX9Pq1x0upXlUm6pVHapFVddcTKLzLfscJZUMBpDRVlPjuT5aAfE6wNj6ZVKzQ6i1Y9KqdMrcSk1MvXPEUiOqUy64w4lTj+CjLqT7wHXnyGlak2tthXbOhUOybdsy5DZn0vHqkiBcMOoKhySOKHIl8bOQrrw59TgaZe2uyW29Wp9al0S07puWu3A2uPcNw3DS1rM51SQlSWuNYS2lIQgBsAA8PXRd/Z72qo1nV+VZ21cyDebqGfZJdFpUijRITiHkqWX0hxZcASFpKSEpIUNARxV+yttzcUfdo2TuzbNxUulXc9c9PchV+Ow/PjkLKW5jhXluKpRCuHhWRgYCVDGtXs87aR7P3eRYd52CtpFqGc7Ev+l3S5U4UhaGZCW0LKHXUyVOKSlKm+xLBKyBjT/AO0/cN5UO1q7UoVrVfcm2KpXHqXXrjtaO3GXOnMpW4hx5KUnj90o4grlkrGp62P2T2mq+1lpXfaduUmDPmxGlS4wSXCVlsFR4jzGSSdAUR7MHZkXdt3bk2RXJT1u7fzTSn6BQ2qk0mUpiU+46gSmmwjifLTiCtJUk9zlOQRqwW8dqO3PK2/tOqUqM3dlPqkn6CoFVRGXGmtuIfQllK2WzwpKkLMpOFbcGNW9Nh7diqCui2m0T+4MQRV0tnCYiY/fBvP6gUeIgeZzqA98OyWxuneRuCzrjRbtWqEtyrM1uJIbQ/HkutNofw4VKSAsLaaez0K0fHT2mPCJ9/q/QwfqZuzZcH6U9idp94f/qR/D2D2bH+L3M/bz/8APl8dTnbtHqEKI6Km2hTrsx2SCjphah/w09Nn9ibM2dniq2tBqKqtj/bKpKW9JWMYPDk4R6YGdP2oWxbFTnJqNYpFOmS08PfNvRkL4+EcKSoEczgYz8NMnRrN/ifrYHDyHjtjYVr7fUONb1pU+TDprb8iShp6UuQtLjzi3VgqcJOMrPLy06tGjWwBo0aNAGjRo0AaNGjQBo0aNAGjRo0AaNGjQGpIlBMktJwVJSMnzJ8vXTwpa0OsIcQcpUMg6a6YwddUtZJOcnz0+IDXBHSn06/PSGgNnRo0aA0qnDckL4m3C2sDAPgf5/hqP9zrou2yrdqFattFp3VclIfbcj0ZSA0JkWQhxt1JcUoJK28pUkE85J8DqRrjqdLodJk1WrT2YEGMguPvvL4UNoHUk+Wqu3RuNtBdNUmSbdgXxdlwIaSZl9TbWJpMbg5rRFSRxKbyR7pUlZz4+IAeFkUOp7r3U/utvBS5kmC1BVGtW23FcAhyVcKKjLAOVPLSBlKckDlgKJ1KItWzJ8D2GVaNvSYpwpCHKcwoD4e7pptCse2XGLUo0SqPw6e/McuSoSIvclL7veKmSAjjPEhSicckqGObZAwr6VcFFi01+iVysU2j1CgCQ/Fh1CQljuVB5aFFP2SQlKE4TmRtA49kKlag2+o9sblU+HDr0GIlLzjNJS1xJU7wIMmIMtE95j3kYwCDzxqLvykULaKSzSbk3MZptUrFvqdpkWDBYaem0dSiFlxSgkiPxe67jKleCgRpvVja3bZuvS61Qp12UKptMN01dIo1cMazkuMp4eApWWnUOoIBS4ooOM5yRrVuyxq/b9LqdwUf2+jr9mj0yZS49Niy6pOYdCHpLxUEK72PEwWw0kKKnVHhwOZDPVd3SqF/p3BpuxUOVGepjzzTirwjxkJchvFpSjlsjLjmAtz6xTkjIxnUzUzZO+dybdZqly3VcVj0mRTLg9gty3nRJZrjTEdphovS1tpLTZ4eJI4VFAOFKPIQN2MtwLQVt5IpcB56PcUyb3cV2bwul6e4hZcaQFhDeQ8rKk4AVgZ5DU/wB47Z3JNVSKvZ241xWlWY9S7y7J0qSxOXUoobLbam/bW3Q2pIKDhKQFDOCONLiy09HZjW98T6c/RUf2fR/Q//AHfj+n7n7f8AHXv9J31+vpv/ABjPw6fd78o5dpO+4u1G41NlN0Cm0qRPiutOPRUSG58p+OOJSQsOYKffaPEClJBzgjEHR6VQokKzdzajt/YTNvXFXnXGJUiiPuxO4dcWWnYqlySuMl1pCglfNhPJQHhqp0iVcd03TTplQ3f3Jmz4Z/S2pSZEeLUo5USChtxDhU0nIAyOVXgMZOpF2y2Wuu+bypNc3kueZUbXoE+PPpdsTn1OLmyGHO9S7PXn3ngUo4E8zxKJ4gNVYqjsPdmxrFjx4dJUxVrOrDlVekIbkPuhuYhSGFPqQptpwNaUoOFKJGCdAWWtmqT4Uyh/8AovNl0hVPpDbMqo0+msT489RKkuypNMW23L4lBIJ4lZ4eiueZJ27tmq2lCmrcqFFZ9luAwPZJ7lMi+0uRijDc2KtR7spVnC+pJAByMVy2m3RrFqRLlpsGNVXoVAYpNYq1WfnSTSbdlJWpMmMl1LqEkLQQ0pKVJ+0CCDnTlqN8Ue6WdrINjbiSbmhUy/FUxVPlhUdtcIxZKzIL+EB3jPcYKiVDvCfPUGVipahQIiqtS4TMBp+Onviwz3CVp85GG+RPqNDqmtSrX/ACi0i6Uy2YcdLrNQnAIbLctYakNlRAAUlRcPwKR4jUif07/AHr2jvPpL9LhPT7R9L6Plj3ccsbY8saAm7RozrLRoAy6h77Nk0u/u4/LBNr/AJ+U7tf+X/RnZfzn8/yh/Qvbvpn/AIZwf/+vD/OvmxvoL2r6c/Kb9Lf7X+fPsv5zf75+l9o/yfT/APdtvZ8/Zz/h0yfZ/wB7Pn2/+nNOo0AaNGjQGD2KJ7X7Z7DH9rxnvu4T3nzxx6w+zRvaPbPZ2faM8XecA4s/POs2jQBrC9JYaWULcAUPDRo0BhlSETXW4rRzxEcZ8h6n0GnK0gJQANINFZX7U9KWkgFWAD4gaWzwcaNHUzGrIhDKNYPao/tey+1977PxvY+8/lpBoP54foj9Ofpz9F9H929n7X+8/TcnP+9+/u/n4/w1pxaZ9H/SP6W+n/aJvtX6Xsvs/HjHsf2/0f+DjPh184vfx+z/AB/Z/dr+f9rH0f31drl/xPtNtVGmUu4n7XcocR5xK5bPsTiZEdKlEuh1sqU2tISnLSk8sHqdRls7S3a/bdVZrFSp2RVZBp0SFCqE+SqJEiM+6tthlwNpQ04pa3FqAcUoEZyANO7da1tq6bRZzNXt2DVZ0x1qDFclx2FPriNqyhtC3PecwBwjkfw1tWvRrIgW+1Ove3bcuSe+VuTly6ctb/CFp5NpQ3/SiEp93jbyrHQ50lNDflT1vZ1ZtfbGlV6OxApynqz7TDXHZS+XCUhJSFEhISMgHPPwzpLtup7cO1oVusUq+pMe8anPYj0GpzFyYMpLWGURkPONAocSlRQ4lzJ4VEAnSJuhW9tJN0Noa2qmnE/sldvCssREKpK2nEYjx1FKGpC8LcUPhnQEp7F3NtVtU1WrUrtGTU6TUZTtQuZ1cKqKi9+jSpAQAypIUI/6MaI4OBfCTz1Mm2NEpVn7UGmRavSqRHcpMyUzUprIYhJW41IUhT7pPh0/E6rH+STq+31K3OuixYtDpUa2bypLlyUSJHiJb7h95gtPkJAzzU5Hd+B4E+Wpx3D27tmtW/c0OrVapUPa2zbqfpmt09amxLjoLqX22nAFKaSSpJChjKSdARzZiNpvyguzqKtQbnpFQVHVIK4Dz6HPZprSiA4PacnAyoFSOWSR1B1l2L3HtCHT7K2AeodPgV4UR62JMmnQwzGbUyC3GSyABxFlSgSpXUEAc+hN2S25s6n7BTbT2iqc0/hhXKksoUqe/UJz8pO/GFkkgA4HRPAUg4+Bt78oB3klS91tvrNnQnKbUH50eqVqmOIKY4zCIKXAoAcXeJWT6aAv5o0aNAGjRo0AaNGjQBo0aNAGjRo0AaNGjQBo0aNARXOoG7Ee7a9WLXuW2pFpOQ5DsWDUIDzyi4GQeEPodSGipxSwQpopOEHjz76S7rFqUOyKbXq/R6tJqVtUSnP1KTLQ7xPSZj2OBtS+EAt8XEcLJBPwA0tU2+LLl1dFFjXnRTWHZDcVMBmW2p9brgAbRw5zxcRA+es7tZtqLcS6A7ddD+kDIMOI5UGQ+Uq5hDe/iDnpk6A2ZqLdpLTiKqmlU8R3YMWZGflIIH+CG45XkZUMAnKc+R04VzG3Z8OJEUqS/HZcdWwW1BQSlSQpWR1GFJ+YOk0XJQnKvVoL9SpDT9FbRImKmSUR24XGgKQpZUQEoUFDhPjnpnOdp25UqUuRuHtrGpzT9RdgsR2dumveDDy2isBTR2KkLHif5YlA0uS3GmlYeWlvPnyGtUym1K4UrSSeQwdIN03FEtO2JdyVOnVWsQ4LSnn4tLih+S4kc8IQk5J9NKFq1+nXRadMuuholIg1OMJEYSoq2HODJ5lCwFJ5g8iB0GgM8tRWpKSeQGsWjRkBrcYWhRLiTjP2v+upn/DqPqJUGY87LwccKvqKJ6nzHw0pTa22p4odQFKIxnOpksoxN7aooYMZgLz4qTpcaCggHSJbUuLNZTJjqCkqHMEYIPgQdLRcDSQSeWkNAbOjWtydIcWkOIVxJ+BxrPoA0aNGgDRo0aANGjRoA0aNGgDRo0aANGjRoA0aNGgDRo0aANGjRoA0aNGgDRo0aANDi1IQVJbU4R9lJwT++lSlJnTJDUSDAlTZTmQ0zFYLi1keQSCToD6oUf2hsPPMllXg2pXvD46W8BIxpv1OvUykTosCtTI1JmS3eBqPUH0w3nCBn3UvlOfx09WZbBgInS5MWNHP1npDqW208iTlSjjGCfnpAY1vthwNBwF08wnmdaMmpRmnSgusrV1wnppHqF7WHSmTInX1bcFpSSpKl1eOBw+eOPXw2tgywWlV1U6LOgsyWZEZ15pDyC2tSFAlKseBx1GgGjVH07iVSRbFvT6jQYsaQy5VqhCj5cQAglthtS8JUpYxlXgDgAjODd2Fb9vt1U0tcWAZMdALC+CnPtLSM8IyVpGSME9T5njJXxo0aAMu8Pu/q+z9bP/wCpr1hTuzlm2+qI/Jn2fSxPjPMzZD1nwVKkSELStLrh7r3nApKVZPkgHwGrw17aOzL7lwG7LxpcFqY5PlvSGYSUOKcUStwqIypRJJ+Z0acGVqklm7WZQrOoTazt8tlD6XGHURUpShxJIIHLVEKk5RlKLeVk6SXq1v3LT2r+Q/20vHbyFdlauC/o1v1ZxTq4rbVUYbzUIE4CGm8qCGz8VE+Z1ZOoTNobItVUVS1Uy3qPA4yTkMxYzfx+slCR8dGnAJylKf4jyzmn2PqLQqjv/ejtZocKqSqTKaRDD7KHQyr2pIyjiB4TjzxqK/zY2lVvVdnGixdvtvQn6flQe70T2f2cSvs+89/WE+I93zo0aYORu2HtXt/cNZv6bX6tTfYLnt9NHhMCOh0tvO8IUl1eFFRwEnkNPLbbZfbO1PzhpBtOizzTqf8AR/0/FRN/Vee4y6r3lfVGeWjRoD//2Q==" alt="Logo Consolato Tunisia Bologna">
+    <div class="hdr-title" id="hdr-title">Consolato della Repubblica Tunisina a Bologna</div>
+    <div class="hdr-sub" id="hdr-sub">Prenotazione Appuntamenti — Mar–Sab 09:00–13:00</div>
+  </div>
+</div>
+
+<div class="lang-bar no-print">
+  <button class="lb active" onclick="setLang('it',this)">Italiano</button>
+  <button class="lb" onclick="setLang('ar',this)">عربي</button>
+</div>
+
+<!-- BOOKING FLOW -->
+<div id="booking-flow">
+  <div class="steps no-print">
+    <div class="si active" id="si1"><div class="sn">1</div><span id="sl1">Servizio</span></div>
+    <div class="si" id="si2"><div class="sn">2</div><span id="sl2">Orario</span></div>
+    <div class="si" id="si3"><div class="sn">3</div><span id="sl3">Conferma</span></div>
+  </div>
+
+  <!-- STEP 1: choose service (senza sportello) -->
+  <div class="panel" id="p1">
+    <div class="sec-title" id="lbl-cs">Scegli il servizio desiderato</div>
+    <div id="svc-list"></div>
+    <div class="nav no-print"><button class="btn-p" id="btn-n1" onclick="goStep(2)" disabled>Continua →</button></div>
+  </div>
+
+  <!-- STEP 2: choose day/time -->
+  <div class="panel" id="p2" style="display:none">
+    <div class="sec-title" id="lbl-cd">Scegli un giorno</div>
+    <div class="day-tabs" id="day-tabs"></div>
+    <div class="sec-title" id="lbl-ct">Scegli un orario</div>
+    <div style="font-size:14px;color:var(--color-text-tertiary);margin-bottom:10px;font-family:var(--font-calibri);" id="dur-info"></div>
+    <div class="time-grid" id="time-grid"></div>
+    <div class="nav no-print">
+      <button class="btn-s" onclick="goStep(1)" id="btn-b2">← Indietro</button>
+      <button class="btn-p" id="btn-n2" onclick="goStep(3)" disabled style="flex:1;margin-top:0;">Continua →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: summary -->
+  <div class="panel" id="p3" style="display:none">
+    <div class="confirm-card">
+      <div class="cc-hdr"><i class="ti ti-calendar-check"></i><span id="lbl-sum">Riepilogo</span></div>
+      <div class="cc-body">
+        <div class="cc-row"><span class="cc-lbl" id="lbl-sf">Servizio</span><span class="cc-val" id="sum-svc"></span></div>
+        <div class="cc-row"><span class="cc-lbl" id="lbl-df">Data</span><span class="cc-val" id="sum-day"></span></div>
+        <div class="cc-row"><span class="cc-lbl" id="lbl-tf">Ora</span><span class="cc-val" id="sum-time"></span></div>
+      </div>
+    </div>
+    <button class="btn-p no-print" id="btn-confirm" onclick="genCode()"><i class="ti ti-check"></i> <span id="lbl-cb">Conferma e genera il codice</span></button>
+    <div class="nav no-print" style="margin-top:8px;"><button class="btn-s" onclick="goStep(2)" id="btn-b3">← Indietro</button></div>
+  </div>
+
+  <!-- STEP 4: confirmed + receipt -->
+  <div class="panel" id="p4" style="display:none;text-align:center;">
+    <div class="ok-icon no-print"><i class="ti ti-check"></i></div>
+    <div style="font-size:19px;font-weight:600;margin-bottom:5px;font-family:var(--font-calibri);" id="lbl-ok">Appuntamento confermato!</div>
+    <div style="font-size:15px;color:var(--color-text-secondary);margin-bottom:18px;font-family:var(--font-calibri);" id="lbl-ok2">Mostra questo codice alla reception</div>
+
+    <!-- Receipt box -->
+    <div class="code-box" id="receipt-area">
+      <div class="code-lbl" id="lbl-yc">Il tuo codice</div>
+      <div class="code-val" id="bk-code">----</div>
+      <div class="code-sub" id="bk-detail"></div>
+      <div class="sportello-box" id="sp-box" style="margin-top:14px;">
+        <div class="sp-label" id="sp-box-label">Sportello</div>
+        <div class="sp-num" id="sp-box-num">—</div>
+      </div>
+      <!-- Full receipt details for print -->
+      <div id="receipt-details" style="margin-top:16px;text-align:left;border-top:1px dashed #ccc;padding-top:12px;">
+        <div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-calibri);"><span style="color:#666;" id="rcpt-lbl-svc">Servizio:</span><span style="font-weight:600;" id="rcpt-svc"></span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-calibri);"><span style="color:#666;" id="rcpt-lbl-sp">Sportello:</span><span style="font-weight:600;" id="rcpt-sp"></span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-calibri);"><span style="color:#666;" id="rcpt-lbl-day">Data:</span><span style="font-weight:600;" id="rcpt-day"></span></div>
+        <div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-calibri);"><span style="color:#666;" id="rcpt-lbl-time">Ora:</span><span style="font-weight:600;" id="rcpt-time"></span></div>
+        <!-- DOCUMENTI SECTION -->
+        <div class="docs-section">
+          <div class="docs-title"><i class="ti ti-file-text"></i> <span id="docs-title">Documenti da preparare</span></div>
+          <ul class="docs-list" id="docs-list"></ul>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:#999;text-align:center;font-family:var(--font-calibri);" id="rcpt-footer">Consolato della Repubblica Tunisina a Bologna</div>
+      </div>
+    </div>
+
+    <div class="alert-i no-print"><i class="ti ti-info-circle" style="flex-shrink:0;margin-top:1px;"></i><span id="lbl-note">Annota o stampa questo codice. Ti verrà richiesto all'ingresso del consolato.</span></div>
+    <button class="btn-print no-print" onclick="printReceipt()"><i class="ti ti-printer"></i> <span id="lbl-print">Stampa ricevuta</span></button>
+    <button class="btn-p no-print" onclick="restart()" id="btn-new" style="margin-top:8px;">Nuovo appuntamento</button>
+  </div>
+</div>
+
+<!-- ADMIN FLOW (stesso di prima) -->
+<div id="admin-flow" style="display:none" class="no-print">
+  <div id="admin-login">
+    <div class="pwd-box">
+      <div style="font-size:28px;color:#C8102E;margin-bottom:10px;"><i class="ti ti-lock"></i></div>
+      <h3 id="admin-title">Pannello Amministrazione</h3>
+      <p id="admin-pwd-label" style="font-size:14px;color:var(--color-text-secondary);margin:6px 0 14px;font-family:var(--font-calibri);">Inserisci la password per accedere</p>
+      <input class="pwd-input" type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPwd()">
+      <button class="btn-p" id="admin-pwd-btn" onclick="checkPwd()">Accedi</button>
+      <div class="pwd-err" id="pwd-err">Password errata. Riprova.</div>
+      <div style="margin-top:12px;"><button class="btn-s" id="admin-back-btn" onclick="closeAdmin()">← Torna alla prenotazione</button></div>
+    </div>
+  </div>
+
+  <div id="admin-panel" style="display:none">
+    <div class="tab-bar">
+      <div class="tab active" id="tab-appts" onclick="showTab('t-appts',this)"><i class="ti ti-list"></i> Appuntamenti</div>
+      <div class="tab" id="tab-days" onclick="showTab('t-days',this)"><i class="ti ti-calendar"></i> Giorni/Festività</div>
+      <div class="tab" id="tab-svcs" onclick="showTab('t-svcs',this)"><i class="ti ti-clock"></i> Durata servizi</div>
+      <div class="tab" id="tab-hours" onclick="showTab('t-hours',this)"><i class="ti ti-adjustments"></i> Orari</div>
+      <div class="tab" id="tab-logo" onclick="showTab('t-logo',this)"><i class="ti ti-photo"></i> Logo</div>
+    </div>
+
+    <div class="admin-wrap tab-panel active" id="t-appts">
+      <div class="filter-bar">
+        <input type="text" id="filter-search" placeholder="Cerca codice o servizio..." oninput="renderAppts()" style="flex:1;min-width:120px;">
+        <select id="filter-day" onchange="renderAppts()"><option value="">Tutti i giorni</option></select>
+      </div>
+      <div id="appts-list"></div>
+    </div>
+
+    <div class="admin-wrap tab-panel" id="t-days">
+      <div class="admin-section">
+        <div class="admin-title" id="admin-workdays-title"><i class="ti ti-calendar-week"></i> Giorni lavorativi</div>
+        <div class="days-grid" id="weekday-grid"></div>
+      </div>
+      <div class="admin-section">
+        <div class="admin-title" id="admin-holidays-title"><i class="ti ti-calendar-off"></i> Chiusure speciali</div>
+        <div id="holidays-list"></div>
+        <button class="add-btn" id="add-holiday-btn" onclick="addHoliday()"><i class="ti ti-plus"></i> Aggiungi chiusura</button>
+      </div>
+      <button class="btn-p" id="save-btn-days" onclick="saveAll()">Salva</button>
+      <div class="save-banner" id="sb1"><i class="ti ti-check"></i> Salvato!</div>
+    </div>
+
+    <div class="admin-wrap tab-panel" id="t-svcs">
+      <div class="admin-section">
+        <div class="admin-title" id="admin-dur-title"><i class="ti ti-list"></i> Durata per servizio</div>
+        <div id="svc-dur-list"></div>
+      </div>
+      <button class="btn-p" id="save-btn-svcs" onclick="saveAll()">Salva</button>
+      <div class="save-banner" id="sb2"><i class="ti ti-check"></i> Salvato!</div>
+    </div>
+
+    <div class="admin-wrap tab-panel" id="t-hours">
+      <div class="admin-section">
+        <div class="admin-title" id="admin-hours-title"><i class="ti ti-clock"></i> Orario di apertura</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:15px;font-family:var(--font-calibri);">
+            <span id="admin-morning-lbl" style="width:110px;color:var(--color-text-secondary);">Mattina:</span>
+            <input type="time" id="am-start" value="09:00" class="time-input">
+            <span style="color:var(--color-text-tertiary);font-size:14px;">→</span>
+            <input type="time" id="am-end" value="13:00" class="time-input">
+          </div>
+        </div>
+      </div>
+      <button class="btn-p" id="save-btn-hours" onclick="saveAll()">Salva</button>
+      <div class="save-banner" id="sb3"><i class="ti ti-check"></i> Salvato!</div>
+    </div>
+
+    <div class="admin-wrap tab-panel" id="t-logo">
+      <div class="admin-section">
+        <div class="admin-title"><i class="ti ti-photo"></i> Logo del Consolato</div>
+        <p style="font-size:14px;color:var(--color-text-secondary);margin-bottom:16px;font-family:var(--font-calibri);">Carica il logo che apparirà nell'intestazione. Formati supportati: PNG, JPG, SVG. Dimensione consigliata: 90×90 px.</p>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
+          <div id="logo-preview-wrap" style="width:110px;height:110px;border-radius:10px;border:2px dashed var(--color-border-secondary);display:flex;align-items:center;justify-content:center;background:var(--color-background-secondary);overflow:hidden;">
+            <img id="logo-preview" src="" alt="Logo preview" style="width:100%;height:100%;object-fit:contain;display:none;">
+            <span id="logo-placeholder" style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:8px;font-family:var(--font-calibri);">Nessun logo</span>
+          </div>
+          <label style="cursor:pointer;">
+            <span class="btn-s" style="display:inline-block;"><i class="ti ti-upload"></i> Scegli immagine</span>
+            <input type="file" id="logo-file-input" accept="image/*" style="display:none;" onchange="handleLogoUpload(this)">
+          </label>
+          <button class="btn-p" style="margin-top:0;width:auto;padding:10px 24px;" onclick="saveLogo()"><i class="ti ti-device-floppy"></i> Salva logo</button>
+          <button class="btn-s" onclick="removeLogo()"><i class="ti ti-trash"></i> Rimuovi logo</button>
+          <div id="logo-save-banner" style="background:#e6f5eb;border:0.5px solid #a3d9b1;border-radius:var(--border-radius-md);padding:10px 14px;font-size:14px;color:#2d8a4e;display:none;align-items:center;gap:7px;font-family:var(--font-calibri);"><i class="ti ti-check"></i> Logo salvato!</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:0 20px 16px;"><button class="btn-s" id="admin-back-btn2" onclick="closeAdmin()">← Torna alla prenotazione</button></div>
+  </div>
+</div>
+
+<div id="edit-modal" style="display:none;background:rgba(0,0,0,0.4);padding:40px 20px;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;" class="no-print">
+  <div class="modal" style="background:#fff;max-width:360px;margin:0 auto;">
+    <h3 id="edit-title">Modifica appuntamento</h3>
+    <input type="hidden" id="edit-code">
+    <label id="edit-lbl-svc">Servizio</label>
+    <input type="text" id="edit-svc">
+    <label id="edit-lbl-day">Data</label>
+    <input type="text" id="edit-day">
+    <label id="edit-lbl-time">Ora</label>
+    <input type="time" id="edit-time">
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn-s" id="edit-cancel-btn" onclick="closeEdit()" style="flex:1;">Annulla</button>
+      <button class="btn-p" id="edit-save-btn" onclick="saveEdit()" style="flex:1;margin-top:0;">Salva modifiche</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const PASS = 'Ma3yitnwassi';
+
+// =====================================================
+// GOOGLE SHEETS — incolla qui il tuo URL della web app
+// =====================================================
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxtIXEcZ-UcyhJ_4CldY8PzGAcDskOWkuJEYcgTIJyMD9YHllyuMwc6p-sx0tB9aSl9/exec';
+// =====================================================
+
+async function syncToSheets(action, appt) {
+  if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action, ...appt }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  } catch(e) { console.warn('Sheets sync error:', e); }
+}
+
+async function loadFromSheets() {
+  if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
+  try {
+    const res = await fetch(SHEETS_URL);
+    const data = await res.json();
+    if (data.ok && data.appointments) {
+      data.appointments.forEach(remote => {
+        if (!appointments.find(a => a.code === remote.code)) {
+          appointments.push(remote);
+          if (remote.status !== 'cancelled') {
+            const key = (remote.sp||1) + '|' + (remote.dayISO||remote.day) + '|' + remote.time;
+            if (!bookedSlots[key]) bookedSlots[key] = [];
+            bookedSlots[key].push(remote);
+          }
+        } else {
+          const local = appointments.find(a => a.code === remote.code);
+          if (local && remote.status === 'cancelled') local.status = 'cancelled';
+        }
+      });
+      saveData();
+    }
+  } catch(e) { console.warn('Sheets load error:', e); }
+}
+
+// --- MAPPA SERVIZIO -> SPORTELLO (AUTOMATICO) ---
+const sportelloPerServizio = {
+  it: {
+    "Trascrizione della nascita": 1,
+    "Trascrizione del matrimonio": 1,
+    "Trascrizione del decesso": 1,
+    "Rilascio atti di stato civile": 1,
+    "Certificato di cittadinanza": 1,
+    "Passaporto per neonati": 1,
+    "Autentica della firma": 2,
+    "Copia conforme": 2,
+    "Autenticazione documenti": 2,
+    "Iscrizione consolare": 2,
+    "Passaporto minorenni — Primo rilascio": 3,
+    "Passaporto minorenni — Rinnovo": 3,
+    "Passaporto minorenni — Duplicato": 3,
+    "Passaporto maggiorenni — Primo rilascio": 4,
+    "Passaporto maggiorenni — Rinnovo": 4,
+    "Passaporto maggiorenni — Duplicato": 4,
+    "Nulla-osta per matrimonio": 5,
+    "Traduzione documenti": 5,
+    "Esonero servizio militare": 5,
+    "Rinvio servizio militare": 5,
+    "Visto": 5,
+    "Certificato del casellario giudiziale": 5,
+    "Scheda movimenti frontiera": 6,
+    "Lasciapassare": 6,
+    "Libretto di navigazione": 6,
+    "Richiesta contratto di matrimonio": 6
+  },
+  ar: {
+    "جواز السفر للمولودين الجدد": 1,
+    "إدراج الولادة": 1,
+    "إدراج الزواج": 1,
+    "إدراج الوفاة": 1,
+    "استخراج مضامين الحالة المدنية": 1,
+    "شهادة في الجنسية": 1,
+    "شهادة عرف للزواج": 1,
+    "طلب إبرام عقد الزواج": 1,
+    "التعريف بالإمضاء": 2,
+    "النسخ المطابقة للأصل": 2,
+    "المصادقة على الوثائق": 2,
+    "ترجمة الوثائق": 2,
+    "بطاقة الترسيم القنصلي": 2,
+    "جواز سفر القاصرين — استخراج": 3,
+    "جواز سفر القاصرين — تجديد": 3,
+    "جواز سفر القاصرين — تعويض": 3,
+    "جواز سفر الراشدين — استخراج": 4,
+    "جواز سفر الراشدين — تجديد": 4,
+    "جواز سفر الراشدين — تعويض": 4,
+    "الإعفاء من أداء واجب الخدمة الوطنية": 5,
+    "التأجيل من أداء واجب الخدمة الوطنية": 5,
+    "التأشيرة": 5,
+    "البطاقة عدد 3": 5,
+    "بطاقة التحركات الحدودية": 6,
+    "رخصة المرور": 6,
+    "الدفتر المهني لرجال البحر": 6
+  }
+};
+
+// --- LISTA COMPLETA SERVIZI (da mostrare nella selezione) ---
+const serviziList = {
+  it: [
+    "Trascrizione della nascita", "Trascrizione del matrimonio", "Trascrizione del decesso",
+    "Rilascio atti di stato civile", "Certificato di cittadinanza", "Passaporto per neonati",
+    "Autentica della firma", "Copia conforme", "Autenticazione documenti", "Iscrizione consolare",
+    "Passaporto minorenni — Primo rilascio", "Passaporto minorenni — Rinnovo", "Passaporto minorenni — Duplicato",
+    "Passaporto maggiorenni — Primo rilascio", "Passaporto maggiorenni — Rinnovo", "Passaporto maggiorenni — Duplicato",
+    "Nulla-osta per matrimonio", "Traduzione documenti", "Esonero servizio militare", "Rinvio servizio militare",
+    "Visto", "Certificato del casellario giudiziale", "Scheda movimenti frontiera", "Lasciapassare",
+    "Libretto di navigazione", "Richiesta contratto di matrimonio"
+  ],
+  ar: [
+    "جواز السفر للمولودين الجدد",
+    "جواز سفر القاصرين — استخراج", "جواز سفر القاصرين — تجديد", "جواز سفر القاصرين — تعويض",
+    "جواز سفر الراشدين — استخراج", "جواز سفر الراشدين — تجديد", "جواز سفر الراشدين — تعويض",
+    "إدراج الولادة", "إدراج الزواج", "إدراج الوفاة",
+    "استخراج مضامين الحالة المدنية", "شهادة في الجنسية",
+    "شهادة عرف للزواج", "طلب إبرام عقد الزواج",
+    "بطاقة الترسيم القنصلي",
+    "التعريف بالإمضاء", "النسخ المطابقة للأصل", "المصادقة على الوثائق", "ترجمة الوثائق",
+    "الإعفاء من أداء واجب الخدمة الوطنية", "التأجيل من أداء واجب الخدمة الوطنية",
+    "التأشيرة",
+    "البطاقة عدد 3", "بطاقة التحركات الحدودية", "رخصة المرور", "الدفتر المهني لرجال البحر"
+  ]
+};
+
+const documentiRequisiti = {
+  it: {
+    "Passaporto per neonati": [
+      "Modulo richiesta passaporto firmato dal tutore",
+      "Modulo iscrizione nascita",
+      "Atto di nascita originale italiano (con nomi dei genitori)",
+      "Copia Carta d'Identità o Passaporto dei genitori",
+      "Atto di nascita del genitore (se straniero)",
+      "Richiesta Carta Consolare",
+      "Autorizzazione legalizzata del tutore",
+      "2 copie documento identità tutore",
+      "2 copie permesso di soggiorno o passaporto italiano (se cittadino italiano)",
+      "3 foto recenti sfondo bianco",
+      "Marca da bollo consolare",
+      "⚠ La nascita deve avvenire nelle province di Emilia Romagna o Marche"
+    ],
+    "Passaporto minorenni — Primo rilascio": [
+      "Modulo passaporto da compilare in arabo e in italiano",
+      "Richiesta di Carta Consolare",
+      "Autorizzazione legalizzata di uno dei genitori",
+      "Atto di nascita tunisino originale (non oltre 90 giorni)",
+      "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
+      "2 copie del passaporto di uno dei genitori o carta d'identità tunisina",
+      "2 copie attestato scolastico/universitario per chi frequenta la scuola/università",
+      "3 foto con sfondo bianco",
+      "Marca da bollo consolare",
+      "⚠ Le domande vengono accettate solo per i residenti in Emilia Romagna e Marche"
+    ],
+    "Passaporto minorenni — Rinnovo": [
+      "Passaporto scaduto + 2 copie",
+      "Modulo passaporto da compilare in arabo e in italiano",
+      "Richiesta di Carta Consolare",
+      "Autorizzazione legalizzata di uno dei genitori",
+      "Atto di nascita tunisino originale recente (non oltre 90 giorni)",
+      "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
+      "2 copie del passaporto di uno dei genitori o carta d'identità tunisina",
+      "2 copie attestato scolastico/universitario per chi frequenta la scuola/università",
+      "3 foto con sfondo bianco",
+      "Marca da bollo consolare",
+      "⚠ Le domande vengono accettate solo per i residenti in Emilia Romagna e Marche"
+    ],
+    "Passaporto minorenni — Duplicato": [
+      "Passaporto rovinato + 2 copie (se deteriorato)",
+      "Denuncia di smarrimento o autodichiarazione di smarrimento (se smarrito)",
+      "Modulo passaporto da compilare in arabo e in italiano",
+      "Richiesta di Carta Consolare",
+      "Autorizzazione legalizzata di uno dei genitori",
+      "Atto di nascita tunisino originale (non oltre 90 giorni)",
+      "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
+      "2 copie del passaporto di uno dei genitori o carta d'identità tunisina",
+      "2 copie attestato scolastico/universitario per chi frequenta la scuola/università",
+      "3 foto con sfondo bianco",
+      "Marca da bollo consolare",
+      "⚠ La domanda viene inoltrata ai Servizi del Ministero dell'Interno per consultazione"
+    ],
+    "Passaporto maggiorenni — Primo rilascio": [
+      "Modulo passaporto da compilare in arabo e in italiano",
+      "Richiesta di Carta Consolare",
+      "2 copie della carta d'identità tunisina (con presentazione dell'originale)",
+      "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
+      "2 copie dell'attestato scolastico/universitario",
+      "3 foto con sfondo bianco",
+      "Marca da bollo consolare",
+      "⚠ Senza copia della Carta d'Identità Nazionale la domanda non viene accolta"
+    ],
+    "Passaporto maggiorenni — Rinnovo": [
+      "Passaporto scaduto + 2 copie",
+      "Modulo passaporto da compilare in arabo e in italiano",
+      "Richiesta di Carta Consolare",
+      "2 copie della carta d'identità tunisina (con presentazione dell'originale)",
+      "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
+      "2 copie dell'attestato scolastico/universitario",
+      "3 foto con sfondo bianco",
+      "Marca da bollo consolare",
+      "⚠ Senza copia della Carta d'Identità Nazionale la domanda non viene accolta"
+    ],
+    "Passaporto maggiorenni — Duplicato": [
+      "Passaporto rovinato + 2 copie (se deteriorato)",
+      "Denuncia di smarrimento o autodichiarazione di smarrimento (se smarrito)",
+      "Modulo richiesta duplicato passaporto da compilare in arabo",
+      "Modulo passaporto da compilare in arabo e in italiano",
+      "Richiesta di Carta Consolare",
+      "2 copie della carta d'identità tunisina",
+      "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
+      "2 copie dell'attestato scolastico/universitario",
+      "3 foto con sfondo bianco",
+      "Marca da bollo consolare",
+      "⚠ La domanda viene inoltrata ai Servizi del Ministero dell'Interno per consultazione"
+    ],
+    "Trascrizione della nascita": [
+      "Modulo trascrizione della nascita da compilare in arabo",
+      "Atto di nascita italiano recente originale con paternità e maternità + copia",
+      "Copia della carta d'identità nazionale dei genitori o passaporto",
+      "Atto di nascita recente originale con paternità e maternità per i genitori non tunisini",
+      "⚠ La nascita deve avvenire nelle province di competenza del consolato (Emilia Romagna e Marche)"
+    ],
+    "Trascrizione del matrimonio": [
+      "Modulo trascrizione del matrimonio da compilare in arabo",
+      "Atto di matrimonio italiano recente originale + copia",
+      "Atto di nascita originale con paternità e maternità di entrambi i coniugi",
+      "Copia della carta d'identità nazionale o passaporto in corso di validità di entrambi i coniugi",
+      "⚠ Il matrimonio deve avvenire nelle province di competenza del consolato (Emilia Romagna e Marche)"
+    ],
+    "Trascrizione del decesso": [
+      "Atto di decesso italiano originale",
+      "Atto di nascita originale recente",
+      "Ritiro del passaporto/carta d'identità del defunto",
+      "⚠ Il decesso deve avvenire nelle province di competenza del consolato (Emilia Romagna e Marche)"
+    ],
+    "Rilascio atti di stato civile": [
+      "Presentare un documento d'identità valido (Carta d'Identità Nazionale o passaporto)",
+      "Marca da bollo consolare"
+    ],
+    "Certificato di cittadinanza": [
+      "Atto di nascita tunisino originale recente (non oltre 3 mesi dalla data di rilascio)",
+      "Carta d'identità nazionale originale di uno dei genitori + copia",
+      "Copia del passaporto tunisino del richiedente",
+      "Marca da bollo consolare",
+      "⚠ Per i nati al di fuori della circoscrizione consolare il certificato non viene rilasciato"
+    ],
+    "Nulla-osta per matrimonio": [
+      "Atto di nascita originale in lingua araba con annotazione 'en vue de mariage' (non più di 20 giorni), oppure atto di nascita con certificato di celibato (non più di 20 giorni)",
+      "Certificato medico prematrimoniale per ciascun coniuge",
+      "Copia documento d'identità dei coniugi (passaporto tunisino o carta d'identità nazionale)",
+      "Copia documento d'identità dei testimoni",
+      "Autorizzazione del tribunale per i minorenni",
+      "Consenso scritto del tutore se il coniuge è assente alla stipula",
+      "Atto di decesso del coniuge (per i vedovi)",
+      "Copia sentenza definitiva di divorzio (per i divorziati)"
+    ],
+    "Richiesta contratto di matrimonio": [
+      "Atto di nascita originale in lingua araba con annotazione 'en vue de mariage' (non più di 20 giorni), oppure atto di nascita con certificato di celibato (non più di 20 giorni)",
+      "Certificato medico prematrimoniale per ciascun coniuge",
+      "Copia documento d'identità dei coniugi",
+      "Copia documento d'identità dei testimoni",
+      "Autorizzazione del tribunale per i minorenni",
+      "Consenso scritto del tutore se il coniuge è assente",
+      "Atto di decesso del coniuge (per i vedovi)",
+      "Copia sentenza definitiva di divorzio (per i divorziati)"
+    ],
+    "Iscrizione consolare": [
+      "Modulo carta consolare da compilare e firmare",
+      "Passaporto originale + copia",
+      "Copia del permesso di soggiorno o carta d'identità (se cittadino italiano)",
+      "2 foto con sfondo bianco",
+      "Marca da bollo consolare"
+    ],
+    "Autentica della firma": [
+      "Documento di identità tunisino valido",
+      "Marca da bollo consolare",
+      "⚠ Il contenuto del documento non deve essere contrario alla pubblica decenza o violare l'ordine pubblico"
+    ],
+    "Copia conforme": [
+      "Documento di identità valido (carta d'identità nazionale o passaporto)",
+      "Documento originale",
+      "Marca da bollo consolare",
+      "⚠ Il contenuto del documento non deve essere contrario alla pubblica decenza o violare l'ordine pubblico"
+    ],
+    "Autenticazione documenti": [
+      "Documento di identità tunisino valido",
+      "Documento originale da autenticare",
+      "Marca da bollo consolare"
+    ],
+    "Traduzione documenti": [
+      "Documento originale da tradurre",
+      "Marca da bollo consolare",
+      "⚠ Non sono accettate fotocopie realizzate con smartphone o scanner"
+    ],
+    "Esonero servizio militare": [
+      "Aver compiuto 28 anni o più ed essere residente in Emilia Romagna o Marche",
+      "Modulo domanda di esonero compilata e firmata (intestata al Ministro della Difesa Nazionale)",
+      "Atto di nascita originale recente (non più di 3 mesi)",
+      "Copia della carta d'identità tunisina",
+      "2 foto tessera (formato 3x2,5 cm)",
+      "Copia del passaporto tunisino",
+      "Copia conforme della carta consolare valida",
+      "Copia conforme del permesso di soggiorno valido o carta d'identità italiana",
+      "Attestato di lavoro originale (non più di 3 mesi) o certificato di iscrizione universitaria/scolastica",
+      "Per lavoratori autonomi: certificato recente della Camera di Commercio e Industria italiana",
+      "Ricevuta vaglia postale di 5 dinari tunisini intestato al Tesoriere del Ministero della Difesa"
+    ],
+    "Rinvio servizio militare": [
+      "Aver compiuto 20 anni o più ed essere residente in Emilia Romagna o Marche",
+      "Modulo domanda di rinvio compilata e firmata (intestata al Ministro della Difesa Nazionale)",
+      "Atto di nascita tunisino originale recente (non più di 3 mesi)",
+      "Copia della carta d'identità tunisina",
+      "2 foto tessera (formato 3x2,5 cm)",
+      "Copia del passaporto tunisino",
+      "Copia conforme della carta consolare valida",
+      "Copia conforme del permesso di soggiorno valido o carta d'identità italiana",
+      "Attestato di lavoro originale (non più di 3 mesi) o certificato di iscrizione universitaria/scolastica",
+      "Per lavoratori autonomi: certificato recente della Camera di Commercio e Industria italiana",
+      "Ricevuta vaglia postale di 5 dinari tunisini intestato al Tesoriere del Ministero della Difesa"
+    ],
+    "Visto": [
+      "Modulo domanda di visto compilato e firmato",
+      "Copia del passaporto valido (almeno 6 mesi di validità residua)",
+      "Copia del permesso di soggiorno valido (almeno 6 mesi di validità residua)",
+      "2 foto tessera",
+      "Prenotazione alberghiera in Tunisia o invito da cittadino/ente tunisino autenticato",
+      "Lettera di invito per conferenze o convegni organizzati in Tunisia",
+      "Marca da bollo consolare (visto di transito 25€ / singolo ingresso 75€ / ingressi multipli 150€)"
+    ],
+    "Certificato del casellario giudiziale": [
+      "Modulo del certificato da compilare",
+      "Copia della carta d'identità nazionale",
+      "Atto di nascita se non è in possesso della C.I.N.",
+      "Marca da bollo consolare",
+      "ℹ È possibile richiedere il certificato online su: https://b3.interieur.gov.tn/"
+    ],
+    "Scheda movimenti frontiera": [
+      "Modulo 'Scheda Movimenti di Frontiera' compilato e firmato",
+      "Copia del passaporto valido",
+      "Copia della carta d'identità nazionale"
+    ],
+    "Lasciapassare": [
+      "Scheda informativa da compilare e firmare",
+      "Domanda di lasciapassare da compilare e firmare",
+      "Documento che attesti l'identità tunisina (copia passaporto o carta d'identità)",
+      "2 foto tessera recenti su sfondo bianco",
+      "Biglietto di viaggio con data specifica (dopo l'approvazione preliminare)",
+      "⚠ La presenza dell'interessato è obbligatoria — validità max 5 giorni"
+    ],
+    "Libretto di navigazione": [
+      "Domanda di rilascio/proroga libretto compilata e firmata",
+      "Copia della carta d'identità nazionale",
+      "Certificato penale N° 3 recente",
+      "4 foto tessera recenti",
+      "Certificato medico e estratto di navigazione con anzianità di almeno 24 mesi",
+      "Certificato medico (in caso di rinnovo del libretto)"
+    ]
+  },
+  ar: {
+    "جواز السفر للمولودين الجدد": [
+      "استمارة مطلب جواز سفر ممضاة من قبل الوليّ",
+      "استمارة إدراج ولادة",
+      "مضمون ولادة أصلي جديد للمولود باللغة الإيطالية (يتضمن اسم ولقب الوالدين)",
+      "نسخة من بطاقة التعريف الوطنية أو جواز سفر الوالدين",
+      "مضمون ولادة الأب أو الأم (يتضمن اسم ولقب الوالدين) إن كان أجنبيّاً",
+      "استخراج بطاقة قنصلية",
+      "ترخيص الوليّ (الأم أو الأب) معرّف به",
+      "02 نسخ من وثيقة هويّة الوليّ (جواز سفر تونسي ساري أو بطاقة تعريف وطنية)",
+      "02 نسخ من بطاقة إقامة الأم أو الأب أو من جواز السفر الإيطالي لحاملي الجنسية الإيطالية",
+      "03 صور شمسيّة حديثة ذات خلفية بيضاء",
+      "معاليم طوابع العمليّات القنصليّة",
+      "⚠ يجب أن يكون مكان الولادة بإحدى الدوائر البلديّة بمقاطعتي إيميليا رومانيا وماركي"
+    ],
+    "جواز سفر القاصرين — استخراج": [
+      "استمارة مطلب جواز سفر ممضاة من قبل الوليّ",
+      "استخراج بطاقة قنصلية",
+      "ترخيص الوليّ (الأم أو الأب) معرّف به",
+      "مضمون ولادة تونسي لم يمض على تاريخ صدوره أكثر من 90 يوماً",
+      "02 نسخ من بطاقة إقامة المعني أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "02 نسخ من وثيقة هويّة الوليّ (جواز سفر تونسي ساري أو بطاقة تعريف وطنية)",
+      "02 نسخ من شهادة مدرسية لمن سنّهم فوق 6 سنوات أو شهادة جامعيّة",
+      "03 صور شمسيّة حديثة ذات خلفية بيضاء",
+      "معاليم طوابع العمليّات القنصليّة",
+      "⚠ يتم قبول المطالب فقط للمقيمين بإيميليا رومانيا وماركي"
+    ],
+    "جواز سفر القاصرين — تجديد": [
+      "جواز السفر القديم + 02 نسخ",
+      "استمارة مطلب جواز سفر ممضاة من قبل الوليّ",
+      "استخراج بطاقة قنصلية",
+      "ترخيص الوليّ (الأم أو الأب) معرّف به",
+      "مضمون ولادة تونسي لم يمض على تاريخ صدوره أكثر من 90 يوماً",
+      "02 نسخ من بطاقة إقامة المعني أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "02 نسخ من وثيقة هويّة الوليّ (جواز سفر تونسي ساري أو بطاقة تعريف وطنية)",
+      "02 نسخ من شهادة مدرسية لمن سنّهم فوق 6 سنوات أو شهادة جامعيّة",
+      "03 صور شمسيّة حديثة ذات خلفية بيضاء",
+      "معاليم طوابع العمليّات القنصليّة",
+      "⚠ يتم قبول المطالب فقط للمقيمين بإيميليا رومانيا وماركي"
+    ],
+    "جواز سفر القاصرين — تعويض": [
+      "جواز السفر القديم في حالة التلف + 02 نسخ",
+      "شهادة ضياع من السلطات الإيطالية (في حالة الضياع) أو تصريح على الشرف بالضياع",
+      "استمارة مطلب جواز سفر ممضاة من قبل الوليّ",
+      "استخراج بطاقة قنصلية",
+      "ترخيص الوليّ (الأم أو الأب) معرّف به",
+      "مضمون ولادة تونسي لم يمض على تاريخ صدوره أكثر من 90 يوماً",
+      "02 نسخ من بطاقة إقامة المعني أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "02 نسخ من وثيقة هويّة الوليّ (جواز سفر تونسي ساري أو بطاقة تعريف وطنية)",
+      "02 نسخ من شهادة مدرسية لمن سنّهم فوق 6 سنوات أو شهادة جامعيّة",
+      "03 صور شمسيّة حديثة ذات خلفية بيضاء",
+      "معاليم طوابع العمليّات القنصليّة",
+      "⚠ تتم الإجابة في أجل أدناه 60 يوماً من تاريخ إيداع الملف"
+    ],
+    "جواز سفر الراشدين — استخراج": [
+      "استمارة مطلب جواز سفر ممضاة",
+      "استخراج بطاقة قنصلية",
+      "02 نسخ من بطاقة التعريف الوطنية (مع الاستظهار بالأصل)",
+      "02 نسخ من بطاقة الإقامة أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "02 نسخ من شهادة مدرسية أو بطاقة طالب",
+      "03 صور شمسيّة حديثة ذات خلفية بيضاء",
+      "معلوم طوابع العمليّات القنصليّة",
+      "⚠ في حال عدم الاستظهار ببطاقة التعريف الوطنية، لا يتم قبول المطلب"
+    ],
+    "جواز سفر الراشدين — تجديد": [
+      "جواز السفر القديم + 02 نسخ",
+      "استمارة مطلب جواز سفر ممضاة",
+      "استخراج بطاقة قنصلية",
+      "02 نسخ من بطاقة التعريف الوطنية (مع الاستظهار بالأصل)",
+      "02 نسخ من بطاقة الإقامة أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "02 نسخ من شهادة مدرسية أو بطاقة طالب",
+      "03 صور شمسيّة حديثة ذات خلفية بيضاء",
+      "معلوم طوابع العمليّات القنصليّة",
+      "⚠ في حال عدم الاستظهار ببطاقة التعريف الوطنية، لا يتم قبول المطلب"
+    ],
+    "جواز سفر الراشدين — تعويض": [
+      "جواز السفر القديم في حالة التلف + 02 نسخ",
+      "شهادة ضياع من السلطات الإيطالية (في حالة الضياع) أو تصريح على الشرف بضياع الجواز",
+      "مطلب تعويض جواز سفر ضائع أو مُتلف",
+      "استمارة مطلب جواز سفر ممضاة",
+      "استخراج بطاقة قنصلية",
+      "02 نسخ من بطاقة التعريف الوطنية",
+      "02 نسخ من بطاقة الإقامة أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "02 نسخ من شهادة مدرسية أو بطاقة طالب",
+      "03 صور شمسيّة حديثة ذات خلفية بيضاء",
+      "معلوم طوابع العمليّات القنصليّة",
+      "⚠ تتم الإجابة في أجل أدناه 60 يوماً من تاريخ إيداع الملف"
+    ],
+    "إدراج الولادة": [
+      "استمارة إدراج ولادة",
+      "مضمون ولادة أصلي جديد باللغة الإيطالية (يتضمن اسم ولقب الوالدين)",
+      "نسخة من بطاقة تعريف الوالدين إن كانا تونسيّان، أو جواز سفر أحدهما إن كان أجنبيّاً",
+      "مضمون ولادة الأب أو الأم (يتضمن اسم ولقب الوالدين) إن كان أجنبيّاً",
+      "⚠ يجب أن يكون مكان الولادة بإحدى الدوائر البلديّة بمقاطعتي إيميليا رومانيا وماركي"
+    ],
+    "إدراج الزواج": [
+      "استمارة يتولىّ المعني تعميرها بالعربية",
+      "مضمون من رسم زواج أصلي باللغة الإيطالية مع نسخة",
+      "مضمون ولادة أصلي لكلّ من الزوجين (أقل من 3 أشهر) يتضمن اسم ولقب الوالدين",
+      "نسخة من وثيقة هويّة الزوجين (جواز سفر ساري أو بطاقة هوية)",
+      "⚠ يجب أن يكون مكان الزواج بإحدى الدوائر البلدية بمقاطعتي إيميليا رومانيا وماركي"
+    ],
+    "إدراج الوفاة": [
+      "مضمون من رسم وفاة أصلي باللغة الإيطالية",
+      "مضمون ولادة أصلي باللغة العربية",
+      "تسليم وثائق الهوية الأصلية للمتوفى (بطاقة التعريف الوطنية وجواز السفر)",
+      "⚠ يجب أن يكون مكان الوفاة بإحدى الدوائر البلدية بمقاطعتي إيميليا رومانيا وماركي"
+    ],
+    "استخراج مضامين الحالة المدنية": [
+      "الاستظهار بوثيقة هوية رسمية (بطاقة تعريف وطنية أو جواز سفر ساري المفعول)",
+      "معلوم طابع العمليات القنصلية"
+    ],
+    "شهادة في الجنسية": [
+      "مضمون ولادة أصلي حديث العهد (لا تتجاوز مدة صلاحيته 3 أشهر)",
+      "نسخة من بطاقة التعريف الوطنية للأب أو الأم مع الاستظهار بالأصل",
+      "معلوم طابع العمليات القنصلية",
+      "⚠ يجب أن يكون مكان ولادة المعني بالأمر بإحدى الدوائر البلدية بمقاطعتي إيميليا رومانيا وماركي"
+    ],
+    "شهادة عرف للزواج": [
+      "مضمون ولادة أصلي باللغة العربية مع ملاحظة 'بغرض الزواج' لكل من الزوجين (لم يمض عليه أكثر من 20 يوماً)، أو مضمون ولادة مرفوق بشهادة عزوبية (لم يمض عليها أكثر من 20 يوماً)",
+      "شهادة طبّية سابقة للزواج لكل من الزوجين",
+      "نسخة من بطاقة هوية الزوجين",
+      "نسخة من بطاقة هوية الشاهدين",
+      "إذن من المحكمة لمن هم دون السن القانونية",
+      "موافقة كتابية للولي إذا كان الزوج متغيباً عن إبرام عقد الزواج",
+      "مضمون وفاة الزوج أو الزوجة بالنسبة للأرامل",
+      "نسخة من الحكم النهائي للطلاق للمطلّقين"
+    ],
+    "طلب إبرام عقد الزواج": [
+      "مضمون ولادة أصلي باللغة العربية مع ملاحظة 'بغرض الزواج' (لم يمض عليه أكثر من 20 يوماً)، أو مضمون ولادة مرفوق بشهادة عزوبية",
+      "شهادة طبّية سابقة للزواج لكل من الزوجين",
+      "نسخة من بطاقة هوية الزوجين",
+      "نسخة من بطاقة هوية الشاهدين",
+      "إذن من المحكمة لمن هم دون السن القانونية",
+      "موافقة كتابية للولي عند الغياب",
+      "مضمون وفاة الزوج أو الزوجة (للأرامل)",
+      "نسخة من الحكم النهائي للطلاق (للمطلّقين)"
+    ],
+    "بطاقة الترسيم القنصلي": [
+      "استمارة مطلب ترسيم قنصلي ممضاة",
+      "الاستظهار بجواز السفر الأصلي مع نسخة",
+      "نسخة من بطاقة الإقامة أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "02 صور شمسية حديثة ذات خلفية بيضاء",
+      "معلوم طابع العمليّات القنصليّة"
+    ],
+    "التعريف بالإمضاء": [
+      "ضرورة الاستظهار بوثيقة هوية تونسية سارية المفعول (بطاقة تعريف وطنية أو جواز سفر)",
+      "معلوم طابع العمليات القنصلية",
+      "⚠ يجب ألاّ يكون محتوى الوثيقة منافياً للأخلاق الحميدة أو مخلًّا بالنظام العام"
+    ],
+    "النسخ المطابقة للأصل": [
+      "ضرورة الاستظهار بوثيقة هوية سارية المفعول (بطاقة تعريف وطنية أو جواز سفر)",
+      "الاستظهار بالوثيقة الأصلية",
+      "معلوم طابع العمليات القنصلية",
+      "⚠ يجب ألّا يكون محتوى الوثيقة منافياً للأخلاق الحميدة أو مخلًّا بالنظام العام"
+    ],
+    "المصادقة على الوثائق": [
+      "ضرورة الاستظهار بوثيقة هوية تونسية سارية المفعول",
+      "الوثيقة الأصلية المراد المصادقة عليها",
+      "معلوم طابع العمليات القنصلية"
+    ],
+    "ترجمة الوثائق": [
+      "الاستظهار بالوثيقة الأصلية المُراد ترجمتها",
+      "معلوم طابع العمليات القنصلية",
+      "⚠ لا تُقبل النسخ المُصوّرة بالهاتف الذكي أو الآلات الماسحة"
+    ],
+    "الإعفاء من أداء واجب الخدمة الوطنية": [
+      "بلوغ سن 28 سنة فما فوق، والإقامة بمقاطعتي إيميليا رومانيا وماركي",
+      "مطلب باسم السيّد وزير الدفاع الوطني",
+      "مضمون ولادة أصلي حديث العهد (لم يمض عليه أكثر من 3 أشهر)",
+      "نسخة من بطاقة التعريف الوطنية",
+      "2 صور شمسية (3/2.5 سم)",
+      "نسخة من جواز السفر",
+      "نسخة مطابقة للأصل من بطاقة الترسيم القنصلي سارية المفعول",
+      "نسخة مطابقة للأصل من بطاقة الإقامة أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "شهادة عمل أصلية (لم يمض عليها أكثر من 3 أشهر) أو شهادة ترسيم جامعية أو مدرسية",
+      "لأصحاب المهن الحرة: شهادة حديثة من غرفة الصناعة والتجارة الإيطالية",
+      "وصل حوالة بريدية بخمسة (05) دنانير باسم وكيل مقابيض وزارة الدفاع الوطني"
+    ],
+    "التأجيل من أداء واجب الخدمة الوطنية": [
+      "بلوغ سن 20 سنة فما فوق، والإقامة بمقاطعتي إيميليا رومانيا وماركي",
+      "مطلب باسم السيّد وزير الدفاع الوطني",
+      "مضمون ولادة أصلي حديث العهد (لم يمض عليه أكثر من 3 أشهر)",
+      "نسخة من بطاقة التعريف الوطنية",
+      "2 صور شمسية (3/2.5 سم)",
+      "نسخة من جواز السفر",
+      "نسخة مطابقة للأصل من بطاقة الترسيم القنصلي سارية المفعول",
+      "نسخة مطابقة للأصل من بطاقة الإقامة أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
+      "شهادة عمل أصلية (لم يمض عليها أكثر من 3 أشهر) أو شهادة ترسيم جامعية أو مدرسية",
+      "لأصحاب المهن الحرة: شهادة حديثة من غرفة الصناعة والتجارة الإيطالية",
+      "وصل حوالة بريدية بخمسة (05) دنانير باسم وكيل مقابيض وزارة الدفاع الوطني"
+    ],
+    "التأشيرة": [
+      "مطلب تأشيرة يتم تعميره وإمضائه",
+      "نسخة من جواز السفر ساري المفعول وصالح على الأقل لمدة 6 أشهر",
+      "نسخة من شهادة الإقامة سارية المفعول وصالحة على الأقل لمدة 6 أشهر",
+      "2 صور شمسية",
+      "حجز بنزل بالجمهورية التونسية أو دعوة من جهة تونسية معرّفة بالإمضاء لدى السلطات التونسية",
+      "رسالة دعوة للأشخاص المشاركين في مؤتمرات أو ندوات بتونس",
+      "معلوم قنصلي: تأشيرة عبور 25 أورو / دخول واحد 75 أورو / دخول متعدّد 150 أورو"
+    ],
+    "البطاقة عدد 3": [
+      "استمارة بطاقة عدد 3",
+      "نسخة من بطاقة التعريف الوطنية",
+      "مضمون ولادة بالنسبة لمن ليس لديهم بطاقة تعريف وطنية",
+      "معلوم طابع العمليّات القنصليّة",
+      "ℹ يمكن استخراج البطاقة عن بعد على الموقع: https://b3.interieur.gov.tn/"
+    ],
+    "بطاقة التحركات الحدودية": [
+      "مطلب 'بطاقة تحركات حدودية' يتم تعميره وإمضائه",
+      "نسخة من جواز السفر ساري المفعول",
+      "نسخة من بطاقة التّعريف الوطنيّة"
+    ],
+    "رخصة المرور": [
+      "استمارة إرشادات يتم تعميرها وإمضائها",
+      "مطلب رخصة مرور يتم تعميره وإمضائه",
+      "وثيقة تثبت الهوية التونسية (نسخة جواز سفر أو بطاقة تعريف وطنية)",
+      "2 صور شمسية حديثة ذات خلفية بيضاء",
+      "تذكرة سفر في تاريخ محدد (بعد الحصول على الموافقة الأولية)",
+      "⚠ حضور المعني بالأمر ضروري — مدة صلاحية رخصة المرور لا تتجاوز 5 أيام"
+    ],
+    "الدفتر المهني لرجال البحر": [
+      "مطلب استخراج/تمديد الدفتر يتم تعميره وإمضائه",
+      "نسخة من بطاقة التعريف الوطنية",
+      "بطاقة عدد 03 حديثة العهد",
+      "04 صور شمسية حديثة العهد",
+      "02 نسخ مطابقة للأصل من شهادة طبيّة وكشف ابحار يتضمّن أقدميّة بـ 24 شهراً على الأقل",
+      "شهادة طبيّة عند التّمديد في صلاحيّة الدفتر"
+    ]
+  }
+};;
+// Fallback per servizi senza documenti specifici
+documentiRequisiti.it["Autenticazione documenti"] = documentiRequisiti.it["Autentica della firma"];
+documentiRequisiti.it["Iscrizione consolare"] = documentiRequisiti.it["Iscrizione consolare"] || ["Documento identità valido", "Marca da bollo"];
+documentiRequisiti.it["Certificato del casellario giudiziale"] = documentiRequisiti.it["Certificato del casellario giudiziale"] || ["Modulo", "Copia CIN", "Atto di nascita", "Marca da bollo"];
+
+// Default durations per sportello (minutes)
+const defaultDurBySp = {1:30,2:20,3:30,4:30,5:20,6:15};
+
+const T={
+  it:{hdr:'Consolato della Repubblica Tunisina a Bologna',sub:'Prenotazione Appuntamenti — Mar–Sab 09:00–13:00',s1:'Servizio',s2:'Orario',s3:'Conferma',cs:'Scegli il servizio',cd:'Scegli un giorno',ct:'Scegli un orario',next:'Continua →',back:'← Indietro',sum:'Riepilogo',sf:'Servizio',df:'Data',tf:'Ora',dur:'Durata',cb:'Conferma e genera il codice',ok:'Appuntamento confermato!',ok2:'Mostra questo codice alla reception',yc:'Il tuo codice',note:"Annota o stampa questo codice. Ti verrà richiesto all'ingresso.",newrdv:'Nuovo appuntamento',print:'Stampa ricevuta',min:'min',dir:'ltr',days:['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],months:['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'],sportelloLabel:'Sportello',
+    rcpt:{svc:'Servizio',sp:'Sportello',day:'Data',time:'Ora',dur:'Durata',footer:'Consolato della Repubblica Tunisina a Bologna',docs:'Documenti da preparare'},
+    admin:{title:'Pannello Amministrazione',pwdLabel:'Inserisci la password per accedere',pwdBtn:'Accedi',pwdErr:'Password errata. Riprova.',backBtn:'← Torna alla prenotazione',tabAppts:'Appuntamenti',tabDays:'Giorni/Festività',tabSvcs:'Durata servizi',tabHours:'Orari',searchPlaceholder:'Cerca codice o servizio...',allDays:'Tutti i giorni',workdays:'Giorni lavorativi',holidays:'Chiusure speciali',addHoliday:'+ Aggiungi chiusura',durTitle:'Durata per servizio',hoursTitle:'Orario di apertura',morning:'Mattina:',save:'Salva',saved:'Salvato!',confirmStatus:'Confermato',cancelStatus:'Annullato',editTitle:'Modifica appuntamento',editSvc:'Servizio',editDay:'Data',editTime:'Ora',cancel:'Annulla',saveEdit:'Salva modifiche',noAppts:'Nessun appuntamento trovato.',noSlots:'Nessuno slot disponibile con questa configurazione.'}
+  },
+  ar:{hdr:'قنصلية الجمهورية التونسية بولونيا',sub:'حجز المواعيد — الثلاثاء–السبت 09:00–13:00',s1:'الخدمة',s2:'الموعد',s3:'التأكيد',cs:'اختر الخدمة',cd:'اختر اليوم',ct:'اختر الوقت',next:'→ متابعة',back:'رجوع ←',sum:'ملخص الحجز',sf:'الخدمة',df:'التاريخ',tf:'الوقت',dur:'المدة',cb:'تأكيد وإنشاء الرمز',ok:'تم تأكيد الموعد!',ok2:'قدّم هذا الرمز عند الاستقبال',yc:'رمزك',note:'احتفظ بهذا الرمز. سيُطلب منك عند المدخل.',newrdv:'موعد جديد',print:'طباعة الوصل',min:'د',dir:'rtl',days:['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],months:['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],sportelloLabel:'الشباك',
+    rcpt:{svc:'الخدمة',sp:'الشباك',day:'التاريخ',time:'الوقت',dur:'المدة',footer:'قنصلية الجمهورية التونسية بولونيا',docs:'الوثائق المطلوبة'},
+    admin:{title:'لوحة الإدارة',pwdLabel:'أدخل كلمة المرور للدخول',pwdBtn:'دخول',pwdErr:'كلمة المرور خاطئة. حاول مجدداً.',backBtn:'← العودة إلى الحجز',tabAppts:'المواعيد',tabDays:'الأيام/العطل',tabSvcs:'مدة الخدمات',tabHours:'أوقات العمل',searchPlaceholder:'ابحث برمز أو خدمة...',allDays:'كل الأيام',workdays:'أيام العمل',holidays:'إغلاق خاص',addHoliday:'+ إضافة إغلاق',durTitle:'مدة كل خدمة',hoursTitle:'ساعات العمل',morning:'الصباح:',save:'حفظ',saved:'تم الحفظ!',confirmStatus:'مؤكد',cancelStatus:'ملغى',editTitle:'تعديل الموعد',editSvc:'الخدمة',editDay:'التاريخ',editTime:'الوقت',cancel:'إلغاء',saveEdit:'حفظ التعديلات',noAppts:'لم يُعثر على مواعيد.',noSlots:'لا توجد فترات متاحة بهذا الإعداد.'}
+  }
+};
+
+// --- PERSISTENZA localStorage ---
+function saveData(){
+  try {
+    localStorage.setItem('consolato_appointments', JSON.stringify(appointments));
+    localStorage.setItem('consolato_bookedSlots', JSON.stringify(bookedSlots));
+    localStorage.setItem('consolato_cfg', JSON.stringify(cfg));
+  } catch(e){ console.warn('saveData error:', e); }
+}
+function loadData(){
+  try {
+    const a = localStorage.getItem('consolato_appointments');
+    if(a) appointments = JSON.parse(a);
+    const b = localStorage.getItem('consolato_bookedSlots');
+    if(b) bookedSlots = JSON.parse(b);
+    const c = localStorage.getItem('consolato_cfg');
+    if(c){ const saved=JSON.parse(c); cfg=Object.assign(cfg,saved); }
+  } catch(e){ console.warn('loadData error:', e); }
+}
+
+let cfg={workdays:[2,3,4,5,6],holidays:[],amStart:'09:00',amEnd:'13:00',durations:{}};
+let bookedSlots={};
+let appointments=[];
+
+let curLang='it';
+let selSvc=null, selSp=null, selSpLabel=null, selSvcIdx=-1;
+let selDay=null, selDayISO=null, selTime=null, curStep=1;
+
+function getDur(spNum, svcName){
+  const k='sp'+spNum+'-'+svcName;
+  return cfg.durations[k]||(defaultDurBySp[spNum]||20);
+}
+
+function setLang(l,btn){
+  curLang=l;
+  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyT(l);
+  buildSvcs(l);
+  if(curStep===2) buildDays();
+}
+
+function applyT(lang){
+  lang=lang||curLang;
+  const t=T[lang];
+  const isRTL=t.dir==='rtl';
+  const app=document.getElementById('app');
+  app.setAttribute('dir',t.dir);
+  app.style.textAlign=isRTL?'right':'left';
+  document.querySelector('.lang-bar').style.flexDirection=isRTL?'row-reverse':'row';
+  document.querySelector('.steps').style.flexDirection=isRTL?'row-reverse':'row';
+  document.querySelectorAll('.si').forEach(el=>{el.style.marginRight=isRTL?'0':'';el.style.marginLeft=isRTL?'20px':'0';});
+  document.querySelectorAll('.nav').forEach(nav=>{nav.style.flexDirection=isRTL?'row-reverse':'row';});
+  document.getElementById('hdr-title').textContent=t.hdr;
+  document.getElementById('hdr-sub').textContent=t.sub;
+  ['sl1','sl2','sl3'].forEach((id,i)=>document.getElementById(id).textContent=[t.s1,t.s2,t.s3][i]);
+  document.getElementById('lbl-cs').textContent=t.cs;
+  document.getElementById('lbl-cd').textContent=t.cd;
+  document.getElementById('lbl-ct').textContent=t.ct;
+  document.getElementById('btn-n1').textContent=t.next;
+  document.getElementById('btn-n2').textContent=t.next;
+  document.getElementById('btn-b2').textContent=t.back;
+  document.getElementById('btn-b3').textContent=t.back;
+  document.getElementById('lbl-sum').textContent=t.sum;
+  document.getElementById('lbl-sf').textContent=t.sf;
+  document.getElementById('lbl-df').textContent=t.df;
+  document.getElementById('lbl-tf').textContent=t.tf;
+  document.getElementById('btn-confirm').innerHTML='<i class="ti ti-check"></i> <span id="lbl-cb">'+t.cb+'</span>';
+  document.getElementById('lbl-ok').textContent=t.ok;
+  document.getElementById('lbl-ok2').textContent=t.ok2;
+  document.getElementById('lbl-yc').textContent=t.yc;
+  document.getElementById('lbl-note').textContent=t.note;
+  document.getElementById('btn-new').textContent=t.newrdv;
+  document.getElementById('lbl-print').textContent=t.print;
+  document.getElementById('sp-box-label').textContent=t.sportelloLabel;
+  document.getElementById('rcpt-lbl-svc').textContent=t.rcpt.svc+':';
+  document.getElementById('rcpt-lbl-sp').textContent=t.rcpt.sp+':';
+  document.getElementById('rcpt-lbl-day').textContent=t.rcpt.day+':';
+  document.getElementById('rcpt-lbl-time').textContent=t.rcpt.time+':';
+  document.getElementById('rcpt-footer').textContent=t.rcpt.footer;
+  document.getElementById('docs-title').textContent=t.rcpt.docs;
+  // admin texts
+  const a=t.admin;
+  document.getElementById('admin-title').textContent=a.title;
+  document.getElementById('admin-pwd-label').textContent=a.pwdLabel;
+  document.getElementById('admin-pwd-btn').textContent=a.pwdBtn;
+  document.getElementById('pwd-err').textContent=a.pwdErr;
+  document.getElementById('admin-back-btn').textContent=a.backBtn;
+  document.getElementById('admin-back-btn2').textContent=a.backBtn;
+  document.getElementById('tab-appts').innerHTML='<i class="ti ti-list"></i> '+a.tabAppts;
+  document.getElementById('tab-days').innerHTML='<i class="ti ti-calendar"></i> '+a.tabDays;
+  document.getElementById('tab-svcs').innerHTML='<i class="ti ti-clock"></i> '+a.tabSvcs;
+  document.getElementById('tab-hours').innerHTML='<i class="ti ti-adjustments"></i> '+a.tabHours;
+  document.getElementById('filter-search').placeholder=a.searchPlaceholder;
+  const fdOpt=document.getElementById('filter-day').options[0]; if(fdOpt) fdOpt.textContent=a.allDays;
+  document.getElementById('admin-workdays-title').innerHTML='<i class="ti ti-calendar-week"></i> '+a.workdays;
+  document.getElementById('admin-holidays-title').innerHTML='<i class="ti ti-calendar-off"></i> '+a.holidays;
+  document.getElementById('add-holiday-btn').innerHTML='<i class="ti ti-plus"></i> '+a.addHoliday;
+  document.getElementById('save-btn-days').textContent=a.save;
+  document.getElementById('sb1').innerHTML='<i class="ti ti-check"></i> '+a.saved;
+  document.getElementById('admin-dur-title').innerHTML='<i class="ti ti-list"></i> '+a.durTitle;
+  document.getElementById('save-btn-svcs').textContent=a.save;
+  document.getElementById('sb2').innerHTML='<i class="ti ti-check"></i> '+a.saved;
+  document.getElementById('admin-hours-title').innerHTML='<i class="ti ti-clock"></i> '+a.hoursTitle;
+  document.getElementById('admin-morning-lbl').textContent=a.morning;
+  document.getElementById('save-btn-hours').textContent=a.save;
+  document.getElementById('sb3').innerHTML='<i class="ti ti-check"></i> '+a.saved;
+  document.getElementById('edit-title').textContent=a.editTitle;
+  document.getElementById('edit-lbl-svc').textContent=a.editSvc;
+  document.getElementById('edit-lbl-day').textContent=a.editDay;
+  document.getElementById('edit-lbl-time').textContent=a.editTime;
+  document.getElementById('edit-cancel-btn').textContent=a.cancel;
+  document.getElementById('edit-save-btn').textContent=a.saveEdit;
+  if(document.getElementById('admin-panel').style.display!=='none') buildAdminPanel();
+}
+
+// --- GRUPPI DI SERVIZI ---
+const serviziGruppi = {
+  it: [
+    {
+      label: 'Passaporto',
+      icon: 'ti-passport',
+      items: [
+        'Passaporto maggiorenni — Primo rilascio',
+        'Passaporto maggiorenni — Rinnovo',
+        'Passaporto maggiorenni — Duplicato',
+        'Passaporto minorenni — Primo rilascio',
+        'Passaporto minorenni — Rinnovo',
+        'Passaporto minorenni — Duplicato',
+        'Passaporto per neonati'
+      ]
+    },
+    {
+      label: 'Carta Consolare',
+      icon: 'ti-id-badge',
+      items: ['Iscrizione consolare']
+    },
+    {
+      label: 'Stato Civile',
+      icon: 'ti-file-certificate',
+      items: [
+        'Trascrizione della nascita',
+        'Trascrizione del matrimonio',
+        'Trascrizione del decesso',
+        'Rilascio atti di stato civile',
+        'Nulla-osta per matrimonio',
+        'Richiesta contratto di matrimonio',
+        'Certificato di cittadinanza'
+      ]
+    },
+    {
+      label: 'Autentica, Legalizzazione e Copia conforme',
+      icon: 'ti-stamp',
+      items: ['Autentica della firma', 'Autenticazione documenti', 'Copia conforme', 'Traduzione documenti']
+    },
+    {
+      label: 'Rinvio e Esonero dal servizio militare',
+      icon: 'ti-shield',
+      items: ['Rinvio servizio militare', 'Esonero servizio militare']
+    },
+    {
+      label: 'Certificato del casellario giudiziale B3',
+      icon: 'ti-file-check',
+      items: ['Certificato del casellario giudiziale']
+    },
+    {
+      label: 'Visto',
+      icon: 'ti-plane',
+      items: ['Visto']
+    },
+    {
+      label: 'Altri servizi',
+      icon: 'ti-dots-circle-horizontal',
+      items: ['Scheda movimenti frontiera', 'Lasciapassare', 'Libretto di navigazione']
+    }
+  ],
+  ar: [
+    {
+      label: 'جواز السفر',
+      icon: 'ti-passport',
+      items: [
+        'جواز سفر الراشدين — استخراج',
+        'جواز سفر الراشدين — تجديد',
+        'جواز سفر الراشدين — تعويض',
+        'جواز سفر القاصرين — استخراج',
+        'جواز سفر القاصرين — تجديد',
+        'جواز سفر القاصرين — تعويض',
+        'جواز السفر للمولودين الجدد'
+      ]
+    },
+    {
+      label: 'بطاقة الترسيم القنصلي',
+      icon: 'ti-id-badge',
+      items: ['بطاقة الترسيم القنصلي']
+    },
+    {
+      label: 'الحالة المدنية',
+      icon: 'ti-file-certificate',
+      items: [
+        'إدراج الولادة',
+        'إدراج الزواج',
+        'إدراج الوفاة',
+        'استخراج مضامين الحالة المدنية',
+        'شهادة عرف للزواج',
+        'طلب إبرام عقد الزواج',
+        'شهادة في الجنسية'
+      ]
+    },
+    {
+      label: 'التعريف والمصادقة والنسخ المطابقة',
+      icon: 'ti-stamp',
+      items: ['التعريف بالإمضاء', 'المصادقة على الوثائق', 'النسخ المطابقة للأصل', 'ترجمة الوثائق']
+    },
+    {
+      label: 'التأجيل والإعفاء من الخدمة الوطنية',
+      icon: 'ti-shield',
+      items: ['التأجيل من أداء واجب الخدمة الوطنية', 'الإعفاء من أداء واجب الخدمة الوطنية']
+    },
+    {
+      label: 'البطاقة عدد 3',
+      icon: 'ti-file-check',
+      items: ['البطاقة عدد 3']
+    },
+    {
+      label: 'التأشيرة',
+      icon: 'ti-plane',
+      items: ['التأشيرة']
+    },
+    {
+      label: 'خدمات أخرى',
+      icon: 'ti-dots-circle-horizontal',
+      items: ['بطاقة التحركات الحدودية', 'رخصة المرور', 'الدفتر المهني لرجال البحر']
+    }
+  ]
+};
+
+function buildSvcs(lang){
+  lang=lang||curLang;
+  const list=document.getElementById('svc-list');
+  list.innerHTML='';
+  selSvc=null; selSp=null; selSpLabel=null; selSvcIdx=-1;
+  document.getElementById('btn-n1').disabled=true;
+  const t=T[lang];
+  const gruppi=serviziGruppi[lang]||[];
+  const wrapDiv=document.createElement('div'); wrapDiv.className='services-list';
+
+  gruppi.forEach(gruppo=>{
+    // Gruppo header (accordion trigger)
+    const groupDiv=document.createElement('div'); groupDiv.className='svc-group';
+    const hdr=document.createElement('div'); hdr.className='svc-group-hdr';
+    hdr.innerHTML='<span class="svc-group-label"><i class="ti '+gruppo.icon+'"></i> '+gruppo.label+'</span><i class="ti ti-chevron-down svc-group-arrow"></i>';
+    const body=document.createElement('div'); body.className='svc-group-body'; body.style.display='none';
+
+    hdr.onclick=()=>{
+      const isOpen=body.style.display!=='none';
+      // chiudi tutti
+      wrapDiv.querySelectorAll('.svc-group-body').forEach(b=>b.style.display='none');
+      wrapDiv.querySelectorAll('.svc-group-hdr').forEach(h=>{h.classList.remove('open');h.querySelector('.svc-group-arrow').style.transform='';});
+      if(!isOpen){
+        body.style.display='block';
+        hdr.classList.add('open');
+        hdr.querySelector('.svc-group-arrow').style.transform='rotate(180deg)';
+      }
+    };
+
+    gruppo.items.forEach((svcName,idx)=>{
+      const fullIdx=serviziList[lang].indexOf(svcName);
+      const sp=sportelloPerServizio[lang][svcName]||1;
+      const card=document.createElement('div'); card.className='service-card service-card-sub';
+      card.innerHTML='<span class="service-name">'+svcName+'</span><i class="ti ti-chevron-right" style="color:#C8102E;font-size:16px;flex-shrink:0;"></i>';
+      card.onclick=(e)=>{
+        e.stopPropagation();
+        document.querySelectorAll('.service-card').forEach(x=>x.classList.remove('selected'));
+        card.classList.add('selected');
+        selSvc=svcName;
+        selSp=sp;
+        selSpLabel=t.sportelloLabel+' '+sp;
+        selSvcIdx=fullIdx>=0?fullIdx:idx;
+        document.getElementById('btn-n1').disabled=false;
+      };
+      body.appendChild(card);
+    });
+
+    groupDiv.appendChild(hdr);
+    groupDiv.appendChild(body);
+    wrapDiv.appendChild(groupDiv);
+  });
+
+  list.appendChild(wrapDiv);
+}
+
+function dateToISO(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function isHoliday(d){return cfg.holidays.some(h=>h.date===dateToISO(d));}
+
+function buildDays(){
+  const tabs=document.getElementById('day-tabs'); tabs.innerHTML='';
+  selDay=null; selDayISO=null; selTime=null;
+  document.getElementById('btn-n2').disabled=true;
+  document.getElementById('time-grid').innerHTML='';
+  const t=T[curLang];
+  const today=new Date(); let count=0;
+  let d=new Date(today); d.setDate(d.getDate()+1);
+  while(count<60){
+    const dow=d.getDay(), isWork=cfg.workdays.includes(dow), isHol=isHoliday(d);
+    const tab=document.createElement('div');
+    tab.className='dt'+((!isWork||isHol)?' off':'');
+    tab.textContent=t.days[dow]+' '+d.getDate()+' '+t.months[d.getMonth()];
+    const iso=dateToISO(d);
+    if(isWork&&!isHol){
+      const label=tab.textContent, isoC=iso;
+      tab.onclick=()=>{
+        document.querySelectorAll('.dt').forEach(x=>x.classList.remove('sel'));
+        tab.classList.add('sel');
+        selDay=label; selDayISO=isoC; buildSlots();
+      };
+    }
+    tabs.appendChild(tab);
+    count++;
+    d.setDate(d.getDate()+1);
+  }
+  updateDurInfo();
+}
+
+function timeToMins(s){const [h,m]=s.split(':').map(Number);return h*60+m;}
+function minsToTime(m){return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
+function isSlotTaken(sp,iso,time){ const key=sp+'|'+iso+'|'+time; return bookedSlots[key]&&bookedSlots[key].length>0; }
+
+function buildSlots(){
+  const grid=document.getElementById('time-grid'); grid.innerHTML='';
+  selTime=null; document.getElementById('btn-n2').disabled=true;
+  const dur=getDur(selSp, selSvc);
+  const slots=[];
+  const amS=timeToMins(cfg.amStart), amE=timeToMins(cfg.amEnd);
+  for(let t=amS;t+dur<=amE;t+=dur) slots.push(minsToTime(t));
+  if(!slots.length){grid.innerHTML='<div style="font-size:14px;color:var(--color-text-tertiary);padding:8px 0;font-family:var(--font-calibri);">'+T[curLang].admin.noSlots+'</div>'; return;}
+  slots.forEach(s=>{
+    const taken=isSlotTaken(selSp,selDayISO,s);
+    const el=document.createElement('div'); el.className='ts'+(taken?' taken':'');
+    el.textContent=s;
+    if(!taken) el.onclick=()=>{
+      document.querySelectorAll('.ts').forEach(x=>x.classList.remove('sel'));
+      el.classList.add('sel'); selTime=s;
+      document.getElementById('btn-n2').disabled=false;
+    };
+    grid.appendChild(el);
+  });
+}
+
+function updateDurInfo(){
+  if(selSp){
+    const dur=getDur(selSp, selSvc);
+    const t=T[curLang];
+    const txt=curLang==='ar'?'مدة الخدمة: '+dur+' '+t.min:'Durata appuntamento: '+dur+' '+t.min;
+    document.getElementById('dur-info').textContent='⏱ '+txt;
+  }
+}
+
+function goStep(n){
+  document.getElementById('p'+curStep).style.display='none';
+  curStep=n; document.getElementById('p'+n).style.display='block';
+  ['1','2','3'].forEach(i=>{
+    const el=document.getElementById('si'+i); el.className='si';
+    if(parseInt(i)<n) el.classList.add('done');
+    else if(parseInt(i)===n) el.classList.add('active');
+  });
+  if(n===2){buildDays();updateDurInfo();}
+  if(n===3) fillSummary();
+}
+
+function fillSummary(){
+  document.getElementById('sum-svc').textContent=selSvc||'';
+  document.getElementById('sum-day').textContent=selDay||'';
+  document.getElementById('sum-time').textContent=selTime||'';
+}
+
+function genCode(){
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code='';
+  for(let i=0;i<8;i++){if(i===4)code+='-';code+=chars[Math.floor(Math.random()*chars.length)];}
+  const dur=getDur(selSp, selSvc);
+  const key=selSp+'|'+selDayISO+'|'+selTime;
+  if(!bookedSlots[key]) bookedSlots[key]=[];
+  const appt={code,svc:selSvc,sp:selSp,spLabel:selSpLabel,day:selDay,dayISO:selDayISO,time:selTime,dur,status:'confirmed',ts:Date.now()};
+  bookedSlots[key].push(appt);
+  appointments.unshift(appt);
+  saveData();
+  syncToSheets('add', appt);
+  document.getElementById('bk-code').textContent=code;
+  document.getElementById('bk-detail').textContent=selDay+' · '+selTime;
+  document.getElementById('sp-box-num').textContent=selSpLabel;
+  document.getElementById('rcpt-svc').textContent=selSvc;
+  document.getElementById('rcpt-sp').textContent=selSpLabel;
+  document.getElementById('rcpt-day').textContent=selDay;
+  document.getElementById('rcpt-time').textContent=selTime;
+  // Mostra documenti
+  const docs = documentiRequisiti[curLang][selSvc] || ["Verificare i documenti necessari presso il consolato."];
+  const docsList = document.getElementById('docs-list');
+  docsList.innerHTML = '';
+  docs.forEach(doc => {
+    const li = document.createElement('li');
+    li.innerHTML = '<i class="ti ti-check"></i><span>' + doc + '</span>';
+    docsList.appendChild(li);
+  });
+  goStep(4);
+  document.querySelectorAll('.si').forEach(el=>{el.className='si done';});
+}
+
+function printReceipt(){ window.print(); }
+
+function restart(){
+  selSvc=null;selSp=null;selSpLabel=null;selSvcIdx=-1;
+  selDay=null;selDayISO=null;selTime=null;
+  document.getElementById('p4').style.display='none';
+  document.getElementById('p1').style.display='block'; curStep=1;
+  buildSvcs();
+  ['1','2','3'].forEach(i=>{const el=document.getElementById('si'+i);el.className='si';if(i==='1')el.classList.add('active');});
+}
+
+// ADMIN (stessa logica, adattata per gestire durata per servizio)
+function openAdmin(){ /* ... stessa ... */ document.getElementById('booking-flow').style.display='none'; document.getElementById('admin-flow').style.display='block'; document.getElementById('admin-login').style.display='block'; document.getElementById('admin-panel').style.display='none'; document.getElementById('pwd-input').value=''; document.getElementById('pwd-err').style.display='none'; }
+function checkPwd(){ if(document.getElementById('pwd-input').value===PASS){ document.getElementById('admin-login').style.display='none'; document.getElementById('admin-panel').style.display='block'; buildAdminPanel(); } else { document.getElementById('pwd-err').style.display='block'; document.getElementById('pwd-input').value=''; } }
+function closeAdmin(){ document.getElementById('admin-flow').style.display='none'; document.getElementById('booking-flow').style.display='block'; }
+function showTab(id,btn){ document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); }
+function buildAdminPanel(){
+  const wdNames=T[curLang].days;
+  const wg=document.getElementById('weekday-grid'); wg.innerHTML='';
+  [0,1,2,3,4,5,6].forEach(d=>{
+    const el=document.createElement('div'); el.className='day-toggle'+(cfg.workdays.includes(d)?' on':'');
+    el.textContent=wdNames[d];
+    el.onclick=()=>{ cfg.workdays=cfg.workdays.includes(d)?cfg.workdays.filter(x=>x!==d):[...cfg.workdays,d]; el.classList.toggle('on'); };
+    wg.appendChild(el);
+  });
+  renderHolidays();
+  buildDurList();
+  document.getElementById('am-start').value=cfg.amStart;
+  document.getElementById('am-end').value=cfg.amEnd;
+  renderAppts();
+  const fd=document.getElementById('filter-day'); fd.innerHTML='<option value="">'+T[curLang].admin.allDays+'</option>';
+  const days=[...new Set(appointments.map(a=>a.day))]; days.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;fd.appendChild(o);});
+}
+function renderHolidays(){ const list=document.getElementById('holidays-list'); list.innerHTML=''; const placeholder=curLang==='ar'?'وصف':'Descrizione'; cfg.holidays.forEach((h,i)=>{ const row=document.createElement('div'); row.className='holiday-row'; row.innerHTML='<input type="date" value="'+h.date+'" onchange="cfg.holidays['+i+'].date=this.value"><input type="text" value="'+h.label+'" placeholder="'+placeholder+'" onchange="cfg.holidays['+i+'].label=this.value"><button class="del-btn" onclick="cfg.holidays.splice('+i+',1);renderHolidays()"><i class="ti ti-trash"></i></button>'; list.appendChild(row); }); }
+function addHoliday(){ cfg.holidays.push({date:new Date().toISOString().split('T')[0],label:''}); renderHolidays(); }
+function buildDurList(){
+  const list=document.getElementById('svc-dur-list'); list.innerHTML='';
+  const t=T[curLang];
+  serviziList[curLang].forEach(svcName => {
+    const sp = sportelloPerServizio[curLang][svcName] || 1;
+    const k='sp'+sp+'-'+svcName;
+    const dur=cfg.durations[k]||(defaultDurBySp[sp]||20);
+    const row=document.createElement('div'); row.className='svc-config-row';
+    row.innerHTML='<span class="svc-config-name">'+svcName+'</span><select class="dur-select" onchange="cfg.durations[\''+k+'\']= parseInt(this.value)">'+[10,15,20,30,45,60,90,120].map(v=>'<option value="'+v+'"'+( v===dur?' selected':'')+'>'+v+' min</option>').join('')+'</select>';
+    list.appendChild(row);
+  });
+}
+function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
+function renderAppts(){ const list=document.getElementById('appts-list'); const a=T[curLang].admin; const search=(document.getElementById('filter-search').value||'').toLowerCase(); const dayFilter=document.getElementById('filter-day').value; const filtered=appointments.filter(ap=>{ const matchSearch=!search||(ap.code.toLowerCase().includes(search)||ap.svc.toLowerCase().includes(search)); const matchDay=!dayFilter||ap.day===dayFilter; return matchSearch&&matchDay&&ap.status!=='deleted'; }); if(!filtered.length){ list.innerHTML='<div class="empty-state"><i class="ti ti-calendar-off" style="font-size:28px;display:block;margin-bottom:8px;"></i>'+a.noAppts+'</div>'; return; } list.innerHTML=''; filtered.forEach(appt=>{ const row=document.createElement('div'); row.className='appt-row'; const statusBadge=appt.status==='cancelled'?'<span class="badge-status badge-cancel">'+a.cancelStatus+'</span>':'<span class="badge-status badge-ok">'+a.confirmStatus+'</span>'; row.innerHTML='<span class="appt-code">'+appt.code+'</span><div class="appt-info"><div>'+appt.svc+'</div><div class="appt-meta">'+appt.day+' · '+appt.time+' · '+appt.dur+' '+T[curLang].min+' · '+( appt.spLabel||'Sp.'+appt.sp)+' '+statusBadge+'</div></div><div class="appt-actions"><button class="appt-btn" onclick="openEdit(\''+appt.code+'\')"><i class="ti ti-edit"></i></button><button class="appt-btn danger" onclick="cancelAppt(\''+appt.code+'\')"><i class="ti ti-trash"></i></button></div>'; list.appendChild(row); }); }
+function cancelAppt(code){ const a=appointments.find(x=>x.code===code); if(!a) return; if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';} const key=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[key]) bookedSlots[key]=bookedSlots[key].filter(x=>x.code!==code); saveData(); renderAppts(); }
+function openEdit(code){ const a=appointments.find(x=>x.code===code); if(!a) return; document.getElementById('edit-code').value=code; document.getElementById('edit-svc').value=a.svc; document.getElementById('edit-day').value=a.day; document.getElementById('edit-time').value=a.time; document.getElementById('admin-panel').style.display='none'; document.getElementById('edit-modal').style.display='flex'; }
+function closeEdit(){ document.getElementById('edit-modal').style.display='none'; document.getElementById('admin-panel').style.display='block'; }
+function saveEdit(){ const code=document.getElementById('edit-code').value; const a=appointments.find(x=>x.code===code); if(!a) return; const oldKey=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[oldKey]) bookedSlots[oldKey]=bookedSlots[oldKey].filter(x=>x.code!==code); a.svc=document.getElementById('edit-svc').value; a.day=document.getElementById('edit-day').value; const newTime=document.getElementById('edit-time').value; a.time=newTime; const newKey=a.sp+'|'+a.dayISO+'|'+newTime; if(!bookedSlots[newKey]) bookedSlots[newKey]=[]; bookedSlots[newKey].push(a); saveData(); closeEdit(); renderAppts(); }
+
+loadData();
+loadFromSheets();
+buildSvcs(); applyT();
+// --- LOGO MANAGEMENT ---
+function loadLogoFromStorage(){
+  try {
+    const saved = localStorage.getItem('consolato_logo');
+    if(saved){
+      const img = document.querySelector('.hdr img');
+      if(img) img.src = saved;
+      const prev = document.getElementById('logo-preview');
+      const placeholder = document.getElementById('logo-placeholder');
+      if(prev){ prev.src = saved; prev.style.display='block'; }
+      if(placeholder) placeholder.style.display='none';
+    }
+  } catch(e){}
+}
+
+function handleLogoUpload(input){
+  const file = input.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const dataURL = e.target.result;
+    const prev = document.getElementById('logo-preview');
+    const placeholder = document.getElementById('logo-placeholder');
+    if(prev){ prev.src = dataURL; prev.style.display='block'; }
+    if(placeholder) placeholder.style.display='none';
+    // Store temporarily in input dataset
+    input.dataset.pending = dataURL;
+  };
+  reader.readAsDataURL(file);
+}
+
+function saveLogo(){
+  const input = document.getElementById('logo-file-input');
+  const dataURL = input.dataset.pending || document.getElementById('logo-preview').src;
+  if(!dataURL || dataURL === window.location.href) return;
+  try {
+    localStorage.setItem('consolato_logo', dataURL);
+    const img = document.querySelector('.hdr img');
+    if(img) img.src = dataURL;
+    const banner = document.getElementById('logo-save-banner');
+    if(banner){ banner.style.display='flex'; setTimeout(()=>banner.style.display='none', 2500); }
+  } catch(e){ alert('Errore: immagine troppo grande per il browser. Usa un logo più piccolo.'); }
+}
+
+function removeLogo(){
+  try { localStorage.removeItem('consolato_logo'); } catch(e){}
+  const img = document.querySelector('.hdr img');
+  if(img) img.src = '';
+  const prev = document.getElementById('logo-preview');
+  const placeholder = document.getElementById('logo-placeholder');
+  if(prev){ prev.src=''; prev.style.display='none'; }
+  if(placeholder) placeholder.style.display='block';
+  const input = document.getElementById('logo-file-input');
+  if(input){ input.value=''; delete input.dataset.pending; }
+}
+
+loadLogoFromStorage();
+</script>
+</body>
+</html>
