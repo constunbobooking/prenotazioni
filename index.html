@@ -391,11 +391,35 @@ async function syncToSheets(action, appt) {
   } catch(e) { console.warn('Sheets sync error:', e); }
 }
 
+async function saveCfgToSheets() {
+  if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'saveConfig', cfg }),
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  } catch(e) { console.warn('Sheets config save error:', e); }
+}
+
 async function loadFromSheets() {
   if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
   try {
-    const res = await fetch(SHEETS_URL);
+    const res = await fetch(SHEETS_URL + '?t=' + Date.now());
     const data = await res.json();
+
+    // Carica configurazione admin
+    if (data.cfg) {
+      cfg = Object.assign(cfg, data.cfg);
+      saveData();
+      // Aggiorna i campi orario nell'admin se visibili
+      const amStart = document.getElementById('am-start');
+      const amEnd   = document.getElementById('am-end');
+      if (amStart) amStart.value = cfg.amStart;
+      if (amEnd)   amEnd.value   = cfg.amEnd;
+    }
+
+    // Carica prenotazioni
     if (data.ok && data.appointments) {
       data.appointments.forEach(remote => {
         if (!appointments.find(a => a.code === remote.code)) {
@@ -1437,7 +1461,7 @@ function buildDurList(){
     list.appendChild(row);
   });
 }
-function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
+function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); saveCfgToSheets(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
 function renderAppts(){ const list=document.getElementById('appts-list'); const a=T[curLang].admin; const search=(document.getElementById('filter-search').value||'').toLowerCase(); const dayFilter=document.getElementById('filter-day').value; const filtered=appointments.filter(ap=>{ const matchSearch=!search||(ap.code.toLowerCase().includes(search)||ap.svc.toLowerCase().includes(search)); const matchDay=!dayFilter||ap.day===dayFilter; return matchSearch&&matchDay&&ap.status!=='deleted'; }); if(!filtered.length){ list.innerHTML='<div class="empty-state"><i class="ti ti-calendar-off" style="font-size:28px;display:block;margin-bottom:8px;"></i>'+a.noAppts+'</div>'; return; } list.innerHTML=''; filtered.forEach(appt=>{ const row=document.createElement('div'); row.className='appt-row'; const statusBadge=appt.status==='cancelled'?'<span class="badge-status badge-cancel">'+a.cancelStatus+'</span>':'<span class="badge-status badge-ok">'+a.confirmStatus+'</span>'; row.innerHTML='<span class="appt-code">'+appt.code+'</span><div class="appt-info"><div>'+appt.svc+'</div><div class="appt-meta">'+appt.day+' · '+appt.time+' · '+appt.dur+' '+T[curLang].min+' · '+( appt.spLabel||'Sp.'+appt.sp)+' '+statusBadge+'</div></div><div class="appt-actions"><button class="appt-btn" onclick="openEdit(\''+appt.code+'\')"><i class="ti ti-edit"></i></button><button class="appt-btn danger" onclick="cancelAppt(\''+appt.code+'\')"><i class="ti ti-trash"></i></button></div>'; list.appendChild(row); }); }
 function cancelAppt(code){ const a=appointments.find(x=>x.code===code); if(!a) return; if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';} const key=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[key]) bookedSlots[key]=bookedSlots[key].filter(x=>x.code!==code); saveData(); renderAppts(); }
 function openEdit(code){ const a=appointments.find(x=>x.code===code); if(!a) return; document.getElementById('edit-code').value=code; document.getElementById('edit-svc').value=a.svc; document.getElementById('edit-day').value=a.day; document.getElementById('edit-time').value=a.time; document.getElementById('admin-panel').style.display='none'; document.getElementById('edit-modal').style.display='flex'; }
