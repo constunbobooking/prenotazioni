@@ -391,35 +391,11 @@ async function syncToSheets(action, appt) {
   } catch(e) { console.warn('Sheets sync error:', e); }
 }
 
-async function saveCfgToSheets() {
-  if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
-  try {
-    await fetch(SHEETS_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'saveConfig', cfg }),
-      headers: { 'Content-Type': 'text/plain' }
-    });
-  } catch(e) { console.warn('Sheets config save error:', e); }
-}
-
 async function loadFromSheets() {
   if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
   try {
-    const res = await fetch(SHEETS_URL + '?t=' + Date.now());
+    const res = await fetch(SHEETS_URL);
     const data = await res.json();
-
-    // Carica configurazione admin
-    if (data.cfg) {
-      cfg = Object.assign(cfg, data.cfg);
-      saveData();
-      // Aggiorna i campi orario nell'admin se visibili
-      const amStart = document.getElementById('am-start');
-      const amEnd   = document.getElementById('am-end');
-      if (amStart) amStart.value = cfg.amStart;
-      if (amEnd)   amEnd.value   = cfg.amEnd;
-    }
-
-    // Carica prenotazioni
     if (data.ok && data.appointments) {
       data.appointments.forEach(remote => {
         if (!appointments.find(a => a.code === remote.code)) {
@@ -1035,9 +1011,19 @@ let curLang='it';
 let selSvc=null, selSp=null, selSpLabel=null, selSvcIdx=-1;
 let selDay=null, selDayISO=null, selTime=null, curStep=1;
 
+// Chiave stabile per le durate: usa indice nel serviziList della lingua del servizio
+// Separata per lingua (i servizi IT e AR non sono equivalenti 1:1)
+function svcKey(spNum, svcName){
+  const isAr = serviziList['ar'].includes(svcName);
+  const lang = isAr ? 'ar' : 'it';
+  const idx = serviziList[lang].indexOf(svcName);
+  return 'sp'+spNum+'-'+lang+(idx>=0?idx:svcName.length);
+}
 function getDur(spNum, svcName){
-  const k='sp'+spNum+'-'+svcName;
-  return cfg.durations[k]||(defaultDurBySp[spNum]||20);
+  const k = svcKey(spNum, svcName);
+  // fallback alla chiave vecchia (per compatibilità con dati già salvati)
+  const kOld = 'sp'+spNum+'-'+svcName;
+  return cfg.durations[k] || cfg.durations[kOld] || (defaultDurBySp[spNum]||20);
 }
 
 function setLang(l,btn){
@@ -1046,7 +1032,7 @@ function setLang(l,btn){
   btn.classList.add('active');
   applyT(l);
   buildSvcs(l);
-  if(curStep===2) buildDays();
+  if(curStep===2){ buildDays(); updateDurInfo(); }
 }
 
 function applyT(lang){
@@ -1356,11 +1342,14 @@ function buildSlots(){
 }
 
 function updateDurInfo(){
-  if(selSp){
+  const infoEl = document.getElementById('dur-info');
+  if(selSp && selSvc){
     const dur=getDur(selSp, selSvc);
     const t=T[curLang];
     const txt=curLang==='ar'?'مدة الخدمة: '+dur+' '+t.min:'Durata appuntamento: '+dur+' '+t.min;
-    document.getElementById('dur-info').textContent='⏱ '+txt;
+    infoEl.textContent='⏱ '+txt;
+  } else {
+    infoEl.textContent='';
   }
 }
 
@@ -1454,14 +1443,14 @@ function buildDurList(){
   const t=T[curLang];
   serviziList[curLang].forEach(svcName => {
     const sp = sportelloPerServizio[curLang][svcName] || 1;
-    const k='sp'+sp+'-'+svcName;
+    const k = svcKey(sp, svcName);
     const dur=cfg.durations[k]||(defaultDurBySp[sp]||20);
     const row=document.createElement('div'); row.className='svc-config-row';
     row.innerHTML='<span class="svc-config-name">'+svcName+'</span><select class="dur-select" onchange="cfg.durations[\''+k+'\']= parseInt(this.value)">'+[10,15,20,30,45,60,90,120].map(v=>'<option value="'+v+'"'+( v===dur?' selected':'')+'>'+v+' min</option>').join('')+'</select>';
     list.appendChild(row);
   });
 }
-function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); saveCfgToSheets(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
+function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
 function renderAppts(){ const list=document.getElementById('appts-list'); const a=T[curLang].admin; const search=(document.getElementById('filter-search').value||'').toLowerCase(); const dayFilter=document.getElementById('filter-day').value; const filtered=appointments.filter(ap=>{ const matchSearch=!search||(ap.code.toLowerCase().includes(search)||ap.svc.toLowerCase().includes(search)); const matchDay=!dayFilter||ap.day===dayFilter; return matchSearch&&matchDay&&ap.status!=='deleted'; }); if(!filtered.length){ list.innerHTML='<div class="empty-state"><i class="ti ti-calendar-off" style="font-size:28px;display:block;margin-bottom:8px;"></i>'+a.noAppts+'</div>'; return; } list.innerHTML=''; filtered.forEach(appt=>{ const row=document.createElement('div'); row.className='appt-row'; const statusBadge=appt.status==='cancelled'?'<span class="badge-status badge-cancel">'+a.cancelStatus+'</span>':'<span class="badge-status badge-ok">'+a.confirmStatus+'</span>'; row.innerHTML='<span class="appt-code">'+appt.code+'</span><div class="appt-info"><div>'+appt.svc+'</div><div class="appt-meta">'+appt.day+' · '+appt.time+' · '+appt.dur+' '+T[curLang].min+' · '+( appt.spLabel||'Sp.'+appt.sp)+' '+statusBadge+'</div></div><div class="appt-actions"><button class="appt-btn" onclick="openEdit(\''+appt.code+'\')"><i class="ti ti-edit"></i></button><button class="appt-btn danger" onclick="cancelAppt(\''+appt.code+'\')"><i class="ti ti-trash"></i></button></div>'; list.appendChild(row); }); }
 function cancelAppt(code){ const a=appointments.find(x=>x.code===code); if(!a) return; if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';} const key=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[key]) bookedSlots[key]=bookedSlots[key].filter(x=>x.code!==code); saveData(); renderAppts(); }
 function openEdit(code){ const a=appointments.find(x=>x.code===code); if(!a) return; document.getElementById('edit-code').value=code; document.getElementById('edit-svc').value=a.svc; document.getElementById('edit-day').value=a.day; document.getElementById('edit-time').value=a.time; document.getElementById('admin-panel').style.display='none'; document.getElementById('edit-modal').style.display='flex'; }
