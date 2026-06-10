@@ -377,15 +377,15 @@ const PASS = 'Ma3yitnwassi';
 // =====================================================
 // GOOGLE SHEETS — incolla qui il tuo URL della web app
 // =====================================================
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxtIXEcZ-UcyhJ_4CldY8PzGAcDskOWkuJEYcgTIJyMD9YHllyuMwc6p-sx0tB9aSl9/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwpk9Klesbi1jLhdE7Rm7n6_MIMUCSjCmi_qHgQYHduI8rvISvWcbSd3CdyOAajZaQ/exec';
 // =====================================================
 
-async function syncToSheets(action, appt) {
+async function syncToSheets(action, payload) {
   if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
   try {
     await fetch(SHEETS_URL, {
       method: 'POST',
-      body: JSON.stringify({ action, ...appt }),
+      body: JSON.stringify({ action, ...payload }),
       headers: { 'Content-Type': 'text/plain' }
     });
   } catch(e) { console.warn('Sheets sync error:', e); }
@@ -396,6 +396,16 @@ async function loadFromSheets() {
   try {
     const res = await fetch(SHEETS_URL);
     const data = await res.json();
+    // Carica configurazione (orari, durate, festivita) da Sheets
+    if (data.cfg) {
+      cfg = Object.assign(cfg, data.cfg);
+      saveData();
+      const amS = document.getElementById('am-start');
+      const amE = document.getElementById('am-end');
+      if (amS) amS.value = cfg.amStart;
+      if (amE) amE.value = cfg.amEnd;
+    }
+    // Carica appuntamenti
     if (data.ok && data.appointments) {
       data.appointments.forEach(remote => {
         if (!appointments.find(a => a.code === remote.code)) {
@@ -1450,7 +1460,7 @@ function buildDurList(){
     list.appendChild(row);
   });
 }
-function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
+function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); syncToSheets('save_cfg', {cfg}); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
 function renderAppts(){ const list=document.getElementById('appts-list'); const a=T[curLang].admin; const search=(document.getElementById('filter-search').value||'').toLowerCase(); const dayFilter=document.getElementById('filter-day').value; const filtered=appointments.filter(ap=>{ const matchSearch=!search||(ap.code.toLowerCase().includes(search)||ap.svc.toLowerCase().includes(search)); const matchDay=!dayFilter||ap.day===dayFilter; return matchSearch&&matchDay&&ap.status!=='deleted'; }); if(!filtered.length){ list.innerHTML='<div class="empty-state"><i class="ti ti-calendar-off" style="font-size:28px;display:block;margin-bottom:8px;"></i>'+a.noAppts+'</div>'; return; } list.innerHTML=''; filtered.forEach(appt=>{ const row=document.createElement('div'); row.className='appt-row'; const statusBadge=appt.status==='cancelled'?'<span class="badge-status badge-cancel">'+a.cancelStatus+'</span>':'<span class="badge-status badge-ok">'+a.confirmStatus+'</span>'; row.innerHTML='<span class="appt-code">'+appt.code+'</span><div class="appt-info"><div>'+appt.svc+'</div><div class="appt-meta">'+appt.day+' · '+appt.time+' · '+appt.dur+' '+T[curLang].min+' · '+( appt.spLabel||'Sp.'+appt.sp)+' '+statusBadge+'</div></div><div class="appt-actions"><button class="appt-btn" onclick="openEdit(\''+appt.code+'\')"><i class="ti ti-edit"></i></button><button class="appt-btn danger" onclick="cancelAppt(\''+appt.code+'\')"><i class="ti ti-trash"></i></button></div>'; list.appendChild(row); }); }
 function cancelAppt(code){ const a=appointments.find(x=>x.code===code); if(!a) return; if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';} const key=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[key]) bookedSlots[key]=bookedSlots[key].filter(x=>x.code!==code); saveData(); renderAppts(); }
 function openEdit(code){ const a=appointments.find(x=>x.code===code); if(!a) return; document.getElementById('edit-code').value=code; document.getElementById('edit-svc').value=a.svc; document.getElementById('edit-day').value=a.day; document.getElementById('edit-time').value=a.time; document.getElementById('admin-panel').style.display='none'; document.getElementById('edit-modal').style.display='flex'; }
