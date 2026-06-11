@@ -149,10 +149,16 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 .badge-ok{background:#e6f5eb;color:#2d8a4e;}
 .badge-cancel{background:#ffeef0;color:#C8102E;}
 .empty-state{text-align:center;padding:28px 20px;color:var(--color-text-tertiary);font-size:15px;font-family:var(--font-calibri);}
-[dir="rtl"] .services-list{direction:rtl;}
+[dir="rtl"] .services-list{direction:rtl;text-align:right;}
 [dir="rtl"] .service-card{direction:rtl;text-align:right;}
+[dir="rtl"] .service-card .service-name{text-align:right;}
+[dir="rtl"] .svc-group-body{text-align:right;}
+[dir="rtl"] .service-card-sub{text-align:right;}
+[dir="rtl"] #svc-list{text-align:right;}
 [dir="rtl"] .docs-list li{direction:rtl;}
 [dir="rtl"] .docs-list li i{margin-left:8px;margin-right:0;}
+[dir="rtl"] .sec-title{text-align:right;}
+[dir="rtl"] .panel{text-align:right;}
 @media print{
   body{background:#fff;padding:0;}
   .app{box-shadow:none;border:none;max-width:100%;}
@@ -169,7 +175,7 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 <div class="hdr-wrap">
   <button class="hdr-admin-btn no-print" onclick="openAdmin()"><i class="ti ti-settings"></i> Admin</button>
   <div class="hdr">
-    <img src="https://drive.google.com/uc?export=view&id=16Yh2nkcED-hnDSjjiZi67M7tUcOauQJh" alt="Logo Consolato Tunisia Bologna">
+    <img src="https://drive.google.com/thumbnail?id=16Yh2nkcED-hnDSjjiZi67M7tUcOauQJh&sz=w200" alt="Logo Consolato Tunisia Bologna" style="width:90px;height:90px;border-radius:8px;object-fit:contain;background:#fff;padding:4px;border:2px solid rgba(255,255,255,0.6);box-shadow:0 2px 8px rgba(0,0,0,0.25);">
     <div class="hdr-title" id="hdr-title">Consolato della Repubblica Tunisina a Bologna</div>
     <div class="hdr-sub" id="hdr-sub">Prenotazione Appuntamenti — Mar–Sab 09:00–13:00</div>
   </div>
@@ -331,19 +337,12 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
     <div class="admin-wrap tab-panel" id="t-logo">
       <div class="admin-section">
         <div class="admin-title"><i class="ti ti-photo"></i> Logo del Consolato</div>
-        <p style="font-size:14px;color:var(--color-text-secondary);margin-bottom:16px;font-family:var(--font-calibri);">Carica il logo che apparirà nell'intestazione. Formati supportati: PNG, JPG, SVG. Dimensione consigliata: 90×90 px.</p>
+        <p style="font-size:14px;color:var(--color-text-secondary);margin-bottom:16px;font-family:var(--font-calibri);">Il logo è caricato da Google Drive ed è sempre visibile nell'intestazione.</p>
         <div style="display:flex;flex-direction:column;align-items:center;gap:14px;">
-          <div id="logo-preview-wrap" style="width:110px;height:110px;border-radius:10px;border:2px dashed var(--color-border-secondary);display:flex;align-items:center;justify-content:center;background:var(--color-background-secondary);overflow:hidden;">
-            <img id="logo-preview" src="" alt="Logo preview" style="width:100%;height:100%;object-fit:contain;display:none;">
-            <span id="logo-placeholder" style="font-size:12px;color:var(--color-text-tertiary);text-align:center;padding:8px;font-family:var(--font-calibri);">Nessun logo</span>
+          <div style="width:110px;height:110px;border-radius:10px;border:2px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:center;background:#fff;overflow:hidden;">
+            <img src="https://drive.google.com/thumbnail?id=16Yh2nkcED-hnDSjjiZi67M7tUcOauQJh&sz=w200" alt="Logo Consolato Tunisia Bologna" style="width:100%;height:100%;object-fit:contain;">
           </div>
-          <label style="cursor:pointer;">
-            <span class="btn-s" style="display:inline-block;"><i class="ti ti-upload"></i> Scegli immagine</span>
-            <input type="file" id="logo-file-input" accept="image/*" style="display:none;" onchange="handleLogoUpload(this)">
-          </label>
-          <button class="btn-p" style="margin-top:0;width:auto;padding:10px 24px;" onclick="saveLogo()"><i class="ti ti-device-floppy"></i> Salva logo</button>
-          <button class="btn-s" onclick="removeLogo()"><i class="ti ti-trash"></i> Rimuovi logo</button>
-          <div id="logo-save-banner" style="background:#e6f5eb;border:0.5px solid #a3d9b1;border-radius:var(--border-radius-md);padding:10px 14px;font-size:14px;color:#2d8a4e;display:none;align-items:center;gap:7px;font-family:var(--font-calibri);"><i class="ti ti-check"></i> Logo salvato!</div>
+          <a href="https://drive.google.com/file/d/16Yh2nkcED-hnDSjjiZi67M7tUcOauQJh/view?usp=sharing" target="_blank" class="btn-s" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;"><i class="ti ti-brand-google-drive"></i> Apri su Google Drive</a>
         </div>
       </div>
     </div>
@@ -372,57 +371,28 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 </div>
 
 <script>
-const PASS = 'Ma3yitnwassi';
+// ── SICUREZZA: nessuna password nel frontend ──────────────────
+// La verifica avviene lato server tramite Google Apps Script.
+// Il token di sessione è temporaneo (2 ore) e salvato in sessionStorage.
 
-// =====================================================
-// GOOGLE SHEETS — incolla qui il tuo URL della web app
-// =====================================================
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwpk9Klesbi1jLhdE7Rm7n6_MIMUCSjCmi_qHgQYHduI8rvISvWcbSd3CdyOAajZaQ/exec';
-// =====================================================
+const SESSION_KEY   = 'cons_admin_token';
+const SESSION_EXP   = 'cons_admin_exp';
+const SESSION_TTL   = 2 * 60 * 60 * 1000; // 2 ore in ms
 
-async function syncToSheets(action, payload) {
-  if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
-  try {
-    await fetch(SHEETS_URL, {
-      method: 'POST',
-      body: JSON.stringify({ action, ...payload }),
-      headers: { 'Content-Type': 'text/plain' }
-    });
-  } catch(e) { console.warn('Sheets sync error:', e); }
+function sessionIsValid() {
+  const token = sessionStorage.getItem(SESSION_KEY);
+  const exp   = parseInt(sessionStorage.getItem(SESSION_EXP) || '0');
+  return token === 'granted' && Date.now() < exp;
 }
 
-async function loadFromSheets() {
-  if (!SHEETS_URL || SHEETS_URL === 'INCOLLA_QUI_IL_TUO_URL') return;
-  try {
-    const res = await fetch(SHEETS_URL);
-    const data = await res.json();
-    // Carica configurazione (orari, durate, festivita) da Sheets
-    if (data.cfg) {
-      cfg = Object.assign(cfg, data.cfg);
-      saveData();
-      const amS = document.getElementById('am-start');
-      const amE = document.getElementById('am-end');
-      if (amS) amS.value = cfg.amStart;
-      if (amE) amE.value = cfg.amEnd;
-    }
-    // Carica appuntamenti
-    if (data.ok && data.appointments) {
-      data.appointments.forEach(remote => {
-        if (!appointments.find(a => a.code === remote.code)) {
-          appointments.push(remote);
-          if (remote.status !== 'cancelled') {
-            const key = (remote.sp||1) + '|' + (remote.dayISO||remote.day) + '|' + remote.time;
-            if (!bookedSlots[key]) bookedSlots[key] = [];
-            bookedSlots[key].push(remote);
-          }
-        } else {
-          const local = appointments.find(a => a.code === remote.code);
-          if (local && remote.status === 'cancelled') local.status = 'cancelled';
-        }
-      });
-      saveData();
-    }
-  } catch(e) { console.warn('Sheets load error:', e); }
+function sessionGrant() {
+  sessionStorage.setItem(SESSION_KEY, 'granted');
+  sessionStorage.setItem(SESSION_EXP, String(Date.now() + SESSION_TTL));
+}
+
+function sessionRevoke() {
+  sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(SESSION_EXP);
 }
 
 // --- MAPPA SERVIZIO -> SPORTELLO (AUTOMATICO) ---
@@ -988,7 +958,7 @@ const T={
     rcpt:{svc:'Servizio',sp:'Sportello',day:'Data',time:'Ora',dur:'Durata',footer:'Consolato della Repubblica Tunisina a Bologna',docs:'Documenti da preparare'},
     admin:{title:'Pannello Amministrazione',pwdLabel:'Inserisci la password per accedere',pwdBtn:'Accedi',pwdErr:'Password errata. Riprova.',backBtn:'← Torna alla prenotazione',tabAppts:'Appuntamenti',tabDays:'Giorni/Festività',tabSvcs:'Durata servizi',tabHours:'Orari',searchPlaceholder:'Cerca codice o servizio...',allDays:'Tutti i giorni',workdays:'Giorni lavorativi',holidays:'Chiusure speciali',addHoliday:'+ Aggiungi chiusura',durTitle:'Durata per servizio',hoursTitle:'Orario di apertura',morning:'Mattina:',save:'Salva',saved:'Salvato!',confirmStatus:'Confermato',cancelStatus:'Annullato',editTitle:'Modifica appuntamento',editSvc:'Servizio',editDay:'Data',editTime:'Ora',cancel:'Annulla',saveEdit:'Salva modifiche',noAppts:'Nessun appuntamento trovato.',noSlots:'Nessuno slot disponibile con questa configurazione.'}
   },
-  ar:{hdr:'قنصلية الجمهورية التونسية بولونيا',sub:'حجز المواعيد — الثلاثاء–السبت 09:00–13:00',s1:'الخدمة',s2:'الموعد',s3:'التأكيد',cs:'اختر الخدمة',cd:'اختر اليوم',ct:'اختر الوقت',next:'→ متابعة',back:'رجوع ←',sum:'ملخص الحجز',sf:'الخدمة',df:'التاريخ',tf:'الوقت',dur:'المدة',cb:'تأكيد وإنشاء الرمز',ok:'تم تأكيد الموعد!',ok2:'قدّم هذا الرمز عند الاستقبال',yc:'رمزك',note:'احتفظ بهذا الرمز. سيُطلب منك عند المدخل.',newrdv:'موعد جديد',print:'طباعة الوصل',min:'د',dir:'rtl',days:['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],months:['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],sportelloLabel:'الشباك',
+  ar:{hdr:'قنصلية الجمهورية التونسية بولونيا',sub:'حجز المواعيد — الثلاثاء–السبت 09:00–13:00',s1:'الخدمة',s2:'الموعد',s3:'التأكيد',cs:'اختر الخدمة',cd:'اختر اليوم',ct:'اختر الوقت',next:'← متابعة',back:'رجوع →',sum:'ملخص الحجز',sf:'الخدمة',df:'التاريخ',tf:'الوقت',dur:'المدة',cb:'تأكيد وإنشاء الرمز',ok:'تم تأكيد الموعد!',ok2:'قدّم هذا الرمز عند الاستقبال',yc:'رمزك',note:'احتفظ بهذا الرمز. سيُطلب منك عند المدخل.',newrdv:'موعد جديد',print:'طباعة الوصل',min:'د',dir:'rtl',days:['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],months:['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],sportelloLabel:'الشباك',
     rcpt:{svc:'الخدمة',sp:'الشباك',day:'التاريخ',time:'الوقت',dur:'المدة',footer:'قنصلية الجمهورية التونسية بولونيا',docs:'الوثائق المطلوبة'},
     admin:{title:'لوحة الإدارة',pwdLabel:'أدخل كلمة المرور للدخول',pwdBtn:'دخول',pwdErr:'كلمة المرور خاطئة. حاول مجدداً.',backBtn:'← العودة إلى الحجز',tabAppts:'المواعيد',tabDays:'الأيام/العطل',tabSvcs:'مدة الخدمات',tabHours:'أوقات العمل',searchPlaceholder:'ابحث برمز أو خدمة...',allDays:'كل الأيام',workdays:'أيام العمل',holidays:'إغلاق خاص',addHoliday:'+ إضافة إغلاق',durTitle:'مدة كل خدمة',hoursTitle:'ساعات العمل',morning:'الصباح:',save:'حفظ',saved:'تم الحفظ!',confirmStatus:'مؤكد',cancelStatus:'ملغى',editTitle:'تعديل الموعد',editSvc:'الخدمة',editDay:'التاريخ',editTime:'الوقت',cancel:'إلغاء',saveEdit:'حفظ التعديلات',noAppts:'لم يُعثر على مواعيد.',noSlots:'لا توجد فترات متاحة بهذا الإعداد.'}
   }
@@ -1021,19 +991,9 @@ let curLang='it';
 let selSvc=null, selSp=null, selSpLabel=null, selSvcIdx=-1;
 let selDay=null, selDayISO=null, selTime=null, curStep=1;
 
-// Chiave stabile per le durate: usa indice nel serviziList della lingua del servizio
-// Separata per lingua (i servizi IT e AR non sono equivalenti 1:1)
-function svcKey(spNum, svcName){
-  const isAr = serviziList['ar'].includes(svcName);
-  const lang = isAr ? 'ar' : 'it';
-  const idx = serviziList[lang].indexOf(svcName);
-  return 'sp'+spNum+'-'+lang+(idx>=0?idx:svcName.length);
-}
 function getDur(spNum, svcName){
-  const k = svcKey(spNum, svcName);
-  // fallback alla chiave vecchia (per compatibilità con dati già salvati)
-  const kOld = 'sp'+spNum+'-'+svcName;
-  return cfg.durations[k] || cfg.durations[kOld] || (defaultDurBySp[spNum]||20);
+  const k='sp'+spNum+'-'+svcName;
+  return cfg.durations[k]||(defaultDurBySp[spNum]||20);
 }
 
 function setLang(l,btn){
@@ -1042,7 +1002,7 @@ function setLang(l,btn){
   btn.classList.add('active');
   applyT(l);
   buildSvcs(l);
-  if(curStep===2){ buildDays(); updateDurInfo(); }
+  if(curStep===2) buildDays();
 }
 
 function applyT(lang){
@@ -1241,6 +1201,7 @@ const serviziGruppi = {
 
 function buildSvcs(lang){
   lang=lang||curLang;
+  const isRTL = lang==='ar';
   const list=document.getElementById('svc-list');
   list.innerHTML='';
   selSvc=null; selSp=null; selSpLabel=null; selSvcIdx=-1;
@@ -1248,17 +1209,22 @@ function buildSvcs(lang){
   const t=T[lang];
   const gruppi=serviziGruppi[lang]||[];
   const wrapDiv=document.createElement('div'); wrapDiv.className='services-list';
+  if(isRTL){ wrapDiv.style.direction='rtl'; wrapDiv.style.textAlign='right'; }
 
   gruppi.forEach(gruppo=>{
-    // Gruppo header (accordion trigger)
     const groupDiv=document.createElement('div'); groupDiv.className='svc-group';
     const hdr=document.createElement('div'); hdr.className='svc-group-hdr';
-    hdr.innerHTML='<span class="svc-group-label"><i class="ti '+gruppo.icon+'"></i> '+gruppo.label+'</span><i class="ti ti-chevron-down svc-group-arrow"></i>';
+    if(isRTL){
+      hdr.style.flexDirection='row-reverse';
+      hdr.innerHTML='<i class="ti ti-chevron-down svc-group-arrow"></i><span class="svc-group-label" style="flex-direction:row-reverse;"><i class="ti '+gruppo.icon+'"></i> '+gruppo.label+'</span>';
+    } else {
+      hdr.innerHTML='<span class="svc-group-label"><i class="ti '+gruppo.icon+'"></i> '+gruppo.label+'</span><i class="ti ti-chevron-down svc-group-arrow"></i>';
+    }
     const body=document.createElement('div'); body.className='svc-group-body'; body.style.display='none';
+    if(isRTL){ body.style.textAlign='right'; body.style.direction='rtl'; }
 
     hdr.onclick=()=>{
       const isOpen=body.style.display!=='none';
-      // chiudi tutti
       wrapDiv.querySelectorAll('.svc-group-body').forEach(b=>b.style.display='none');
       wrapDiv.querySelectorAll('.svc-group-hdr').forEach(h=>{h.classList.remove('open');h.querySelector('.svc-group-arrow').style.transform='';});
       if(!isOpen){
@@ -1272,7 +1238,13 @@ function buildSvcs(lang){
       const fullIdx=serviziList[lang].indexOf(svcName);
       const sp=sportelloPerServizio[lang][svcName]||1;
       const card=document.createElement('div'); card.className='service-card service-card-sub';
-      card.innerHTML='<span class="service-name">'+svcName+'</span><i class="ti ti-chevron-right" style="color:#C8102E;font-size:16px;flex-shrink:0;"></i>';
+      if(isRTL){
+        card.style.flexDirection='row-reverse';
+        card.style.textAlign='right';
+        card.innerHTML='<i class="ti ti-chevron-left" style="color:#C8102E;font-size:16px;flex-shrink:0;"></i><span class="service-name">'+svcName+'</span>';
+      } else {
+        card.innerHTML='<span class="service-name">'+svcName+'</span><i class="ti ti-chevron-right" style="color:#C8102E;font-size:16px;flex-shrink:0;"></i>';
+      }
       card.onclick=(e)=>{
         e.stopPropagation();
         document.querySelectorAll('.service-card').forEach(x=>x.classList.remove('selected'));
@@ -1352,14 +1324,11 @@ function buildSlots(){
 }
 
 function updateDurInfo(){
-  const infoEl = document.getElementById('dur-info');
-  if(selSp && selSvc){
+  if(selSp){
     const dur=getDur(selSp, selSvc);
     const t=T[curLang];
     const txt=curLang==='ar'?'مدة الخدمة: '+dur+' '+t.min:'Durata appuntamento: '+dur+' '+t.min;
-    infoEl.textContent='⏱ '+txt;
-  } else {
-    infoEl.textContent='';
+    document.getElementById('dur-info').textContent='⏱ '+txt;
   }
 }
 
@@ -1392,7 +1361,6 @@ function genCode(){
   bookedSlots[key].push(appt);
   appointments.unshift(appt);
   saveData();
-  syncToSheets('add', appt);
   document.getElementById('bk-code').textContent=code;
   document.getElementById('bk-detail').textContent=selDay+' · '+selTime;
   document.getElementById('sp-box-num').textContent=selSpLabel;
@@ -1425,9 +1393,55 @@ function restart(){
 }
 
 // ADMIN (stessa logica, adattata per gestire durata per servizio)
-function openAdmin(){ /* ... stessa ... */ document.getElementById('booking-flow').style.display='none'; document.getElementById('admin-flow').style.display='block'; document.getElementById('admin-login').style.display='block'; document.getElementById('admin-panel').style.display='none'; document.getElementById('pwd-input').value=''; document.getElementById('pwd-err').style.display='none'; }
-function checkPwd(){ if(document.getElementById('pwd-input').value===PASS){ document.getElementById('admin-login').style.display='none'; document.getElementById('admin-panel').style.display='block'; buildAdminPanel(); } else { document.getElementById('pwd-err').style.display='block'; document.getElementById('pwd-input').value=''; } }
-function closeAdmin(){ document.getElementById('admin-flow').style.display='none'; document.getElementById('booking-flow').style.display='block'; }
+function openAdmin(){
+  document.getElementById('booking-flow').style.display='none';
+  document.getElementById('admin-flow').style.display='block';
+  // Se la sessione è ancora valida, vai direttamente al pannello
+  if(sessionIsValid()){
+    document.getElementById('admin-login').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    buildAdminPanel();
+  } else {
+    sessionRevoke();
+    document.getElementById('admin-login').style.display='block';
+    document.getElementById('admin-panel').style.display='none';
+    document.getElementById('pwd-input').value='';
+    document.getElementById('pwd-err').style.display='none';
+  }
+}
+
+async function checkPwd(){
+  const pwd = document.getElementById('pwd-input').value;
+  if(!pwd) return;
+  const btn = document.querySelector('.pwd-box .btn-p');
+  if(btn){ btn.disabled=true; btn.textContent='...'; }
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method:'POST',
+      body: JSON.stringify({ action:'admin_login', password: pwd })
+    });
+    const data = await res.json();
+    if(data.ok){
+      sessionGrant();
+      document.getElementById('admin-login').style.display='none';
+      document.getElementById('admin-panel').style.display='block';
+      buildAdminPanel();
+    } else {
+      document.getElementById('pwd-err').style.display='block';
+      document.getElementById('pwd-input').value='';
+    }
+  } catch(e){
+    document.getElementById('pwd-err').style.display='block';
+  } finally {
+    if(btn){ btn.disabled=false; btn.textContent= curLang==='ar'?'دخول':'Accedi'; }
+  }
+}
+
+function closeAdmin(){
+  document.getElementById('admin-flow').style.display='none';
+  document.getElementById('booking-flow').style.display='block';
+  // NON revocare la sessione: rimane valida per 2 ore
+}
 function showTab(id,btn){ document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); }
 function buildAdminPanel(){
   const wdNames=T[curLang].days;
@@ -1453,14 +1467,14 @@ function buildDurList(){
   const t=T[curLang];
   serviziList[curLang].forEach(svcName => {
     const sp = sportelloPerServizio[curLang][svcName] || 1;
-    const k = svcKey(sp, svcName);
+    const k='sp'+sp+'-'+svcName;
     const dur=cfg.durations[k]||(defaultDurBySp[sp]||20);
     const row=document.createElement('div'); row.className='svc-config-row';
     row.innerHTML='<span class="svc-config-name">'+svcName+'</span><select class="dur-select" onchange="cfg.durations[\''+k+'\']= parseInt(this.value)">'+[10,15,20,30,45,60,90,120].map(v=>'<option value="'+v+'"'+( v===dur?' selected':'')+'>'+v+' min</option>').join('')+'</select>';
     list.appendChild(row);
   });
 }
-function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); syncToSheets('save_cfg', {cfg}); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
+function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
 function renderAppts(){ const list=document.getElementById('appts-list'); const a=T[curLang].admin; const search=(document.getElementById('filter-search').value||'').toLowerCase(); const dayFilter=document.getElementById('filter-day').value; const filtered=appointments.filter(ap=>{ const matchSearch=!search||(ap.code.toLowerCase().includes(search)||ap.svc.toLowerCase().includes(search)); const matchDay=!dayFilter||ap.day===dayFilter; return matchSearch&&matchDay&&ap.status!=='deleted'; }); if(!filtered.length){ list.innerHTML='<div class="empty-state"><i class="ti ti-calendar-off" style="font-size:28px;display:block;margin-bottom:8px;"></i>'+a.noAppts+'</div>'; return; } list.innerHTML=''; filtered.forEach(appt=>{ const row=document.createElement('div'); row.className='appt-row'; const statusBadge=appt.status==='cancelled'?'<span class="badge-status badge-cancel">'+a.cancelStatus+'</span>':'<span class="badge-status badge-ok">'+a.confirmStatus+'</span>'; row.innerHTML='<span class="appt-code">'+appt.code+'</span><div class="appt-info"><div>'+appt.svc+'</div><div class="appt-meta">'+appt.day+' · '+appt.time+' · '+appt.dur+' '+T[curLang].min+' · '+( appt.spLabel||'Sp.'+appt.sp)+' '+statusBadge+'</div></div><div class="appt-actions"><button class="appt-btn" onclick="openEdit(\''+appt.code+'\')"><i class="ti ti-edit"></i></button><button class="appt-btn danger" onclick="cancelAppt(\''+appt.code+'\')"><i class="ti ti-trash"></i></button></div>'; list.appendChild(row); }); }
 function cancelAppt(code){ const a=appointments.find(x=>x.code===code); if(!a) return; if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';} const key=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[key]) bookedSlots[key]=bookedSlots[key].filter(x=>x.code!==code); saveData(); renderAppts(); }
 function openEdit(code){ const a=appointments.find(x=>x.code===code); if(!a) return; document.getElementById('edit-code').value=code; document.getElementById('edit-svc').value=a.svc; document.getElementById('edit-day').value=a.day; document.getElementById('edit-time').value=a.time; document.getElementById('admin-panel').style.display='none'; document.getElementById('edit-modal').style.display='flex'; }
@@ -1468,65 +1482,8 @@ function closeEdit(){ document.getElementById('edit-modal').style.display='none'
 function saveEdit(){ const code=document.getElementById('edit-code').value; const a=appointments.find(x=>x.code===code); if(!a) return; const oldKey=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[oldKey]) bookedSlots[oldKey]=bookedSlots[oldKey].filter(x=>x.code!==code); a.svc=document.getElementById('edit-svc').value; a.day=document.getElementById('edit-day').value; const newTime=document.getElementById('edit-time').value; a.time=newTime; const newKey=a.sp+'|'+a.dayISO+'|'+newTime; if(!bookedSlots[newKey]) bookedSlots[newKey]=[]; bookedSlots[newKey].push(a); saveData(); closeEdit(); renderAppts(); }
 
 loadData();
-loadFromSheets();
 buildSvcs(); applyT();
-// --- LOGO MANAGEMENT ---
-const LOGO_DRIVE_URL = 'https://drive.google.com/uc?export=view&id=16Yh2nkcED-hnDSjjiZi67M7tUcOauQJh';
-
-function loadLogoFromStorage(){
-  try {
-    const saved = localStorage.getItem('consolato_logo') || LOGO_DRIVE_URL;
-    const img = document.querySelector('.hdr img');
-    if(img) img.src = saved;
-    const prev = document.getElementById('logo-preview');
-    const placeholder = document.getElementById('logo-placeholder');
-    if(prev){ prev.src = saved; prev.style.display='block'; }
-    if(placeholder) placeholder.style.display='none';
-  } catch(e){}
-}
-
-function handleLogoUpload(input){
-  const file = input.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e){
-    const dataURL = e.target.result;
-    const prev = document.getElementById('logo-preview');
-    const placeholder = document.getElementById('logo-placeholder');
-    if(prev){ prev.src = dataURL; prev.style.display='block'; }
-    if(placeholder) placeholder.style.display='none';
-    // Store temporarily in input dataset
-    input.dataset.pending = dataURL;
-  };
-  reader.readAsDataURL(file);
-}
-
-function saveLogo(){
-  const input = document.getElementById('logo-file-input');
-  const dataURL = input.dataset.pending || document.getElementById('logo-preview').src;
-  if(!dataURL || dataURL === window.location.href) return;
-  try {
-    localStorage.setItem('consolato_logo', dataURL);
-    const img = document.querySelector('.hdr img');
-    if(img) img.src = dataURL;
-    const banner = document.getElementById('logo-save-banner');
-    if(banner){ banner.style.display='flex'; setTimeout(()=>banner.style.display='none', 2500); }
-  } catch(e){ alert('Errore: immagine troppo grande per il browser. Usa un logo più piccolo.'); }
-}
-
-function removeLogo(){
-  try { localStorage.removeItem('consolato_logo'); } catch(e){}
-  const img = document.querySelector('.hdr img');
-  if(img) img.src = '';
-  const prev = document.getElementById('logo-preview');
-  const placeholder = document.getElementById('logo-placeholder');
-  if(prev){ prev.src=''; prev.style.display='none'; }
-  if(placeholder) placeholder.style.display='block';
-  const input = document.getElementById('logo-file-input');
-  if(input){ input.value=''; delete input.dataset.pending; }
-}
-
-loadLogoFromStorage();
+// Logo caricato da Google Drive — nessuna gestione necessaria
 </script>
 </body>
 </html>
