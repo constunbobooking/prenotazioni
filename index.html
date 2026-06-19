@@ -1858,6 +1858,7 @@ function genCode(){
   // ── Invia al server Google Sheets ──
   fetch(SCRIPT_URL, {
     method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
     body: JSON.stringify({
       action: 'book',
       code:    appt.code,
@@ -1871,7 +1872,7 @@ function genCode(){
       status:  appt.status,
       lang:    curLang
     })
-  }).catch(err => console.warn('Errore invio server:', err));
+  }).then(r=>r.json()).then(d=>console.log('Prenotazione salvata:', d)).catch(err => console.warn('Errore invio server:', err));
   document.getElementById('bk-code').textContent=code;
   document.getElementById('bk-detail').textContent=selDay+' · '+selTime;
   document.getElementById('sp-box-num').textContent=selSpLabel;
