@@ -1855,6 +1855,23 @@ function genCode(){
   bookedSlots[key].push(appt);
   appointments.unshift(appt);
   saveData();
+  // ── Invia al server Google Sheets ──
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify({
+      action: 'book',
+      code:    appt.code,
+      svc:     appt.svc,
+      day:     appt.day,
+      dayISO:  appt.dayISO,
+      time:    appt.time,
+      dur:     appt.dur,
+      sp:      appt.sp,
+      spLabel: appt.spLabel,
+      status:  appt.status,
+      lang:    curLang
+    })
+  }).catch(err => console.warn('Errore invio server:', err));
   document.getElementById('bk-code').textContent=code;
   document.getElementById('bk-detail').textContent=selDay+' · '+selTime;
   document.getElementById('sp-box-num').textContent=selSpLabel;
@@ -2106,7 +2123,18 @@ function renderAppts(){
     list.appendChild(row);
   });
 }
-function cancelAppt(code){ const a=appointments.find(x=>x.code===code); if(!a) return; if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';} const key=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[key]) bookedSlots[key]=bookedSlots[key].filter(x=>x.code!==code); saveData(); renderAppts(); }
+function cancelAppt(code){
+  const a=appointments.find(x=>x.code===code);
+  if(!a) return;
+  if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';}
+  const key=a.sp+'|'+a.dayISO+'|'+a.time;
+  if(bookedSlots[key]) bookedSlots[key]=bookedSlots[key].filter(x=>x.code!==code);
+  saveData();
+  // Invia al server
+  fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({action:'cancel',code})})
+    .catch(err=>console.warn('Errore server cancel:',err));
+  renderAppts();
+}
 function openEdit(code){
   const a=appointments.find(x=>x.code===code);
   if(!a) return;
@@ -2144,6 +2172,10 @@ function saveEdit(){
   if(!bookedSlots[newKey]) bookedSlots[newKey]=[];
   bookedSlots[newKey].push(a);
   saveData();
+  // Invia al server
+  fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify({
+    action:'update', code, svc:a.svc, day:a.day, dayISO:a.dayISO, time:newTime, status:a.status
+  })}).catch(err=>console.warn('Errore server update:',err));
   closeEdit();
   renderAppts();
 }
