@@ -71,10 +71,21 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 .service-name{font-size:15px;font-weight:500;color:var(--color-text-primary);font-family:var(--font-calibri);}
 .service-badge{background:#f0f0f0;border-radius:20px;padding:4px 10px;font-size:12px;color:var(--color-text-secondary);font-family:var(--font-calibri);}
 
-.day-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
-.dt{padding:8px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:14px;cursor:pointer;background:var(--color-background-primary);color:var(--color-text-secondary);font-family:var(--font-calibri);}
-.dt.sel{background:#C8102E;color:#fff;border-color:#C8102E;font-weight:600;}
-.dt.off{color:var(--color-text-tertiary);background:var(--color-background-secondary);cursor:not-allowed;text-decoration:line-through;}
+/* ── CALENDARIO MENSILE ──────────────────────────────── */
+.cal-wrap{margin-bottom:20px;}
+.cal-month-title{font-size:15px;font-weight:700;font-family:var(--font-calibri);color:var(--color-text-primary);text-align:center;margin-bottom:10px;text-transform:capitalize;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.cal-head{font-size:11px;font-weight:700;font-family:var(--font-calibri);color:var(--color-text-tertiary);text-align:center;padding:4px 0;text-transform:uppercase;letter-spacing:.03em;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:14px;font-family:var(--font-calibri);font-weight:500;border:1.5px solid transparent;transition:all .15s;}
+.cal-day.empty{background:transparent;}
+.cal-day.past{color:var(--color-text-tertiary);background:var(--color-background-secondary);cursor:not-allowed;}
+.cal-day.closed{color:#ccc;background:var(--color-background-secondary);cursor:not-allowed;text-decoration:line-through;}
+.cal-day.open{color:var(--color-text-primary);background:var(--color-background-primary);border-color:var(--color-border-tertiary);cursor:pointer;}
+.cal-day.open:hover{border-color:#C8102E;background:#fff0f3;color:#C8102E;}
+.cal-day.sel{background:#C8102E;color:#fff;border-color:#C8102E;font-weight:700;}
+[dir="rtl"] .cal-head{direction:rtl;}
+[dir="rtl"] .cal-grid{direction:rtl;}
+[dir="rtl"] .cal-month-title{direction:rtl;}
 .time-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;}
 .ts{padding:10px 4px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:14px;text-align:center;cursor:pointer;color:var(--color-text-primary);background:var(--color-background-primary);font-family:var(--font-calibri);}
 .ts:hover{border-color:#C8102E;color:#C8102E;}
@@ -88,15 +99,88 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 .cc-lbl{color:var(--color-text-secondary);font-size:14px;font-family:var(--font-calibri);}
 .cc-val{font-weight:600;color:var(--color-text-primary);text-align:right;max-width:60%;font-family:var(--font-calibri);}
 .code-box{background:var(--color-background-secondary);border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:22px;text-align:center;margin:14px 0;}
+.warn-sign{background:#C8102E;border:2px solid #8c0c1f;border-radius:var(--border-radius-lg);padding:16px 18px;margin:14px 0;text-align:center;color:#fff;}
+.warn-sign .warn-icon{font-size:26px;margin-bottom:8px;}
+.warn-sign .warn-line{font-size:13.5px;line-height:1.6;font-weight:600;}
+.warn-sign .warn-line.ar{margin-top:10px;font-family:var(--font-arabic);direction:rtl;}
+.warn-sign .warn-line+.warn-line{border-top:1px solid rgba(255,255,255,0.3);padding-top:10px;}
 .code-lbl{font-size:13px;color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-family:var(--font-calibri);}
 .code-val{font-size:32px;font-weight:600;letter-spacing:5px;color:#C8102E;font-family:var(--font-mono);}
 .code-sub{font-size:13px;color:var(--color-text-tertiary);margin-top:6px;font-family:var(--font-calibri);}
+.code-box{background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:20px 18px;text-align:center;margin-bottom:14px;}
 .sportello-box{background:linear-gradient(135deg,#C8102E,#a00d25);color:#fff;border-radius:var(--border-radius-md);padding:12px 18px;text-align:center;margin:10px 0;}
 .sportello-box .sp-label{font-size:12px;opacity:.8;text-transform:uppercase;letter-spacing:.06em;font-family:var(--font-calibri);}
 .sportello-box .sp-num{font-size:22px;font-weight:700;font-family:var(--font-calibri);}
 .btn-p{background:#C8102E;color:#fff;border:none;border-radius:var(--border-radius-md);padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-calibri);width:100%;margin-top:14px;}
 .btn-p:hover{background:#a00d25;}
 .btn-p:disabled{background:var(--color-border-tertiary);color:var(--color-text-tertiary);cursor:not-allowed;}
+
+/* ── RECEIPT BILINGUAL LAYOUT ─────────────────── */
+.rcpt-header-bi{display:flex;justify-content:space-between;align-items:center;padding:0 0 10px;border-bottom:1.5px solid #C8102E;margin-bottom:12px;}
+.rcpt-name-it{font-size:12px;font-weight:700;color:#C8102E;font-family:var(--font-calibri);text-align:left;}
+.rcpt-name-ar{font-size:12px;font-weight:700;color:#C8102E;font-family:var(--font-calibri);text-align:right;direction:rtl;}
+.rcpt-data-table{width:100%;border-collapse:collapse;margin-bottom:4px;}
+.rcpt-data-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;padding:7px 0;border-bottom:0.5px solid var(--color-border-tertiary);}
+.rcpt-data-row:last-child{border-bottom:none;}
+.rcpt-it-lbl{font-size:12px;color:#888;font-family:var(--font-calibri);text-align:left;}
+.rcpt-val{font-size:14px;font-weight:700;color:var(--color-text-primary);font-family:var(--font-calibri);text-align:center;}
+.rcpt-ar-lbl{font-size:12px;color:#888;font-family:var(--font-calibri);text-align:right;direction:rtl;}
+/* ─────────────────────────────────────────────── */
+.hdr-ar{opacity:.85;font-size:.9em;}
+.bi-lbl{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.ar-lbl{font-family:var(--font-calibri);direction:rtl;color:inherit;opacity:.85;}
+.bi-title{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.bi-title span:last-child{direction:rtl;text-align:right;opacity:.8;font-size:.92em;}
+
+/* Service card bilingual */
+.bi-card{display:flex;align-items:center;gap:6px;}
+.bi-card .service-name{flex:1;text-align:left;}
+.bi-card .service-name-ar{flex:1;text-align:right;direction:rtl;font-size:13px;color:var(--color-text-secondary);font-family:var(--font-calibri);}
+.bi-card .svc-chevron{flex-shrink:0;}
+
+/* Group header bilingual */
+.svc-group-hdr{display:flex;align-items:center;justify-content:space-between;}
+.svc-group-label-ar{direction:rtl;text-align:right;font-size:13px;color:var(--color-text-secondary);font-family:var(--font-calibri);flex:1;padding-right:6px;}
+
+/* Receipt rows */
+.rcpt-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-family:var(--font-calibri);}
+.rcpt-row:last-of-type{border-bottom:none;}
+.rcpt-lbl{font-size:13px;color:#666;}
+.rcpt-lbl .ar-lbl{font-size:12px;}
+/* ─────────────────────────────────────────────── */
+  position:fixed;
+  bottom:28px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#C8102E;
+  color:#fff;
+  border-radius:30px;
+  padding:10px 20px;
+  font-size:14px;
+  font-weight:600;
+  font-family:var(--font-calibri);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  box-shadow:0 4px 16px rgba(200,16,46,0.35);
+  cursor:pointer;
+  z-index:999;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+  white-space:nowrap;
+}
+#scroll-hint.visible{
+  opacity:1;
+  pointer-events:all;
+}
+#scroll-hint .sh-arrow{
+  animation:bounce-down .9s infinite;
+}
+@keyframes bounce-down{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(4px);}
+}
 .btn-s{background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:10px 18px;font-size:14px;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-calibri);}
 .btn-s:hover{background:var(--color-background-secondary);}
 .btn-print{background:#2d8a4e;color:#fff;border:none;border-radius:var(--border-radius-md);padding:12px 22px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font-calibri);width:100%;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;}
@@ -105,13 +189,58 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 .nav .btn-p{margin-top:0;}
 .ok-icon{width:54px;height:54px;border-radius:50%;background:#e6f5eb;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:24px;color:#2d8a4e;}
 .alert-i{background:var(--color-background-info);border:0.5px solid var(--color-border-info);border-radius:var(--border-radius-md);padding:10px 14px;font-size:14px;color:var(--color-text-info);margin-top:10px;display:flex;gap:8px;align-items:flex-start;font-family:var(--font-calibri);}
-.docs-section{margin-top:20px;border-top:1px solid var(--color-border-tertiary);padding-top:16px;text-align:left;}
-.docs-title{font-size:14px;font-weight:700;color:var(--color-text-primary);margin-bottom:10px;display:flex;align-items:center;gap:6px;font-family:var(--font-calibri);}
+.docs-section{margin-top:20px;border-top:1px solid var(--color-border-tertiary);padding-top:16px;}
+.docs-title{font-size:14px;font-weight:700;color:var(--color-text-primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;font-family:var(--font-calibri);}
+.docs-title span[style*="text-align:left"]{flex:1;}
+.docs-title span[style*="text-align:right"]{font-family:var(--font-calibri);}
 .docs-list{list-style:none;padding-left:8px;}
 .docs-list li{font-size:13px;color:var(--color-text-secondary);margin-bottom:6px;display:flex;align-items:flex-start;gap:8px;font-family:var(--font-calibri);}
 .docs-list li i{color:#C8102E;font-size:14px;margin-top:2px;}
+.moduli-section{margin-top:14px;border-top:1px solid var(--color-border-tertiary);padding-top:14px;}
+.moduli-title{font-size:14px;font-weight:700;color:var(--color-text-primary);margin-bottom:10px;display:flex;align-items:center;gap:8px;font-family:var(--font-calibri);}
+.moduli-list{display:flex;flex-direction:column;gap:7px;}
+.btn-modulo{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #C8102E;border-radius:var(--border-radius-md);padding:9px 14px;font-size:13px;font-weight:600;color:#C8102E;cursor:pointer;text-decoration:none;font-family:var(--font-calibri);transition:background 0.15s;}
+.btn-modulo:hover{background:#fff0f3;}
+.btn-modulo i{font-size:15px;flex-shrink:0;}
+[dir="rtl"] .docs-section{text-align:right;}
+[dir="rtl"] .moduli-section{text-align:right;}
+[dir="rtl"] .docs-list li{flex-direction:row-reverse;}
+[dir="rtl"] .btn-modulo{flex-direction:row-reverse;}
+@media print{.moduli-section{display:none!important;}}
 
-/* ADMIN styles */
+/* ── RICERCA APPUNTAMENTO ───────────────────────────── */
+#lookup-bar{border-bottom:1px solid var(--color-border-tertiary);background:var(--color-background-secondary);}
+.lookup-toggle{width:100%;background:none;border:none;padding:11px 20px;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-calibri);text-align:left;}
+.lookup-toggle:hover{background:var(--color-background-tertiary);}
+.lookup-toggle i{color:#C8102E;font-size:15px;}
+#lookup-toggle-lbl{flex:1;}
+#lookup-chevron{transition:transform .2s;font-size:13px;}
+#lookup-panel{padding:0 20px 16px;}
+.lookup-input-row{display:flex;gap:8px;margin-top:4px;}
+.lookup-input{flex:1;font-size:15px;padding:9px 13px;border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-family:var(--font-mono);letter-spacing:2px;background:#fff;color:var(--color-text-primary);text-transform:uppercase;}
+.lookup-input:focus{outline:none;border-color:#C8102E;}
+.lookup-btn{background:#C8102E;color:#fff;border:none;border-radius:var(--border-radius-md);padding:9px 16px;font-size:16px;cursor:pointer;}
+.lookup-btn:hover{background:#a00d25;}
+.lookup-result-card{margin-top:12px;border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);overflow:hidden;}
+.lookup-result-card.cancelled{border-color:#f5c2c7;opacity:.8;}
+.lrc-header{background:#C8102E;color:#fff;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;font-family:var(--font-calibri);}
+.lrc-code{font-family:var(--font-mono);font-size:16px;font-weight:700;letter-spacing:3px;}
+.lrc-status{font-size:12px;padding:3px 10px;border-radius:20px;font-weight:600;font-family:var(--font-calibri);}
+.lrc-status.ok{background:rgba(255,255,255,0.25);color:#fff;}
+.lrc-status.cancelled{background:#ffeef0;color:#C8102E;}
+.lrc-body{padding:12px 14px;background:#fff;}
+.lrc-row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:14px;font-family:var(--font-calibri);}
+.lrc-row:last-child{border-bottom:none;}
+.lrc-row span:first-child{color:var(--color-text-secondary);}
+.lrc-row span:last-child{font-weight:600;color:var(--color-text-primary);}
+.lookup-cancel-btn{width:100%;margin-top:10px;background:none;border:1.5px solid #C8102E;color:#C8102E;border-radius:var(--border-radius-md);padding:9px;font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font-calibri);display:flex;align-items:center;justify-content:center;gap:6px;}
+.lookup-cancel-btn:hover{background:#fff0f3;}
+.lookup-error{margin-top:10px;padding:10px 14px;background:#ffeef0;border:1px solid #f5c2c7;border-radius:var(--border-radius-md);font-size:14px;color:#C8102E;font-family:var(--font-calibri);display:flex;align-items:center;gap:8px;}
+.lookup-success-msg{margin-top:10px;padding:10px 14px;background:#e6f5eb;border:1px solid #a3d9b1;border-radius:var(--border-radius-md);font-size:14px;color:#2d8a4e;font-family:var(--font-calibri);display:flex;align-items:center;gap:8px;}
+[dir="rtl"] .lookup-toggle{flex-direction:row-reverse;text-align:right;}
+[dir="rtl"] .lookup-input{letter-spacing:2px;direction:ltr;}
+[dir="rtl"] .lrc-header{flex-direction:row-reverse;}
+[dir="rtl"] .lrc-row{flex-direction:row-reverse;}
 .pwd-box{max-width:320px;margin:36px auto;text-align:center;padding:28px 24px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);background:#fff;}
 .pwd-box h3{font-size:17px;font-weight:600;margin-bottom:6px;font-family:var(--font-calibri);}
 .pwd-input{width:100%;font-size:15px;padding:10px 12px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-family:var(--font-calibri);background:#fff;color:#1a1a2e;margin-bottom:10px;text-align:center;letter-spacing:2px;}
@@ -137,6 +266,26 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 .dur-select{width:96px;font-size:13px;padding:5px 7px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;color:#1a1a2e;font-family:var(--font-calibri);}
 .time-input{width:88px;font-size:13px;padding:6px 8px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;color:#1a1a2e;font-family:var(--font-calibri);}
 .save-banner{background:#e6f5eb;border:0.5px solid #a3d9b1;border-radius:var(--border-radius-md);padding:10px 14px;font-size:14px;color:#2d8a4e;display:none;align-items:center;gap:7px;margin-top:12px;font-family:var(--font-calibri);}
+.sp-admin-card{background:var(--color-background-secondary);border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:14px 16px;margin-bottom:12px;}
+.sp-admin-card.closed{opacity:.65;border-style:dashed;}
+.sp-admin-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.sp-admin-num{background:#C8102E;color:#fff;border-radius:6px;width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.sp-admin-name{flex:1;font-weight:600;font-size:14px;font-family:var(--font-calibri);border:1px solid transparent;background:transparent;outline:none;color:var(--color-text-primary);padding:2px 6px;border-radius:4px;min-width:80px;}
+.sp-admin-name:focus{background:var(--color-background-primary);border-color:#C8102E;}
+.sp-admin-name:hover{border-color:var(--color-border-tertiary);}
+.sp-edit-hint{font-size:11px;color:#bbb;margin-left:2px;flex-shrink:0;}
+.sp-toggle{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer;font-family:var(--font-calibri);color:var(--color-text-secondary);}
+.sp-toggle input[type=checkbox]{accent-color:#C8102E;width:16px;height:16px;cursor:pointer;}
+.sp-dual-toggle{display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer;font-family:var(--font-calibri);color:#856404;background:#fff9e6;border:1px solid #ffc107;border-radius:20px;padding:3px 10px;white-space:nowrap;}
+.sp-dual-toggle input[type=checkbox]{accent-color:#e6a800;width:14px;height:14px;cursor:pointer;}
+.sp-dual-toggle.active{background:#fff3cd;}
+.sp-svcs-label{font-size:11px;color:var(--color-text-tertiary);font-family:var(--font-calibri);margin:10px 0 6px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+.sp-svcs-grid{display:flex;flex-wrap:wrap;gap:5px;}
+.sp-svc-chip{font-size:12px;font-family:var(--font-calibri);padding:4px 10px;border-radius:20px;cursor:pointer;border:1.5px solid var(--color-border-tertiary);background:var(--color-background-primary);color:var(--color-text-secondary);transition:all .15s;user-select:none;}
+.sp-svc-chip.active{background:#C8102E;border-color:#C8102E;color:#fff;}
+.sp-dual-badge{font-size:11px;background:#fff3cd;color:#856404;border:1px solid #ffc107;border-radius:12px;padding:2px 8px;font-family:var(--font-calibri);}
+.sp-remove-btn{background:none;border:none;color:#ccc;cursor:pointer;font-size:16px;padding:0 2px;line-height:1;margin-left:auto;}
+.sp-remove-btn:hover{color:#C8102E;}
 .appt-row{display:flex;align-items:center;gap:8px;padding:10px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:#fff;margin-bottom:5px;flex-wrap:wrap;}
 .appt-code{font-family:var(--font-mono);font-size:14px;color:#C8102E;font-weight:600;min-width:86px;}
 .appt-info{flex:1;font-size:14px;color:var(--color-text-primary);font-family:var(--font-calibri);}
@@ -149,6 +298,18 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 .badge-ok{background:#e6f5eb;color:#2d8a4e;}
 .badge-cancel{background:#ffeef0;color:#C8102E;}
 .empty-state{text-align:center;padding:28px 20px;color:var(--color-text-tertiary);font-size:15px;font-family:var(--font-calibri);}
+.appts-stats{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.stat-chip{flex:1;min-width:80px;background:var(--color-background-secondary);border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;text-align:center;}
+.stat-chip .stat-num{font-size:22px;font-weight:700;font-family:var(--font-mono);color:var(--color-text-primary);}
+.stat-chip .stat-lbl{font-size:11px;color:var(--color-text-tertiary);font-family:var(--font-calibri);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+.stat-chip.today .stat-num{color:#C8102E;}
+.stat-chip.confirmed .stat-num{color:#2d8a4e;}
+.stat-chip.cancelled .stat-num{color:#999;}
+.modal{background:#fff;max-width:360px;margin:0 auto;border-radius:var(--border-radius-lg);padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.18);}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:16px;font-family:var(--font-calibri);color:var(--color-text-primary);}
+.modal label{display:block;font-size:13px;font-weight:600;color:var(--color-text-secondary);margin-bottom:4px;margin-top:12px;font-family:var(--font-calibri);}
+.modal input[type=text],.modal input[type=date],.modal input[type=time]{width:100%;font-size:14px;padding:9px 11px;border:1px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-family:var(--font-calibri);background:#fff;color:var(--color-text-primary);}
+.modal input:focus{outline:none;border-color:#C8102E;}
 [dir="rtl"] .services-list{direction:rtl;text-align:right;}
 [dir="rtl"] .service-card{direction:rtl;text-align:right;}
 [dir="rtl"] .service-card .service-name{text-align:right;}
@@ -176,91 +337,174 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
   <button class="hdr-admin-btn no-print" onclick="openAdmin()"><i class="ti ti-settings"></i> Admin</button>
   <div class="hdr">
     <img src="https://drive.google.com/thumbnail?id=16Yh2nkcED-hnDSjjiZi67M7tUcOauQJh&sz=w200" alt="Logo Consolato Tunisia Bologna" style="width:90px;height:90px;border-radius:8px;object-fit:contain;background:#fff;padding:4px;border:2px solid rgba(255,255,255,0.6);box-shadow:0 2px 8px rgba(0,0,0,0.25);">
-    <div class="hdr-title" id="hdr-title">Consolato della Repubblica Tunisina a Bologna</div>
-    <div class="hdr-sub" id="hdr-sub">Prenotazione Appuntamenti — Mar–Sab 09:00–13:00</div>
+    <div class="hdr-sub" id="hdr-sub">Prenotazione Appuntamenti — Mar–Sab 09:00–13:00 <span class="hdr-ar">| حجز المواعيد — الثلاثاء–السبت</span></div>
+
   </div>
 </div>
 
-<div class="lang-bar no-print">
-  <button class="lb active" onclick="setLang('it',this)">Italiano</button>
-  <button class="lb" onclick="setLang('ar',this)">عربي</button>
+<!-- RICERCA APPUNTAMENTO -->
+<div id="lookup-bar" class="no-print">
+  <button class="lookup-toggle" id="lookup-toggle-btn" onclick="toggleLookup()">
+    <i class="ti ti-search"></i>
+    <span class="bi-lbl"><span>Hai già un appuntamento?</span><span class="ar-lbl">هل لديك موعد مسبق؟</span></span>
+    <i class="ti ti-chevron-down" id="lookup-chevron"></i>
+  </button>
+  <div id="lookup-panel" style="display:none;">
+    <div class="lookup-input-row">
+      <input class="lookup-input" type="text" id="lookup-code-input"
+        placeholder="Es. ABCD-EFGH"
+        maxlength="9"
+        oninput="this.value=this.value.toUpperCase()"
+        onkeydown="if(event.key==='Enter')lookupCode()">
+      <button class="lookup-btn" onclick="lookupCode()">
+        <i class="ti ti-arrow-right"></i>
+      </button>
+    </div>
+    <div id="lookup-result"></div>
+  </div>
 </div>
 
 <!-- BOOKING FLOW -->
 <div id="booking-flow">
   <div class="steps no-print">
-    <div class="si active" id="si1"><div class="sn">1</div><span id="sl1">Servizio</span></div>
-    <div class="si" id="si2"><div class="sn">2</div><span id="sl2">Orario</span></div>
-    <div class="si" id="si3"><div class="sn">3</div><span id="sl3">Conferma</span></div>
+    <div class="si active" id="si1"><div class="sn">1</div><span class="bi-lbl"><span>Servizio</span><span class="ar-lbl">الخدمة</span></span></div>
+    <div class="si" id="si2"><div class="sn">2</div><span class="bi-lbl"><span>Orario</span><span class="ar-lbl">الموعد</span></span></div>
+    <div class="si" id="si3"><div class="sn">3</div><span class="bi-lbl"><span>Conferma</span><span class="ar-lbl">التأكيد</span></span></div>
   </div>
 
-  <!-- STEP 1: choose service (senza sportello) -->
+  <!-- STEP 1 -->
   <div class="panel" id="p1">
-    <div class="sec-title" id="lbl-cs">Scegli il servizio desiderato</div>
+    <div class="sec-title bi-title"><span>Scegli il servizio desiderato</span><span class="ar-lbl">اختر الخدمة المطلوبة</span></div>
     <div id="svc-list"></div>
-    <div class="nav no-print"><button class="btn-p" id="btn-n1" onclick="goStep(2)" disabled>Continua →</button></div>
+    <div class="nav no-print"><button class="btn-p" id="btn-n1" onclick="goStep(2)" disabled><span>Continua</span> <span class="ar-lbl">متابعة ←</span></button></div>
   </div>
 
-  <!-- STEP 2: choose day/time -->
+  <!-- Freccia guida scroll -->
+  <div id="scroll-hint" onclick="scrollToContinue()">
+    <span id="scroll-hint-lbl">Continua</span>
+    <i class="ti ti-arrow-down sh-arrow"></i>
+  </div>
+
+  <!-- STEP 2 -->
   <div class="panel" id="p2" style="display:none">
-    <div class="sec-title" id="lbl-cd">Scegli un giorno</div>
-    <div class="day-tabs" id="day-tabs"></div>
-    <div class="sec-title" id="lbl-ct">Scegli un orario</div>
+    <div class="sec-title bi-title"><span>Scegli un giorno</span><span class="ar-lbl">اختر اليوم</span></div>
+    <div id="cal-container"></div>
+    <div class="sec-title bi-title" style="margin-top:16px;"><span>Scegli un orario</span><span class="ar-lbl">اختر الوقت</span></div>
     <div style="font-size:14px;color:var(--color-text-tertiary);margin-bottom:10px;font-family:var(--font-calibri);" id="dur-info"></div>
     <div class="time-grid" id="time-grid"></div>
     <div class="nav no-print">
-      <button class="btn-s" onclick="goStep(1)" id="btn-b2">← Indietro</button>
-      <button class="btn-p" id="btn-n2" onclick="goStep(3)" disabled style="flex:1;margin-top:0;">Continua →</button>
+      <button class="btn-s" onclick="goStep(1)" id="btn-b2"><span>← Indietro</span></button>
+      <button class="btn-p" id="btn-n2" onclick="goStep(3)" disabled style="flex:1;margin-top:0;"><span>Continua</span> <span class="ar-lbl">متابعة ←</span></button>
     </div>
   </div>
 
-  <!-- STEP 3: summary -->
+  <!-- STEP 3 -->
   <div class="panel" id="p3" style="display:none">
     <div class="confirm-card">
-      <div class="cc-hdr"><i class="ti ti-calendar-check"></i><span id="lbl-sum">Riepilogo</span></div>
+      <div class="cc-hdr"><i class="ti ti-calendar-check"></i><span class="bi-lbl"><span>Riepilogo</span><span class="ar-lbl">ملخص الحجز</span></span></div>
       <div class="cc-body">
-        <div class="cc-row"><span class="cc-lbl" id="lbl-sf">Servizio</span><span class="cc-val" id="sum-svc"></span></div>
-        <div class="cc-row"><span class="cc-lbl" id="lbl-df">Data</span><span class="cc-val" id="sum-day"></span></div>
-        <div class="cc-row"><span class="cc-lbl" id="lbl-tf">Ora</span><span class="cc-val" id="sum-time"></span></div>
+        <div class="rcpt-data-row">
+          <span class="rcpt-it-lbl">Servizio</span>
+          <span class="rcpt-val" id="sum-svc"></span>
+          <span class="rcpt-ar-lbl">الخدمة</span>
+        </div>
+        <div class="rcpt-data-row">
+          <span class="rcpt-it-lbl">Data</span>
+          <span class="rcpt-val" id="sum-day"></span>
+          <span class="rcpt-ar-lbl">التاريخ</span>
+        </div>
+        <div class="rcpt-data-row">
+          <span class="rcpt-it-lbl">Orario</span>
+          <span class="rcpt-val" id="sum-time"></span>
+          <span class="rcpt-ar-lbl">الوقت</span>
+        </div>
       </div>
     </div>
-    <button class="btn-p no-print" id="btn-confirm" onclick="genCode()"><i class="ti ti-check"></i> <span id="lbl-cb">Conferma e genera il codice</span></button>
+    <button class="btn-p no-print" id="btn-confirm" onclick="genCode()"><i class="ti ti-check"></i> <span class="bi-lbl"><span>Conferma e genera il codice</span><span class="ar-lbl">تأكيد وإنشاء الرمز</span></span></button>
     <div class="nav no-print" style="margin-top:8px;"><button class="btn-s" onclick="goStep(2)" id="btn-b3">← Indietro</button></div>
   </div>
 
   <!-- STEP 4: confirmed + receipt -->
   <div class="panel" id="p4" style="display:none;text-align:center;">
     <div class="ok-icon no-print"><i class="ti ti-check"></i></div>
-    <div style="font-size:19px;font-weight:600;margin-bottom:5px;font-family:var(--font-calibri);" id="lbl-ok">Appuntamento confermato!</div>
-    <div style="font-size:15px;color:var(--color-text-secondary);margin-bottom:18px;font-family:var(--font-calibri);" id="lbl-ok2">Mostra questo codice alla reception</div>
+    <div style="font-size:19px;font-weight:600;margin-bottom:5px;font-family:var(--font-calibri);" id="lbl-ok"><span>Appuntamento confermato!</span> <span class="ar-lbl">تم تأكيد الموعد</span></div>
+    <div style="font-size:15px;color:var(--color-text-secondary);margin-bottom:18px;font-family:var(--font-calibri);" id="lbl-ok2"><span>Mostra questo codice alla reception</span> <span class="ar-lbl">| قدّم هذا الرمز عند الاستقبال</span></div>
 
     <!-- Receipt box -->
     <div class="code-box" id="receipt-area">
-      <div class="code-lbl" id="lbl-yc">Il tuo codice</div>
+      <div class="code-lbl bi-lbl"><span>Il tuo codice</span><span class="ar-lbl">رمزك</span></div>
       <div class="code-val" id="bk-code">----</div>
       <div class="code-sub" id="bk-detail"></div>
       <div class="sportello-box" id="sp-box" style="margin-top:14px;">
-        <div class="sp-label" id="sp-box-label">Sportello</div>
+        <div class="sp-label bi-lbl"><span>Sportello</span><span class="ar-lbl"> / الشباك</span></div>
         <div class="sp-num" id="sp-box-num">—</div>
       </div>
       <!-- Full receipt details for print -->
-      <div id="receipt-details" style="margin-top:16px;text-align:left;border-top:1px dashed #ccc;padding-top:12px;">
-        <div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-calibri);"><span style="color:#666;" id="rcpt-lbl-svc">Servizio:</span><span style="font-weight:600;" id="rcpt-svc"></span></div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-calibri);"><span style="color:#666;" id="rcpt-lbl-sp">Sportello:</span><span style="font-weight:600;" id="rcpt-sp"></span></div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-calibri);"><span style="color:#666;" id="rcpt-lbl-day">Data:</span><span style="font-weight:600;" id="rcpt-day"></span></div>
-        <div style="display:flex;justify-content:space-between;padding:4px 0;font-family:var(--font-calibri);"><span style="color:#666;" id="rcpt-lbl-time">Ora:</span><span style="font-weight:600;" id="rcpt-time"></span></div>
-        <!-- DOCUMENTI SECTION -->
-        <div class="docs-section">
-          <div class="docs-title"><i class="ti ti-file-text"></i> <span id="docs-title">Documenti da preparare</span></div>
-          <ul class="docs-list" id="docs-list"></ul>
+      <div id="receipt-details" style="margin-top:16px;border-top:1px dashed #ccc;padding-top:14px;">
+
+        <!-- Intestazione bilingue -->
+        <div class="rcpt-header-bi">
+          <span class="rcpt-name-it">Consolato di Tunisia a Bologna</span>
+          <span class="rcpt-name-ar">قنصلية تونس ببولونيا</span>
         </div>
-        <div style="margin-top:8px;font-size:11px;color:#999;text-align:center;font-family:var(--font-calibri);" id="rcpt-footer">Consolato della Repubblica Tunisina a Bologna</div>
+
+        <!-- Dati appuntamento: IT sinistra | valore centro | AR destra -->
+        <div class="rcpt-data-table">
+          <div class="rcpt-data-row">
+            <span class="rcpt-it-lbl">Servizio</span>
+            <span class="rcpt-val" id="rcpt-svc"></span>
+            <span class="rcpt-ar-lbl">الخدمة</span>
+          </div>
+          <div class="rcpt-data-row">
+            <span class="rcpt-it-lbl">Sportello</span>
+            <span class="rcpt-val" id="rcpt-sp"></span>
+            <span class="rcpt-ar-lbl">الشباك</span>
+          </div>
+          <div class="rcpt-data-row">
+            <span class="rcpt-it-lbl">Data</span>
+            <span class="rcpt-val" id="rcpt-day"></span>
+            <span class="rcpt-ar-lbl">التاريخ</span>
+          </div>
+          <div class="rcpt-data-row">
+            <span class="rcpt-it-lbl">Orario</span>
+            <span class="rcpt-val" id="rcpt-time"></span>
+            <span class="rcpt-ar-lbl">الوقت</span>
+          </div>
+        </div>
+
+        <!-- AVVERTIMENTO: AR prima, poi IT -->
+        <div class="warn-sign" style="margin:14px 0 0;">
+          <div class="warn-icon"><i class="ti ti-alert-triangle"></i></div>
+          <div class="warn-line ar">الرجاء إعداد ملفّاتكم قبل التحوّل الى مقر القنصلية. كل ملف منقوص يؤدّي غلى إلغاء هذا الموعد.</div>
+          <div class="warn-line">Si prega di preparare i documenti al completo prima di recarsi presso la sede consolare. Ogni fascicolo incompleto comporterà l'annullamento di questo appuntamento.</div>
+        </div>
+        <!-- DOCUMENTI SECTION: titolo IT sinistra | AR destra, elenco AR prima poi IT -->
+        <div class="docs-section">
+          <div class="docs-title">
+            <i class="ti ti-file-text"></i>
+            <span style="flex:1;text-align:left;">Documenti da preparare</span>
+            <span style="text-align:right;direction:rtl;">الوثائق المطلوبة</span>
+          </div>
+          <ul class="docs-list" id="docs-list-ar"></ul>
+          <ul class="docs-list" id="docs-list-it" style="margin-top:6px;padding-top:6px;border-top:1px dashed #eee;"></ul>
+        </div>
+        <!-- MODULI DA SCARICARE (solo bottoni, niente sezione stampa) -->
+        <div id="moduli-section" style="display:none;">
+          <div class="moduli-section no-print">
+          <div class="moduli-title">
+            <i class="ti ti-download"></i>
+            <span style="flex:1;text-align:left;">Moduli da scaricare</span>
+            <span style="text-align:right;direction:rtl;font-family:var(--font-calibri);">الاستمارات للتنزيل</span>
+          </div>
+            <div class="moduli-list" id="moduli-list"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="alert-i no-print"><i class="ti ti-info-circle" style="flex-shrink:0;margin-top:1px;"></i><span id="lbl-note">Annota o stampa questo codice. Ti verrà richiesto all'ingresso del consolato.</span></div>
-    <button class="btn-print no-print" onclick="printReceipt()"><i class="ti ti-printer"></i> <span id="lbl-print">Stampa ricevuta</span></button>
-    <button class="btn-p no-print" onclick="restart()" id="btn-new" style="margin-top:8px;">Nuovo appuntamento</button>
+    <div class="alert-i no-print"><i class="ti ti-info-circle" style="flex-shrink:0;margin-top:1px;"></i><span style="font-size:12px;display:flex;justify-content:space-between;align-items:center;width:100%;"><span>Annota o stampa il codice.</span><span class="ar-lbl">احتفظ بالرمز أو اطبعه.</span></span></div>
+    <button class="btn-print no-print" onclick="printReceipt()"><i class="ti ti-printer"></i> <span class="bi-lbl"><span>Stampa ricevuta</span><span class="ar-lbl">طباعة الوصل</span></span></button>
+    <button class="btn-p no-print" onclick="restart()" id="btn-new" style="margin-top:8px;"><span>Nuovo appuntamento</span> <span class="ar-lbl">| موعد جديد</span></button>
   </div>
 </div>
 
@@ -281,16 +525,31 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
   <div id="admin-panel" style="display:none">
     <div class="tab-bar">
       <div class="tab active" id="tab-appts" onclick="showTab('t-appts',this)"><i class="ti ti-list"></i> Appuntamenti</div>
+      <div class="tab" id="tab-sp" onclick="showTab('t-sp',this);initSportelliTab()"><i class="ti ti-building-store"></i> Sportelli</div>
       <div class="tab" id="tab-days" onclick="showTab('t-days',this)"><i class="ti ti-calendar"></i> Giorni/Festività</div>
       <div class="tab" id="tab-svcs" onclick="showTab('t-svcs',this)"><i class="ti ti-clock"></i> Durata servizi</div>
       <div class="tab" id="tab-hours" onclick="showTab('t-hours',this)"><i class="ti ti-adjustments"></i> Orari</div>
       <div class="tab" id="tab-logo" onclick="showTab('t-logo',this)"><i class="ti ti-photo"></i> Logo</div>
     </div>
 
+    <!-- SPORTELLI TAB -->
+    <div class="admin-wrap tab-panel" id="t-sp">
+      <div class="admin-section">
+        <div class="admin-title"><i class="ti ti-building-store"></i> Gestione Sportelli</div>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;font-family:var(--font-calibri);">Apri o chiudi ogni sportello e modifica i servizi assegnati. Gli sportelli 3 e 4 accettano 2 prenotazioni per ogni fascia oraria (passaporto).</p>
+        <div id="sp-list-admin"></div>
+        <button class="add-btn" id="add-sp-btn" onclick="addSportello()"><i class="ti ti-plus"></i> Aggiungi sportello</button>
+      </div>
+      <button class="btn-p" id="save-btn-sp" onclick="saveSportelliCfg()">Salva</button>
+      <div class="save-banner" id="sb-sp"><i class="ti ti-check"></i> Salvato!</div>
+    </div>
+
     <div class="admin-wrap tab-panel active" id="t-appts">
+      <div id="appts-stats"></div>
       <div class="filter-bar">
         <input type="text" id="filter-search" placeholder="Cerca codice o servizio..." oninput="renderAppts()" style="flex:1;min-width:120px;">
         <select id="filter-day" onchange="renderAppts()"><option value="">Tutti i giorni</option></select>
+        <select id="filter-sp" onchange="renderAppts()"><option value="">Tutti gli sportelli</option></select>
       </div>
       <div id="appts-list"></div>
     </div>
@@ -351,14 +610,14 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
   </div>
 </div>
 
-<div id="edit-modal" style="display:none;background:rgba(0,0,0,0.4);padding:40px 20px;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;" class="no-print">
-  <div class="modal" style="background:#fff;max-width:360px;margin:0 auto;">
+<div id="edit-modal" style="display:none;background:rgba(0,0,0,0.4);padding:40px 20px;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1000;overflow-y:auto;" class="no-print">
+  <div class="modal">
     <h3 id="edit-title">Modifica appuntamento</h3>
     <input type="hidden" id="edit-code">
     <label id="edit-lbl-svc">Servizio</label>
     <input type="text" id="edit-svc">
     <label id="edit-lbl-day">Data</label>
-    <input type="text" id="edit-day">
+    <input type="date" id="edit-day">
     <label id="edit-lbl-time">Ora</label>
     <input type="time" id="edit-time">
     <div style="display:flex;gap:8px;margin-top:16px;">
@@ -397,90 +656,89 @@ function sessionRevoke() {
   sessionStorage.removeItem(SESSION_EXP);
 }
 
-// --- MAPPA SERVIZIO -> SPORTELLO (AUTOMATICO) ---
-const sportelloPerServizio = {
-  it: {
-    "Trascrizione della nascita": 1,
-    "Trascrizione del matrimonio": 1,
-    "Trascrizione del decesso": 1,
-    "Rilascio atti di stato civile": 1,
-    "Certificato di cittadinanza": 1,
-    "Passaporto per neonati": 1,
-    "Autentica della firma": 2,
-    "Copia conforme": 2,
-    "Autenticazione documenti": 2,
-    "Iscrizione consolare": 2,
-    "Passaporto minorenni — Primo rilascio": 3,
-    "Passaporto minorenni — Rinnovo": 3,
-    "Passaporto minorenni — Duplicato": 3,
-    "Passaporto maggiorenni — Primo rilascio": 4,
-    "Passaporto maggiorenni — Rinnovo": 4,
-    "Passaporto maggiorenni — Duplicato": 4,
-    "Nulla-osta per matrimonio": 5,
-    "Traduzione documenti": 5,
-    "Esonero servizio militare": 5,
-    "Rinvio servizio militare": 5,
-    "Visto": 5,
-    "Certificato del casellario giudiziale": 5,
-    "Scheda movimenti frontiera": 6,
-    "Lasciapassare": 6,
-    "Libretto di navigazione": 6,
-    "Richiesta contratto di matrimonio": 6
-  },
-  ar: {
-    "جواز السفر للمولودين الجدد": 1,
-    "إدراج الولادة": 1,
-    "إدراج الزواج": 1,
-    "إدراج الوفاة": 1,
-    "استخراج مضامين الحالة المدنية": 1,
-    "شهادة في الجنسية": 1,
-    "شهادة عرف للزواج": 1,
-    "طلب إبرام عقد الزواج": 1,
-    "التعريف بالإمضاء": 2,
-    "النسخ المطابقة للأصل": 2,
-    "المصادقة على الوثائق": 2,
-    "ترجمة الوثائق": 2,
-    "بطاقة الترسيم القنصلي": 2,
-    "جواز سفر القاصرين — استخراج": 3,
-    "جواز سفر القاصرين — تجديد": 3,
-    "جواز سفر القاصرين — تعويض": 3,
-    "جواز سفر الراشدين — استخراج": 4,
-    "جواز سفر الراشدين — تجديد": 4,
-    "جواز سفر الراشدين — تعويض": 4,
-    "الإعفاء من أداء واجب الخدمة الوطنية": 5,
-    "التأجيل من أداء واجب الخدمة الوطنية": 5,
-    "التأشيرة": 5,
-    "البطاقة عدد 3": 5,
-    "بطاقة التحركات الحدودية": 6,
-    "رخصة المرور": 6,
-    "الدفتر المهني لرجال البحر": 6
+// --- MAPPA SERVIZIO -> SPORTELLO (DINAMICA da cfg.sportelli) ---
+// Restituisce l'id sportello per un dato servizio nella lingua corrente.
+// Per i servizi "dual" (passaporto), assegna automaticamente lo sportello
+// con meno prenotazioni in quell'orario tra i dual disponibili.
+function getSportelloForSvc(svcName, dayISO, time){
+  // Cerca in cfg.sportelli quale sportello (aperto) ha questo servizio
+  const candidates = cfg.sportelli.filter(sp => sp.open && sp.svcs.includes(svcName));
+  if(!candidates.length) return cfg.sportelli.find(s=>s.open)||cfg.sportelli[0];
+  // Se è un servizio dual (passaporto), bilancia tra gli sportelli dual
+  const duals = candidates.filter(sp => sp.dual);
+  if(duals.length >= 2 && dayISO && time){
+    // Conta le prenotazioni per ogni sportello dual in quel slot
+    let best = duals[0];
+    let bestCount = (bookedSlots[duals[0].id+'|'+dayISO+'|'+time]||[]).length;
+    for(let i=1;i<duals.length;i++){
+      const cnt = (bookedSlots[duals[i].id+'|'+dayISO+'|'+time]||[]).length;
+      if(cnt < bestCount){ best=duals[i]; bestCount=cnt; }
+    }
+    return best;
   }
-};
+  return candidates[0];
+}
+
+// Compatibilità: per buildSvcs che usa sportelloPerServizio[lang][svc]
+// Lo sostituiamo con una funzione che legge da cfg.sportelli
+function getSpId(svcName){
+  const sp = cfg.sportelli.find(s => s.open && s.svcs.includes(svcName));
+  return sp ? sp.id : 1;
+}
+
+// Verifica se uno sportello è chiuso
+function isSpClosed(spId){
+  const sp = cfg.sportelli.find(s=>s.id===spId);
+  return sp && !sp.open;
+}
+
+
 
 // --- LISTA COMPLETA SERVIZI (da mostrare nella selezione) ---
 const serviziList = {
   it: [
-    "Trascrizione della nascita", "Trascrizione del matrimonio", "Trascrizione del decesso",
-    "Rilascio atti di stato civile", "Certificato di cittadinanza", "Passaporto per neonati",
-    "Autentica della firma", "Copia conforme", "Autenticazione documenti", "Iscrizione consolare",
+    // Passaporto minorenni
     "Passaporto minorenni — Primo rilascio", "Passaporto minorenni — Rinnovo", "Passaporto minorenni — Duplicato",
+    // Passaporto maggiorenni
     "Passaporto maggiorenni — Primo rilascio", "Passaporto maggiorenni — Rinnovo", "Passaporto maggiorenni — Duplicato",
-    "Nulla-osta per matrimonio", "Traduzione documenti", "Esonero servizio militare", "Rinvio servizio militare",
-    "Visto", "Certificato del casellario giudiziale", "Scheda movimenti frontiera", "Lasciapassare",
-    "Libretto di navigazione", "Richiesta contratto di matrimonio"
+    // Stato civile
+    "Passaporto per neonati", "Trascrizione della nascita", "Trascrizione del matrimonio",
+    "Trascrizione del decesso", "Rilascio degli atti dello stato civile", "Certificato di cittadinanza",
+    "Richiesta di celebrazione del matrimonio", "Nulla-osta per matrimonio",
+    // Legalizzazione
+    "Autentica della firma", "Copia conforme all'originale", "Legalizzazione dei documenti",
+    // Carta consolare
+    "Carta consolare",
+    // Casellario
+    "Certificato del casellario giudiziale",
+    // Traduzione
+    "Traduzione dei documenti rilasciati dalle amministrazioni Tunisine",
+    "Traduzione della patente di guida e certificato di autenticità",
+    // Altri servizi
+    "Scheda di movimenti di frontiera", "Lasciapassare", "Libretto di navigazione",
+    "Esonero dal servizio militare", "Rinvio del servizio militare", "Visto"
   ],
   ar: [
-    "جواز السفر للمولودين الجدد",
+    // جواز سفر القاصرين
     "جواز سفر القاصرين — استخراج", "جواز سفر القاصرين — تجديد", "جواز سفر القاصرين — تعويض",
+    // جواز سفر الراشدين
     "جواز سفر الراشدين — استخراج", "جواز سفر الراشدين — تجديد", "جواز سفر الراشدين — تعويض",
-    "إدراج الولادة", "إدراج الزواج", "إدراج الوفاة",
+    // الحالة المدنية
+    "جواز السفر للمولودين الجدد", "إدراج الولادة", "إدراج الزواج", "إدراج الوفاة",
     "استخراج مضامين الحالة المدنية", "شهادة في الجنسية",
-    "شهادة عرف للزواج", "طلب إبرام عقد الزواج",
+    "تقديم ملف لإبرام عقد الزواج", "شهادة عرف للزواج",
+    // المصادقة والنسخ
+    "التعريف بالإمضاء", "النسخ المطابقة للأصل", "المصادقة على الوثائق",
+    // بطاقة الترسيم
     "بطاقة الترسيم القنصلي",
-    "التعريف بالإمضاء", "النسخ المطابقة للأصل", "المصادقة على الوثائق", "ترجمة الوثائق",
-    "الإعفاء من أداء واجب الخدمة الوطنية", "التأجيل من أداء واجب الخدمة الوطنية",
-    "التأشيرة",
-    "البطاقة عدد 3", "بطاقة التحركات الحدودية", "رخصة المرور", "الدفتر المهني لرجال البحر"
+    // البطاقة عدد 3
+    "البطاقة عدد 3",
+    // الترجمة
+    "ترجمة الوثائق الصادرة عن الإدارات التونسية",
+    "ترجمة رخصة السياقة وشهادة الثبوت",
+    // خدمات أخرى
+    "بطاقة التحركات الحدودية", "رخصة المرور", "الدفتر المهني لرجال البحر",
+    "الإعفاء من أداء واجب الخدمة الوطنية", "التأجيل من أداء واجب الخدمة الوطنية", "التأشيرة"
   ]
 };
 
@@ -497,7 +755,6 @@ const documentiRequisiti = {
       "2 copie documento identità tutore",
       "2 copie permesso di soggiorno o passaporto italiano (se cittadino italiano)",
       "3 foto recenti sfondo bianco",
-      "Marca da bollo consolare",
       "⚠ La nascita deve avvenire nelle province di Emilia Romagna o Marche"
     ],
     "Passaporto minorenni — Primo rilascio": [
@@ -509,7 +766,6 @@ const documentiRequisiti = {
       "2 copie del passaporto di uno dei genitori o carta d'identità tunisina",
       "2 copie attestato scolastico/universitario per chi frequenta la scuola/università",
       "3 foto con sfondo bianco",
-      "Marca da bollo consolare",
       "⚠ Le domande vengono accettate solo per i residenti in Emilia Romagna e Marche"
     ],
     "Passaporto minorenni — Rinnovo": [
@@ -522,7 +778,6 @@ const documentiRequisiti = {
       "2 copie del passaporto di uno dei genitori o carta d'identità tunisina",
       "2 copie attestato scolastico/universitario per chi frequenta la scuola/università",
       "3 foto con sfondo bianco",
-      "Marca da bollo consolare",
       "⚠ Le domande vengono accettate solo per i residenti in Emilia Romagna e Marche"
     ],
     "Passaporto minorenni — Duplicato": [
@@ -536,7 +791,6 @@ const documentiRequisiti = {
       "2 copie del passaporto di uno dei genitori o carta d'identità tunisina",
       "2 copie attestato scolastico/universitario per chi frequenta la scuola/università",
       "3 foto con sfondo bianco",
-      "Marca da bollo consolare",
       "⚠ La domanda viene inoltrata ai Servizi del Ministero dell'Interno per consultazione"
     ],
     "Passaporto maggiorenni — Primo rilascio": [
@@ -546,7 +800,6 @@ const documentiRequisiti = {
       "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
       "2 copie dell'attestato scolastico/universitario",
       "3 foto con sfondo bianco",
-      "Marca da bollo consolare",
       "⚠ Senza copia della Carta d'Identità Nazionale la domanda non viene accolta"
     ],
     "Passaporto maggiorenni — Rinnovo": [
@@ -557,7 +810,6 @@ const documentiRequisiti = {
       "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
       "2 copie dell'attestato scolastico/universitario",
       "3 foto con sfondo bianco",
-      "Marca da bollo consolare",
       "⚠ Senza copia della Carta d'Identità Nazionale la domanda non viene accolta"
     ],
     "Passaporto maggiorenni — Duplicato": [
@@ -570,7 +822,6 @@ const documentiRequisiti = {
       "2 copie del permesso di soggiorno o carta d'identità italiana (se cittadino italiano)",
       "2 copie dell'attestato scolastico/universitario",
       "3 foto con sfondo bianco",
-      "Marca da bollo consolare",
       "⚠ La domanda viene inoltrata ai Servizi del Ministero dell'Interno per consultazione"
     ],
     "Trascrizione della nascita": [
@@ -595,13 +846,11 @@ const documentiRequisiti = {
     ],
     "Rilascio atti di stato civile": [
       "Presentare un documento d'identità valido (Carta d'Identità Nazionale o passaporto)",
-      "Marca da bollo consolare"
     ],
     "Certificato di cittadinanza": [
       "Atto di nascita tunisino originale recente (non oltre 3 mesi dalla data di rilascio)",
       "Carta d'identità nazionale originale di uno dei genitori + copia",
       "Copia del passaporto tunisino del richiedente",
-      "Marca da bollo consolare",
       "⚠ Per i nati al di fuori della circoscrizione consolare il certificato non viene rilasciato"
     ],
     "Nulla-osta per matrimonio": [
@@ -629,27 +878,22 @@ const documentiRequisiti = {
       "Passaporto originale + copia",
       "Copia del permesso di soggiorno o carta d'identità (se cittadino italiano)",
       "2 foto con sfondo bianco",
-      "Marca da bollo consolare"
     ],
     "Autentica della firma": [
       "Documento di identità tunisino valido",
-      "Marca da bollo consolare",
       "⚠ Il contenuto del documento non deve essere contrario alla pubblica decenza o violare l'ordine pubblico"
     ],
     "Copia conforme": [
       "Documento di identità valido (carta d'identità nazionale o passaporto)",
       "Documento originale",
-      "Marca da bollo consolare",
       "⚠ Il contenuto del documento non deve essere contrario alla pubblica decenza o violare l'ordine pubblico"
     ],
     "Autenticazione documenti": [
       "Documento di identità tunisino valido",
       "Documento originale da autenticare",
-      "Marca da bollo consolare"
     ],
     "Traduzione documenti": [
       "Documento originale da tradurre",
-      "Marca da bollo consolare",
       "⚠ Non sono accettate fotocopie realizzate con smartphone o scanner"
     ],
     "Esonero servizio militare": [
@@ -685,13 +929,11 @@ const documentiRequisiti = {
       "2 foto tessera",
       "Prenotazione alberghiera in Tunisia o invito da cittadino/ente tunisino autenticato",
       "Lettera di invito per conferenze o convegni organizzati in Tunisia",
-      "Marca da bollo consolare (visto di transito 25€ / singolo ingresso 75€ / ingressi multipli 150€)"
     ],
     "Certificato del casellario giudiziale": [
       "Modulo del certificato da compilare",
       "Copia della carta d'identità nazionale",
       "Atto di nascita se non è in possesso della C.I.N.",
-      "Marca da bollo consolare",
       "ℹ È possibile richiedere il certificato online su: https://b3.interieur.gov.tn/"
     ],
     "Scheda movimenti frontiera": [
@@ -826,12 +1068,10 @@ const documentiRequisiti = {
     ],
     "استخراج مضامين الحالة المدنية": [
       "الاستظهار بوثيقة هوية رسمية (بطاقة تعريف وطنية أو جواز سفر ساري المفعول)",
-      "معلوم طابع العمليات القنصلية"
     ],
     "شهادة في الجنسية": [
       "مضمون ولادة أصلي حديث العهد (لا تتجاوز مدة صلاحيته 3 أشهر)",
       "نسخة من بطاقة التعريف الوطنية للأب أو الأم مع الاستظهار بالأصل",
-      "معلوم طابع العمليات القنصلية",
       "⚠ يجب أن يكون مكان ولادة المعني بالأمر بإحدى الدوائر البلدية بمقاطعتي إيميليا رومانيا وماركي"
     ],
     "شهادة عرف للزواج": [
@@ -859,27 +1099,22 @@ const documentiRequisiti = {
       "الاستظهار بجواز السفر الأصلي مع نسخة",
       "نسخة من بطاقة الإقامة أو من بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية",
       "02 صور شمسية حديثة ذات خلفية بيضاء",
-      "معلوم طابع العمليّات القنصليّة"
     ],
     "التعريف بالإمضاء": [
       "ضرورة الاستظهار بوثيقة هوية تونسية سارية المفعول (بطاقة تعريف وطنية أو جواز سفر)",
-      "معلوم طابع العمليات القنصلية",
       "⚠ يجب ألاّ يكون محتوى الوثيقة منافياً للأخلاق الحميدة أو مخلًّا بالنظام العام"
     ],
     "النسخ المطابقة للأصل": [
       "ضرورة الاستظهار بوثيقة هوية سارية المفعول (بطاقة تعريف وطنية أو جواز سفر)",
       "الاستظهار بالوثيقة الأصلية",
-      "معلوم طابع العمليات القنصلية",
       "⚠ يجب ألّا يكون محتوى الوثيقة منافياً للأخلاق الحميدة أو مخلًّا بالنظام العام"
     ],
     "المصادقة على الوثائق": [
       "ضرورة الاستظهار بوثيقة هوية تونسية سارية المفعول",
       "الوثيقة الأصلية المراد المصادقة عليها",
-      "معلوم طابع العمليات القنصلية"
     ],
     "ترجمة الوثائق": [
       "الاستظهار بالوثيقة الأصلية المُراد ترجمتها",
-      "معلوم طابع العمليات القنصلية",
       "⚠ لا تُقبل النسخ المُصوّرة بالهاتف الذكي أو الآلات الماسحة"
     ],
     "الإعفاء من أداء واجب الخدمة الوطنية": [
@@ -915,13 +1150,11 @@ const documentiRequisiti = {
       "2 صور شمسية",
       "حجز بنزل بالجمهورية التونسية أو دعوة من جهة تونسية معرّفة بالإمضاء لدى السلطات التونسية",
       "رسالة دعوة للأشخاص المشاركين في مؤتمرات أو ندوات بتونس",
-      "معلوم قنصلي: تأشيرة عبور 25 أورو / دخول واحد 75 أورو / دخول متعدّد 150 أورو"
     ],
     "البطاقة عدد 3": [
       "استمارة بطاقة عدد 3",
       "نسخة من بطاقة التعريف الوطنية",
       "مضمون ولادة بالنسبة لمن ليس لديهم بطاقة تعريف وطنية",
-      "معلوم طابع العمليّات القنصليّة",
       "ℹ يمكن استخراج البطاقة عن بعد على الموقع: https://b3.interieur.gov.tn/"
     ],
     "بطاقة التحركات الحدودية": [
@@ -948,23 +1181,175 @@ const documentiRequisiti = {
   }
 };;
 // Fallback per servizi senza documenti specifici
-documentiRequisiti.it["Autenticazione documenti"] = documentiRequisiti.it["Autentica della firma"];
-documentiRequisiti.it["Iscrizione consolare"] = documentiRequisiti.it["Iscrizione consolare"] || ["Documento identità valido", "Marca da bollo"];
-documentiRequisiti.it["Certificato del casellario giudiziale"] = documentiRequisiti.it["Certificato del casellario giudiziale"] || ["Modulo", "Copia CIN", "Atto di nascita", "Marca da bollo"];
+documentiRequisiti.it["Legalizzazione dei documenti"] = documentiRequisiti.it["Legalizzazione dei documenti"] || documentiRequisiti.it["Autentica della firma"];
+documentiRequisiti.it["Copia conforme all'originale"] = documentiRequisiti.it["Copia conforme all'originale"] || documentiRequisiti.it["Copia conforme"];
+documentiRequisiti.it["Rilascio degli atti dello stato civile"] = documentiRequisiti.it["Rilascio degli atti dello stato civile"] || documentiRequisiti.it["Rilascio atti di stato civile"];
+documentiRequisiti.it["Richiesta di celebrazione del matrimonio"] = documentiRequisiti.it["Richiesta di celebrazione del matrimonio"] || documentiRequisiti.it["Richiesta contratto di matrimonio"];
+documentiRequisiti.it["Carta consolare"] = documentiRequisiti.it["Carta consolare"] || ["Documento identità valido"];
+documentiRequisiti.it["Scheda di movimenti di frontiera"] = documentiRequisiti.it["Scheda di movimenti di frontiera"] || documentiRequisiti.it["Scheda movimenti frontiera"];
+documentiRequisiti.it["Esonero dal servizio militare"] = documentiRequisiti.it["Esonero dal servizio militare"] || documentiRequisiti.it["Esonero servizio militare"];
+documentiRequisiti.it["Rinvio del servizio militare"] = documentiRequisiti.it["Rinvio del servizio militare"] || documentiRequisiti.it["Rinvio servizio militare"];
+documentiRequisiti.it["Traduzione dei documenti rilasciati dalle amministrazioni Tunisine"] = documentiRequisiti.it["Traduzione dei documenti rilasciati dalle amministrazioni Tunisine"] || documentiRequisiti.it["Traduzione documenti"];
+documentiRequisiti.it["Traduzione della patente di guida e certificato di autenticità"] = documentiRequisiti.it["Traduzione della patente di guida e certificato di autenticità"] || ["Patente di guida originale (copia fronte/retro)", "Documento di identità valido"];
+documentiRequisiti.it["Certificato del casellario giudiziale"] = documentiRequisiti.it["Certificato del casellario giudiziale"] || ["Modulo", "Copia CIN", "Atto di nascita"];
+// Arabo — nuovi nomi
+documentiRequisiti.ar["ترجمة الوثائق الصادرة عن الإدارات التونسية"] = documentiRequisiti.ar["ترجمة الوثائق الصادرة عن الإدارات التونسية"] || documentiRequisiti.ar["ترجمة الوثائق"];
+documentiRequisiti.ar["ترجمة رخصة السياقة وشهادة الثبوت"] = documentiRequisiti.ar["ترجمة رخصة السياقة وشهادة الثبوت"] || ["الاستظهار برخصة السياقة الأصلية (نسخة وجه وظهر)", "وثيقة هوية سارية المفعول"];
+documentiRequisiti.ar["تقديم ملف لإبرام عقد الزواج"] = documentiRequisiti.ar["تقديم ملف لإبرام عقد الزواج"] || documentiRequisiti.ar["طلب إبرام عقد الزواج"];
 
 // Default durations per sportello (minutes)
 const defaultDurBySp = {1:30,2:20,3:30,4:30,5:20,6:15};
 
+// --- MODULI DA SCARICARE PER SERVIZIO ---
+const moduliLinks = {
+  ar: {
+    "جواز سفر القاصرين — استخراج": [
+      { label: "استمارة مطلب جواز السفر", url: "https://drive.google.com/file/d/1DO-WMPq4jkwb_IZ7uStUvIPFxiKStN11/view?usp=sharing" }
+    ],
+    "جواز سفر القاصرين — تجديد": [
+      { label: "استمارة مطلب جواز السفر", url: "https://drive.google.com/file/d/1DO-WMPq4jkwb_IZ7uStUvIPFxiKStN11/view?usp=sharing" }
+    ],
+    "جواز سفر القاصرين — تعويض": [
+      { label: "استمارة مطلب تعويض جواز السفر", url: "https://drive.google.com/file/d/1CFZd1tkFiPgfQtw-ITEDIVJq0pNghcYr/view?usp=sharing" }
+    ],
+    "جواز سفر الراشدين — استخراج": [
+      { label: "استمارة مطلب جواز السفر", url: "https://drive.google.com/file/d/1XKBSL5gra7styoLIAxDUNjl48SjEJq3D/view?usp=sharing" }
+    ],
+    "جواز سفر الراشدين — تجديد": [
+      { label: "استمارة مطلب جواز السفر", url: "https://drive.google.com/file/d/1XKBSL5gra7styoLIAxDUNjl48SjEJq3D/view?usp=sharing" }
+    ],
+    "جواز سفر الراشدين — تعويض": [
+      { label: "استمارة مطلب تعويض جواز السفر", url: "https://drive.google.com/file/d/1DD1mDh-5bU9zseBEdIRgJHzYAkvEe9Mr/view?usp=sharing" }
+    ],
+    "جواز السفر للمولودين الجدد": [
+      { label: "استمارة مطلب جواز السفر", url: "https://drive.google.com/file/d/1DO-WMPq4jkwb_IZ7uStUvIPFxiKStN11/view?usp=sharing" },
+      { label: "استمارة إدراج الولادة", url: "https://drive.google.com/file/d/1h85xGjZf_yqwZwRbRmruJlthsGNMgjg2/view?usp=sharing" }
+    ],
+    "إدراج الولادة": [
+      { label: "استمارة إدراج الولادة", url: "https://drive.google.com/file/d/1h85xGjZf_yqwZwRbRmruJlthsGNMgjg2/view?usp=sharing" }
+    ],
+    "إدراج الزواج": [
+      { label: "استمارة إدراج الزواج", url: "https://drive.google.com/file/d/19b-1zOMbb-oRuBznpr1eplJF1Cj9jswF/view?usp=sharing" }
+    ],
+    "شهادة في الجنسية": [
+      { label: "استمارة شهادة في الجنسية", url: "https://drive.google.com/file/d/1YALa6FFOJQAUaoNnCsopVSlBJYAwZYj3/view?usp=sharing" }
+    ],
+    "بطاقة الترسيم القنصلي": [
+      { label: "استمارة بطاقة الترسيم القنصلي", url: "https://drive.google.com/file/d/1Lq0CdUXZIV0qCkqV6P8pYqMmcEvU5udQ/view?usp=sharing" }
+    ],
+    "البطاقة عدد 3": [
+      { label: "استمارة البطاقة عدد 3", url: "https://drive.google.com/file/d/1gGUHUgm4YtQyCHKpx8QMcB0ttsSi-g04/view?usp=sharing" }
+    ],
+    "بطاقة التحركات الحدودية": [
+      { label: "استمارة بطاقة التحركات الحدودية", url: "https://drive.google.com/file/d/1-2lNlZSr-dvuD7xCvlnAHDjmhzG-kqRP/view?usp=sharing" }
+    ],
+    "رخصة المرور": [
+      { label: "استمارة رخصة المرور", url: "https://drive.google.com/file/d/10OWEcySsm-pvpuwgoK_XWUlPAcGKa3fR/view?usp=sharing" }
+    ],
+    "الدفتر المهني لرجال البحر": [
+      { label: "استمارة الدفتر المهني لرجال البحر", url: "https://drive.google.com/file/d/1CpUHI3PIdlSLFmDv0ZuYX4MSUp2yjv16/view?usp=sharing" }
+    ],
+    "الإعفاء من أداء واجب الخدمة الوطنية": [
+      { label: "استمارة الإعفاء من الخدمة الوطنية", url: "https://drive.google.com/file/d/1sfAdCLu7qxG2qBv1X-IKqdEWQsskg-Xp/view?usp=sharing" }
+    ],
+    "التأجيل من أداء واجب الخدمة الوطنية": [
+      { label: "استمارة التأجيل من الخدمة الوطنية", url: "https://drive.google.com/file/d/1Z8OBptocd0dHE7v5tibazmH1tr7wJqpZ/view?usp=sharing" }
+    ],
+    "التأشيرة": [
+      { label: "استمارة مطلب التأشيرة", url: "https://drive.google.com/file/d/1ygVrFQO6VEmI96fD_d1Jw2nx31LiP8U5/view?usp=sharing" },
+      { label: "استمارة إضافية للتأشيرة", url: "https://drive.google.com/file/d/1XbXDjYbWE3RNWc1e7Ighuvphjj0EaLoX/view?usp=sharing" }
+    ]
+  },
+  it: {
+    // I moduli sono in arabo — stessi link per le voci italiane corrispondenti
+    "Passaporto minorenni — Primo rilascio": [
+      { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1DO-WMPq4jkwb_IZ7uStUvIPFxiKStN11/view?usp=sharing" }
+    ],
+    "Passaporto minorenni — Rinnovo": [
+      { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1DO-WMPq4jkwb_IZ7uStUvIPFxiKStN11/view?usp=sharing" }
+    ],
+    "Passaporto minorenni — Duplicato": [
+      { label: "Modulo sostituzione passaporto", url: "https://drive.google.com/file/d/1CFZd1tkFiPgfQtw-ITEDIVJq0pNghcYr/view?usp=sharing" }
+    ],
+    "Passaporto maggiorenni — Primo rilascio": [
+      { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1XKBSL5gra7styoLIAxDUNjl48SjEJq3D/view?usp=sharing" }
+    ],
+    "Passaporto maggiorenni — Rinnovo": [
+      { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1XKBSL5gra7styoLIAxDUNjl48SjEJq3D/view?usp=sharing" }
+    ],
+    "Passaporto maggiorenni — Duplicato": [
+      { label: "Modulo sostituzione passaporto", url: "https://drive.google.com/file/d/1DD1mDh-5bU9zseBEdIRgJHzYAkvEe9Mr/view?usp=sharing" }
+    ],
+    "Passaporto per neonati": [
+      { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1DO-WMPq4jkwb_IZ7uStUvIPFxiKStN11/view?usp=sharing" },
+      { label: "Modulo iscrizione nascita", url: "https://drive.google.com/file/d/1h85xGjZf_yqwZwRbRmruJlthsGNMgjg2/view?usp=sharing" }
+    ],
+    "Trascrizione della nascita": [
+      { label: "Modulo iscrizione nascita", url: "https://drive.google.com/file/d/1h85xGjZf_yqwZwRbRmruJlthsGNMgjg2/view?usp=sharing" }
+    ],
+    "Trascrizione del matrimonio": [
+      { label: "Modulo iscrizione matrimonio", url: "https://drive.google.com/file/d/19b-1zOMbb-oRuBznpr1eplJF1Cj9jswF/view?usp=sharing" }
+    ],
+    "Certificato di cittadinanza": [
+      { label: "Modulo certificato di cittadinanza", url: "https://drive.google.com/file/d/1YALa6FFOJQAUaoNnCsopVSlBJYAwZYj3/view?usp=sharing" }
+    ],
+    "Carta consolare": [
+      { label: "Modulo carta consolare", url: "https://drive.google.com/file/d/1Lq0CdUXZIV0qCkqV6P8pYqMmcEvU5udQ/view?usp=sharing" }
+    ],
+    "Certificato del casellario giudiziale": [
+      { label: "Modulo casellario giudiziale", url: "https://drive.google.com/file/d/1gGUHUgm4YtQyCHKpx8QMcB0ttsSi-g04/view?usp=sharing" }
+    ],
+    "Scheda di movimenti di frontiera": [
+      { label: "Modulo scheda movimenti frontiera", url: "https://drive.google.com/file/d/1-2lNlZSr-dvuD7xCvlnAHDjmhzG-kqRP/view?usp=sharing" }
+    ],
+    "Lasciapassare": [
+      { label: "Modulo lasciapassare", url: "https://drive.google.com/file/d/10OWEcySsm-pvpuwgoK_XWUlPAcGKa3fR/view?usp=sharing" }
+    ],
+    "Libretto di navigazione": [
+      { label: "Modulo libretto di navigazione", url: "https://drive.google.com/file/d/1CpUHI3PIdlSLFmDv0ZuYX4MSUp2yjv16/view?usp=sharing" }
+    ],
+    "Esonero dal servizio militare": [
+      { label: "Modulo esonero servizio militare", url: "https://drive.google.com/file/d/1sfAdCLu7qxG2qBv1X-IKqdEWQsskg-Xp/view?usp=sharing" }
+    ],
+    "Rinvio del servizio militare": [
+      { label: "Modulo rinvio servizio militare", url: "https://drive.google.com/file/d/1Z8OBptocd0dHE7v5tibazmH1tr7wJqpZ/view?usp=sharing" }
+    ],
+    "Visto": [
+      { label: "Modulo richiesta visto", url: "https://drive.google.com/file/d/1ygVrFQO6VEmI96fD_d1Jw2nx31LiP8U5/view?usp=sharing" },
+      { label: "Modulo aggiuntivo visto", url: "https://drive.google.com/file/d/1XbXDjYbWE3RNWc1e7Ighuvphjj0EaLoX/view?usp=sharing" }
+    ]
+  }
+};
+
 const T={
-  it:{hdr:'Consolato della Repubblica Tunisina a Bologna',sub:'Prenotazione Appuntamenti — Mar–Sab 09:00–13:00',s1:'Servizio',s2:'Orario',s3:'Conferma',cs:'Scegli il servizio',cd:'Scegli un giorno',ct:'Scegli un orario',next:'Continua →',back:'← Indietro',sum:'Riepilogo',sf:'Servizio',df:'Data',tf:'Ora',dur:'Durata',cb:'Conferma e genera il codice',ok:'Appuntamento confermato!',ok2:'Mostra questo codice alla reception',yc:'Il tuo codice',note:"Annota o stampa questo codice. Ti verrà richiesto all'ingresso.",newrdv:'Nuovo appuntamento',print:'Stampa ricevuta',min:'min',dir:'ltr',days:['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],months:['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'],sportelloLabel:'Sportello',
-    rcpt:{svc:'Servizio',sp:'Sportello',day:'Data',time:'Ora',dur:'Durata',footer:'Consolato della Repubblica Tunisina a Bologna',docs:'Documenti da preparare'},
+  it:{hdr:'Consolato della Repubblica Tunisiana a Bologna',sub:'Prenotazione Appuntamenti — Mar–Sab 09:00–13:00',s1:'Servizio',s2:'Orario',s3:'Conferma',cs:'Scegli il servizio',cd:'Scegli un giorno',ct:'Scegli un orario',next:'Continua →',back:'← Indietro',sum:'Riepilogo',sf:'Servizio',df:'Data',tf:'Ora',dur:'Durata',cb:'Conferma e genera il codice',ok:'Appuntamento confermato!',ok2:'Mostra questo codice alla reception',yc:'Il tuo codice',note:"Annota o stampa questo codice. Ti verrà richiesto all'ingresso.",newrdv:'Nuovo appuntamento',print:'Stampa ricevuta',min:'min',dir:'ltr',days:['Dom','Lun','Mar','Mer','Gio','Ven','Sab'],months:['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'],sportelloLabel:'Sportello',
+    rcpt:{svc:'Servizio',sp:'Sportello',day:'Data',time:'Ora',dur:'Durata',footer:'Consolato della Repubblica Tunisiana a Bologna',docs:'Documenti da preparare',moduli:'Moduli da scaricare'},
+    lookup:{toggle:'Hai già un appuntamento?',placeholder:'Es. ABCD-EFGH',notFound:'Nessun appuntamento trovato con questo codice.',svc:'Servizio',sp:'Sportello',day:'Data',time:'Ora',status:'Stato',confirmed:'Confermato',cancelled:'Annullato',cancelBtn:'Annulla appuntamento',cancelConfirm:'Sei sicuro di voler annullare questo appuntamento?',cancelDone:'Appuntamento annullato con successo.',alreadyCancelled:'Questo appuntamento è già stato annullato.'},
     admin:{title:'Pannello Amministrazione',pwdLabel:'Inserisci la password per accedere',pwdBtn:'Accedi',pwdErr:'Password errata. Riprova.',backBtn:'← Torna alla prenotazione',tabAppts:'Appuntamenti',tabDays:'Giorni/Festività',tabSvcs:'Durata servizi',tabHours:'Orari',searchPlaceholder:'Cerca codice o servizio...',allDays:'Tutti i giorni',workdays:'Giorni lavorativi',holidays:'Chiusure speciali',addHoliday:'+ Aggiungi chiusura',durTitle:'Durata per servizio',hoursTitle:'Orario di apertura',morning:'Mattina:',save:'Salva',saved:'Salvato!',confirmStatus:'Confermato',cancelStatus:'Annullato',editTitle:'Modifica appuntamento',editSvc:'Servizio',editDay:'Data',editTime:'Ora',cancel:'Annulla',saveEdit:'Salva modifiche',noAppts:'Nessun appuntamento trovato.',noSlots:'Nessuno slot disponibile con questa configurazione.'}
   },
   ar:{hdr:'قنصلية الجمهورية التونسية بولونيا',sub:'حجز المواعيد — الثلاثاء–السبت 09:00–13:00',s1:'الخدمة',s2:'الموعد',s3:'التأكيد',cs:'اختر الخدمة',cd:'اختر اليوم',ct:'اختر الوقت',next:'← متابعة',back:'رجوع →',sum:'ملخص الحجز',sf:'الخدمة',df:'التاريخ',tf:'الوقت',dur:'المدة',cb:'تأكيد وإنشاء الرمز',ok:'تم تأكيد الموعد!',ok2:'قدّم هذا الرمز عند الاستقبال',yc:'رمزك',note:'احتفظ بهذا الرمز. سيُطلب منك عند المدخل.',newrdv:'موعد جديد',print:'طباعة الوصل',min:'د',dir:'rtl',days:['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],months:['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],sportelloLabel:'الشباك',
-    rcpt:{svc:'الخدمة',sp:'الشباك',day:'التاريخ',time:'الوقت',dur:'المدة',footer:'قنصلية الجمهورية التونسية بولونيا',docs:'الوثائق المطلوبة'},
+    rcpt:{svc:'الخدمة',sp:'الشباك',day:'التاريخ',time:'الوقت',dur:'المدة',footer:'قنصلية الجمهورية التونسية بولونيا',docs:'الوثائق المطلوبة',moduli:'الاستمارات للتنزيل'},
+    lookup:{toggle:'هل لديك موعد مسبق؟',placeholder:'مثال: ABCD-EFGH',notFound:'لم يُعثر على أي موعد بهذا الرمز.',svc:'الخدمة',sp:'الشباك',day:'التاريخ',time:'الوقت',status:'الحالة',confirmed:'مؤكد',cancelled:'ملغى',cancelBtn:'إلغاء الموعد',cancelConfirm:'هل أنت متأكد من إلغاء هذا الموعد؟',cancelDone:'تم إلغاء الموعد بنجاح.',alreadyCancelled:'هذا الموعد ملغى مسبقاً.'},
     admin:{title:'لوحة الإدارة',pwdLabel:'أدخل كلمة المرور للدخول',pwdBtn:'دخول',pwdErr:'كلمة المرور خاطئة. حاول مجدداً.',backBtn:'← العودة إلى الحجز',tabAppts:'المواعيد',tabDays:'الأيام/العطل',tabSvcs:'مدة الخدمات',tabHours:'أوقات العمل',searchPlaceholder:'ابحث برمز أو خدمة...',allDays:'كل الأيام',workdays:'أيام العمل',holidays:'إغلاق خاص',addHoliday:'+ إضافة إغلاق',durTitle:'مدة كل خدمة',hoursTitle:'ساعات العمل',morning:'الصباح:',save:'حفظ',saved:'تم الحفظ!',confirmStatus:'مؤكد',cancelStatus:'ملغى',editTitle:'تعديل الموعد',editSvc:'الخدمة',editDay:'التاريخ',editTime:'الوقت',cancel:'إلغاء',saveEdit:'حفظ التعديلات',noAppts:'لم يُعثر على مواعيد.',noSlots:'لا توجد فترات متاحة بهذا الإعداد.'}
   }
 };
+
+// --- DATI GLOBALI (devono stare PRIMA di saveData/loadData) ---
+let cfg={workdays:[2,3,4,5,6],holidays:[],amStart:'09:00',amEnd:'13:00',durations:{},
+  sportelli:[
+    {id:1, label:'Sportello 1', open:true,  dual:false, svcs:["Passaporto per neonati","Trascrizione della nascita","Trascrizione del matrimonio","Trascrizione del decesso","Rilascio degli atti dello stato civile","Certificato di cittadinanza","Richiesta di celebrazione del matrimonio","Nulla-osta per matrimonio","جواز السفر للمولودين الجدد","إدراج الولادة","إدراج الزواج","إدراج الوفاة","استخراج مضامين الحالة المدنية","شهادة في الجنسية","تقديم ملف لإبرام عقد الزواج","شهادة عرف للزواج"]},
+    {id:2, label:'Sportello 2', open:true,  dual:false, svcs:["Autentica della firma","Copia conforme all'originale","Legalizzazione dei documenti","Carta consolare","التعريف بالإمضاء","النسخ المطابقة للأصل","المصادقة على الوثائق","بطاقة الترسيم القنصلي"]},
+    {id:3, label:'Sportello 3', open:true,  dual:true,  svcs:["Passaporto minorenni — Primo rilascio","Passaporto minorenni — Rinnovo","Passaporto minorenni — Duplicato","Passaporto maggiorenni — Primo rilascio","Passaporto maggiorenni — Rinnovo","Passaporto maggiorenni — Duplicato","جواز سفر القاصرين — استخراج","جواز سفر القاصرين — تجديد","جواز سفر القاصرين — تعويض","جواز سفر الراشدين — استخراج","جواز سفر الراشدين — تجديد","جواز سفر الراشدين — تعويض"]},
+    {id:4, label:'Sportello 4', open:true,  dual:true,  svcs:["Passaporto minorenni — Primo rilascio","Passaporto minorenni — Rinnovo","Passaporto minorenni — Duplicato","Passaporto maggiorenni — Primo rilascio","Passaporto maggiorenni — Rinnovo","Passaporto maggiorenni — Duplicato","جواز سفر القاصرين — استخراج","جواز سفر القاصرين — تجديد","جواز سفر القاصرين — تعويض","جواز سفر الراشدين — استخراج","جواز سفر الراشدين — تجديد","جواز سفر الراشدين — تعويض"]},
+    {id:5, label:'Sportello 5', open:true,  dual:false, svcs:["Certificato del casellario giudiziale","Traduzione dei documenti rilasciati dalle amministrazioni Tunisine","Traduzione della patente di guida e certificato di autenticità","البطاقة عدد 3","ترجمة الوثائق الصادرة عن الإدارات التونسية","ترجمة رخصة السياقة وشهادة الثبوت"]},
+    {id:6, label:'Sportello 6', open:true,  dual:false, svcs:["Scheda di movimenti di frontiera","Lasciapassare","Libretto di navigazione","Esonero dal servizio militare","Rinvio del servizio militare","Visto","بطاقة التحركات الحدودية","رخصة المرور","الدفتر المهني لرجال البحر","الإعفاء من أداء واجب الخدمة الوطنية","التأجيل من أداء واجب الخدمة الوطنية","التأشيرة"]}
+  ]
+};
+let bookedSlots={};
+let appointments=[];
+let curLang='it';
+let selSvc=null, selSvcAR=null, selSp=null, selSpLabel=null, selSvcIdx=-1;
+let selDay=null, selDayISO=null, selTime=null, curStep=1;
 
 // --- PERSISTENZA localStorage ---
 function saveData(){
@@ -972,6 +1357,7 @@ function saveData(){
     localStorage.setItem('consolato_appointments', JSON.stringify(appointments));
     localStorage.setItem('consolato_bookedSlots', JSON.stringify(bookedSlots));
     localStorage.setItem('consolato_cfg', JSON.stringify(cfg));
+    localStorage.setItem('consolato_sportelli', JSON.stringify(cfg.sportelli));
   } catch(e){ console.warn('saveData error:', e); }
 }
 function loadData(){
@@ -981,85 +1367,70 @@ function loadData(){
     const b = localStorage.getItem('consolato_bookedSlots');
     if(b) bookedSlots = JSON.parse(b);
     const c = localStorage.getItem('consolato_cfg');
-    if(c){ const saved=JSON.parse(c); cfg=Object.assign(cfg,saved); }
+    if(c){
+      const saved = JSON.parse(c);
+      // Merge sicuro: non sovrascrivere sportelli con versione vecchia senza dual
+      cfg = Object.assign(cfg, saved);
+    }
+    const s = localStorage.getItem('consolato_sportelli');
+    if(s){ cfg.sportelli = JSON.parse(s); }
+    // Pulizia automatica: rimuove appuntamenti più vecchi di 90 giorni
+    cleanOldAppointments(90);
   } catch(e){ console.warn('loadData error:', e); }
 }
 
-let cfg={workdays:[2,3,4,5,6],holidays:[],amStart:'09:00',amEnd:'13:00',durations:{}};
-let bookedSlots={};
-let appointments=[];
+function cleanOldAppointments(days){
+  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+  const before = appointments.length;
+  appointments = appointments.filter(a => {
+    // Mantieni se ha un timestamp recente, o se non ha timestamp (compatibilità)
+    if(!a.ts) return true;
+    return a.ts > cutoff;
+  });
+  // Pulisci anche bookedSlots delle chiavi orfane
+  if(appointments.length < before){
+    const validKeys = new Set(appointments.map(a => a.sp+'|'+a.dayISO+'|'+a.time));
+    Object.keys(bookedSlots).forEach(k => {
+      if(!validKeys.has(k)) delete bookedSlots[k];
+      else bookedSlots[k] = bookedSlots[k].filter(a => appointments.find(x=>x.code===a.code));
+    });
+    saveData();
+  }
+}
 
-let curLang='it';
-let selSvc=null, selSp=null, selSpLabel=null, selSvcIdx=-1;
-let selDay=null, selDayISO=null, selTime=null, curStep=1;
+function svcToIT(svcName){
+  // Se il nome è già IT, lo restituisce; se è AR cerca l'equivalente IT per indice
+  const arIdx = serviziList.ar.indexOf(svcName);
+  if(arIdx >= 0 && serviziList.it[arIdx]) return serviziList.it[arIdx];
+  return svcName; // già IT o non trovato
+}
 
 function getDur(spNum, svcName){
-  const k='sp'+spNum+'-'+svcName;
+  const svcKey = svcToIT(svcName); // normalizza sempre a IT per la chiave durata
+  const k='sp'+spNum+'-'+svcKey;
   return cfg.durations[k]||(defaultDurBySp[spNum]||20);
 }
 
-function setLang(l,btn){
-  curLang=l;
-  document.querySelectorAll('.lb').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  applyT(l);
-  buildSvcs(l);
-  if(curStep===2) buildDays();
+function setLang(l){
+  curLang=l; // kept for admin lookups — no UI switch anymore
 }
 
-function applyT(lang){
-  lang=lang||curLang;
-  const t=T[lang];
-  const isRTL=t.dir==='rtl';
-  const app=document.getElementById('app');
-  app.setAttribute('dir',t.dir);
-  app.style.textAlign=isRTL?'right':'left';
-  document.querySelector('.lang-bar').style.flexDirection=isRTL?'row-reverse':'row';
-  document.querySelector('.steps').style.flexDirection=isRTL?'row-reverse':'row';
-  document.querySelectorAll('.si').forEach(el=>{el.style.marginRight=isRTL?'0':'';el.style.marginLeft=isRTL?'20px':'0';});
-  document.querySelectorAll('.nav').forEach(nav=>{nav.style.flexDirection=isRTL?'row-reverse':'row';});
-  document.getElementById('hdr-title').textContent=t.hdr;
-  document.getElementById('hdr-sub').textContent=t.sub;
-  ['sl1','sl2','sl3'].forEach((id,i)=>document.getElementById(id).textContent=[t.s1,t.s2,t.s3][i]);
-  document.getElementById('lbl-cs').textContent=t.cs;
-  document.getElementById('lbl-cd').textContent=t.cd;
-  document.getElementById('lbl-ct').textContent=t.ct;
-  document.getElementById('btn-n1').textContent=t.next;
-  document.getElementById('btn-n2').textContent=t.next;
-  document.getElementById('btn-b2').textContent=t.back;
-  document.getElementById('btn-b3').textContent=t.back;
-  document.getElementById('lbl-sum').textContent=t.sum;
-  document.getElementById('lbl-sf').textContent=t.sf;
-  document.getElementById('lbl-df').textContent=t.df;
-  document.getElementById('lbl-tf').textContent=t.tf;
-  document.getElementById('btn-confirm').innerHTML='<i class="ti ti-check"></i> <span id="lbl-cb">'+t.cb+'</span>';
-  document.getElementById('lbl-ok').textContent=t.ok;
-  document.getElementById('lbl-ok2').textContent=t.ok2;
-  document.getElementById('lbl-yc').textContent=t.yc;
-  document.getElementById('lbl-note').textContent=t.note;
-  document.getElementById('btn-new').textContent=t.newrdv;
-  document.getElementById('lbl-print').textContent=t.print;
-  document.getElementById('sp-box-label').textContent=t.sportelloLabel;
-  document.getElementById('rcpt-lbl-svc').textContent=t.rcpt.svc+':';
-  document.getElementById('rcpt-lbl-sp').textContent=t.rcpt.sp+':';
-  document.getElementById('rcpt-lbl-day').textContent=t.rcpt.day+':';
-  document.getElementById('rcpt-lbl-time').textContent=t.rcpt.time+':';
-  document.getElementById('rcpt-footer').textContent=t.rcpt.footer;
-  document.getElementById('docs-title').textContent=t.rcpt.docs;
-  // admin texts
-  const a=t.admin;
-  document.getElementById('admin-title').textContent=a.title;
-  document.getElementById('admin-pwd-label').textContent=a.pwdLabel;
-  document.getElementById('admin-pwd-btn').textContent=a.pwdBtn;
-  document.getElementById('pwd-err').textContent=a.pwdErr;
-  document.getElementById('admin-back-btn').textContent=a.backBtn;
-  document.getElementById('admin-back-btn2').textContent=a.backBtn;
-  document.getElementById('tab-appts').innerHTML='<i class="ti ti-list"></i> '+a.tabAppts;
-  document.getElementById('tab-days').innerHTML='<i class="ti ti-calendar"></i> '+a.tabDays;
-  document.getElementById('tab-svcs').innerHTML='<i class="ti ti-clock"></i> '+a.tabSvcs;
-  document.getElementById('tab-hours').innerHTML='<i class="ti ti-adjustments"></i> '+a.tabHours;
-  document.getElementById('filter-search').placeholder=a.searchPlaceholder;
-  const fdOpt=document.getElementById('filter-day').options[0]; if(fdOpt) fdOpt.textContent=a.allDays;
+function applyT(){
+  // UI is now bilingual-fixed — only update admin panel texts (always Italian)
+  const a = T.it.admin;
+  if(document.getElementById('admin-title')) document.getElementById('admin-title').textContent=a.title;
+  if(document.getElementById('admin-pwd-label')) document.getElementById('admin-pwd-label').textContent=a.pwdLabel;
+  if(document.getElementById('admin-pwd-btn')) document.getElementById('admin-pwd-btn').textContent=a.pwdBtn;
+  if(document.getElementById('pwd-err')) document.getElementById('pwd-err').textContent=a.pwdErr;
+  if(document.getElementById('admin-back-btn')) document.getElementById('admin-back-btn').textContent=a.backBtn;
+  if(document.getElementById('admin-back-btn2')) document.getElementById('admin-back-btn2').textContent=a.backBtn;
+  if(document.getElementById('tab-appts')) document.getElementById('tab-appts').innerHTML='<i class="ti ti-list"></i> '+a.tabAppts;
+  if(document.getElementById('tab-days')) document.getElementById('tab-days').innerHTML='<i class="ti ti-calendar"></i> '+a.tabDays;
+  if(document.getElementById('tab-svcs')) document.getElementById('tab-svcs').innerHTML='<i class="ti ti-clock"></i> '+a.tabSvcs;
+  if(document.getElementById('tab-hours')) document.getElementById('tab-hours').innerHTML='<i class="ti ti-adjustments"></i> '+a.tabHours;
+  const fs=document.getElementById('filter-search'); if(fs) fs.placeholder=a.searchPlaceholder;
+  const fdOpt=document.getElementById('filter-day'); if(fdOpt && fdOpt.options[0]) fdOpt.options[0].textContent=a.allDays;
+  if(document.getElementById('admin-workdays-title')) document.getElementById('admin-workdays-title').innerHTML='<i class="ti ti-calendar-week"></i> '+a.workdays;
   document.getElementById('admin-workdays-title').innerHTML='<i class="ti ti-calendar-week"></i> '+a.workdays;
   document.getElementById('admin-holidays-title').innerHTML='<i class="ti ti-calendar-off"></i> '+a.holidays;
   document.getElementById('add-holiday-btn').innerHTML='<i class="ti ti-plus"></i> '+a.addHoliday;
@@ -1085,74 +1456,117 @@ function applyT(lang){
 const serviziGruppi = {
   it: [
     {
-      label: 'Passaporto',
+      label: 'Passaporto per minorenni',
+      icon: 'ti-passport',
+      items: [
+        'Passaporto minorenni — Primo rilascio',
+        'Passaporto minorenni — Rinnovo',
+        'Passaporto minorenni — Duplicato'
+      ]
+    },
+    {
+      label: 'Passaporto per Maggiorenni',
       icon: 'ti-passport',
       items: [
         'Passaporto maggiorenni — Primo rilascio',
         'Passaporto maggiorenni — Rinnovo',
-        'Passaporto maggiorenni — Duplicato',
-        'Passaporto minorenni — Primo rilascio',
-        'Passaporto minorenni — Rinnovo',
-        'Passaporto minorenni — Duplicato',
-        'Passaporto per neonati'
+        'Passaporto maggiorenni — Duplicato'
       ]
-    },
-    {
-      label: 'Carta Consolare',
-      icon: 'ti-id-badge',
-      items: ['Iscrizione consolare']
     },
     {
       label: 'Stato Civile',
       icon: 'ti-file-certificate',
       items: [
+        'Passaporto per neonati',
         'Trascrizione della nascita',
         'Trascrizione del matrimonio',
         'Trascrizione del decesso',
-        'Rilascio atti di stato civile',
-        'Nulla-osta per matrimonio',
-        'Richiesta contratto di matrimonio',
-        'Certificato di cittadinanza'
+        'Rilascio degli atti dello stato civile',
+        'Certificato di cittadinanza',
+        'Richiesta di celebrazione del matrimonio',
+        'Nulla-osta per matrimonio'
       ]
     },
     {
-      label: 'Autentica, Legalizzazione e Copia conforme',
+      label: 'Legalizzazione e copia conforme all\'originale',
       icon: 'ti-stamp',
-      items: ['Autentica della firma', 'Autenticazione documenti', 'Copia conforme', 'Traduzione documenti']
+      items: [
+        'Autentica della firma',
+        'Copia conforme all\'originale',
+        'Legalizzazione dei documenti'
+      ]
     },
     {
-      label: 'Rinvio e Esonero dal servizio militare',
-      icon: 'ti-shield',
-      items: ['Rinvio servizio militare', 'Esonero servizio militare']
+      label: 'Carta consolare',
+      icon: 'ti-id-badge',
+      items: ['Carta consolare']
     },
     {
-      label: 'Certificato del casellario giudiziale B3',
+      label: 'Certificato del casellario giudiziale',
       icon: 'ti-file-check',
       items: ['Certificato del casellario giudiziale']
     },
     {
-      label: 'Visto',
-      icon: 'ti-plane',
-      items: ['Visto']
+      label: 'Traduzione e patente di guida',
+      icon: 'ti-language',
+      items: [
+        'Traduzione dei documenti rilasciati dalle amministrazioni Tunisine',
+        'Traduzione della patente di guida e certificato di autenticità'
+      ]
     },
     {
       label: 'Altri servizi',
       icon: 'ti-dots-circle-horizontal',
-      items: ['Scheda movimenti frontiera', 'Lasciapassare', 'Libretto di navigazione']
+      items: [
+        'Scheda di movimenti di frontiera',
+        'Lasciapassare',
+        'Libretto di navigazione',
+        'Esonero dal servizio militare',
+        'Rinvio del servizio militare',
+        'Visto'
+      ]
     }
   ],
   ar: [
     {
-      label: 'جواز السفر',
+      label: 'جواز سفر لأقل من 18 سنة',
+      icon: 'ti-passport',
+      items: [
+        'جواز سفر القاصرين — استخراج',
+        'جواز سفر القاصرين — تجديد',
+        'جواز سفر القاصرين — تعويض'
+      ]
+    },
+    {
+      label: 'جواز سفر لمن تجاوز 18 سنة',
       icon: 'ti-passport',
       items: [
         'جواز سفر الراشدين — استخراج',
         'جواز سفر الراشدين — تجديد',
-        'جواز سفر الراشدين — تعويض',
-        'جواز سفر القاصرين — استخراج',
-        'جواز سفر القاصرين — تجديد',
-        'جواز سفر القاصرين — تعويض',
-        'جواز السفر للمولودين الجدد'
+        'جواز سفر الراشدين — تعويض'
+      ]
+    },
+    {
+      label: 'الحالة المدنية',
+      icon: 'ti-file-certificate',
+      items: [
+        'جواز السفر للمولودين الجدد',
+        'إدراج الولادة',
+        'إدراج الزواج',
+        'إدراج الوفاة',
+        'استخراج مضامين الحالة المدنية',
+        'شهادة في الجنسية',
+        'تقديم ملف لإبرام عقد الزواج',
+        'شهادة عرف للزواج'
+      ]
+    },
+    {
+      label: 'المصادقة والنسخ المطابقة للأصل',
+      icon: 'ti-stamp',
+      items: [
+        'التعريف بالإمضاء',
+        'النسخ المطابقة للأصل',
+        'المصادقة على الوثائق'
       ]
     },
     {
@@ -1161,69 +1575,54 @@ const serviziGruppi = {
       items: ['بطاقة الترسيم القنصلي']
     },
     {
-      label: 'الحالة المدنية',
-      icon: 'ti-file-certificate',
-      items: [
-        'إدراج الولادة',
-        'إدراج الزواج',
-        'إدراج الوفاة',
-        'استخراج مضامين الحالة المدنية',
-        'شهادة عرف للزواج',
-        'طلب إبرام عقد الزواج',
-        'شهادة في الجنسية'
-      ]
-    },
-    {
-      label: 'التعريف والمصادقة والنسخ المطابقة',
-      icon: 'ti-stamp',
-      items: ['التعريف بالإمضاء', 'المصادقة على الوثائق', 'النسخ المطابقة للأصل', 'ترجمة الوثائق']
-    },
-    {
-      label: 'التأجيل والإعفاء من الخدمة الوطنية',
-      icon: 'ti-shield',
-      items: ['التأجيل من أداء واجب الخدمة الوطنية', 'الإعفاء من أداء واجب الخدمة الوطنية']
-    },
-    {
       label: 'البطاقة عدد 3',
       icon: 'ti-file-check',
       items: ['البطاقة عدد 3']
     },
     {
-      label: 'التأشيرة',
-      icon: 'ti-plane',
-      items: ['التأشيرة']
+      label: 'الترجمة ورخصة السياقة',
+      icon: 'ti-language',
+      items: [
+        'ترجمة الوثائق الصادرة عن الإدارات التونسية',
+        'ترجمة رخصة السياقة وشهادة الثبوت'
+      ]
     },
     {
       label: 'خدمات أخرى',
       icon: 'ti-dots-circle-horizontal',
-      items: ['بطاقة التحركات الحدودية', 'رخصة المرور', 'الدفتر المهني لرجال البحر']
+      items: [
+        'بطاقة التحركات الحدودية',
+        'رخصة المرور',
+        'الدفتر المهني لرجال البحر',
+        'الإعفاء من أداء واجب الخدمة الوطنية',
+        'التأجيل من أداء واجب الخدمة الوطنية',
+        'التأشيرة'
+      ]
     }
   ]
 };
 
-function buildSvcs(lang){
-  lang=lang||curLang;
-  const isRTL = lang==='ar';
+function buildSvcs(){
   const list=document.getElementById('svc-list');
   list.innerHTML='';
   selSvc=null; selSp=null; selSpLabel=null; selSvcIdx=-1;
   document.getElementById('btn-n1').disabled=true;
-  const t=T[lang];
-  const gruppi=serviziGruppi[lang]||[];
-  const wrapDiv=document.createElement('div'); wrapDiv.className='services-list';
-  if(isRTL){ wrapDiv.style.direction='rtl'; wrapDiv.style.textAlign='right'; }
 
-  gruppi.forEach(gruppo=>{
-    const groupDiv=document.createElement('div'); groupDiv.className='svc-group';
-    const hdr=document.createElement('div'); hdr.className='svc-group-hdr';
-    if(isRTL){
-      hdr.style.flexDirection='row-reverse';
-      hdr.innerHTML='<i class="ti ti-chevron-down svc-group-arrow"></i><span class="svc-group-label" style="flex-direction:row-reverse;"><i class="ti '+gruppo.icon+'"></i> '+gruppo.label+'</span>';
-    } else {
-      hdr.innerHTML='<span class="svc-group-label"><i class="ti '+gruppo.icon+'"></i> '+gruppo.label+'</span><i class="ti ti-chevron-down svc-group-arrow"></i>';
-    }
-    const body=document.createElement('div'); body.className='svc-group-body'; body.style.display='none';
-    if(isRTL){ body.style.textAlign='right'; body.style.direction='rtl'; }
+  // Zip IT and AR groups together
+  const gruppiIT = serviziGruppi['it'] || [];
+  const gruppiAR = serviziGruppi['ar'] || [];
+  const wrapDiv = document.createElement('div'); wrapDiv.className='services-list';
+
+  gruppiIT.forEach((gruppoIT, gIdx) => {
+    const gruppoAR = gruppiAR[gIdx] || {label:'', items:[]};
+    const groupDiv = document.createElement('div'); groupDiv.className='svc-group';
+    const hdr = document.createElement('div'); hdr.className='svc-group-hdr';
+    hdr.innerHTML =
+      '<span class="svc-group-label"><i class="ti '+gruppoIT.icon+'"></i> '+gruppoIT.label+'</span>'+
+      '<span class="svc-group-label-ar">'+gruppoAR.label+'</span>'+
+      '<i class="ti ti-chevron-down svc-group-arrow"></i>';
+
+    const body = document.createElement('div'); body.className='svc-group-body'; body.style.display='none';
 
     hdr.onclick=()=>{
       const isOpen=body.style.display!=='none';
@@ -1236,26 +1635,30 @@ function buildSvcs(lang){
       }
     };
 
-    gruppo.items.forEach((svcName,idx)=>{
-      const fullIdx=serviziList[lang].indexOf(svcName);
-      const sp=sportelloPerServizio[lang][svcName]||1;
-      const card=document.createElement('div'); card.className='service-card service-card-sub';
-      if(isRTL){
-        card.style.flexDirection='row-reverse';
-        card.style.textAlign='right';
-        card.innerHTML='<i class="ti ti-chevron-left" style="color:#C8102E;font-size:16px;flex-shrink:0;"></i><span class="service-name">'+svcName+'</span>';
-      } else {
-        card.innerHTML='<span class="service-name">'+svcName+'</span><i class="ti ti-chevron-right" style="color:#C8102E;font-size:16px;flex-shrink:0;"></i>';
-      }
+    gruppoIT.items.forEach((svcNameIT, idx) => {
+      const svcNameAR = gruppoAR.items[idx] || '';
+      const spId = getSpId(svcNameIT) || getSpId(svcNameAR);
+      if(isSpClosed(spId)) return;
+
+      const fullIdx = serviziList['it'].indexOf(svcNameIT);
+      const card = document.createElement('div'); card.className='service-card service-card-sub bi-card';
+      card.innerHTML =
+        '<span class="service-name">'+svcNameIT+'</span>'+
+        '<span class="service-name-ar">'+svcNameAR+'</span>'+
+        '<i class="ti ti-chevron-right svc-chevron" style="color:#C8102E;font-size:16px;flex-shrink:0;"></i>';
+
       card.onclick=(e)=>{
         e.stopPropagation();
         document.querySelectorAll('.service-card').forEach(x=>x.classList.remove('selected'));
         card.classList.add('selected');
-        selSvc=svcName;
-        selSp=sp;
-        selSpLabel=t.sportelloLabel+' '+sp;
-        selSvcIdx=fullIdx>=0?fullIdx:idx;
+        // Store both lang names; use IT as key for docs/moduli, AR for arabo
+        selSvc = svcNameIT;
+        selSvcAR = svcNameAR;
+        selSp = spId;
+        selSpLabel = (cfg.sportelli.find(s=>s.id===spId)||{}).label || ('Sportello '+spId);
+        selSvcIdx = fullIdx>=0?fullIdx:idx;
         document.getElementById('btn-n1').disabled=false;
+        showScrollHint();
       };
       body.appendChild(card);
     });
@@ -1272,37 +1675,130 @@ function dateToISO(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart
 function isHoliday(d){return cfg.holidays.some(h=>h.date===dateToISO(d));}
 
 function buildDays(){
-  const tabs=document.getElementById('day-tabs'); tabs.innerHTML='';
-  selDay=null; selDayISO=null; selTime=null;
-  document.getElementById('btn-n2').disabled=true;
-  document.getElementById('time-grid').innerHTML='';
-  const t=T[curLang];
-  const today=new Date(); let count=0;
-  let d=new Date(today); d.setDate(d.getDate()+1);
-  while(count<60){
-    const dow=d.getDay(), isWork=cfg.workdays.includes(dow), isHol=isHoliday(d);
-    const tab=document.createElement('div');
-    tab.className='dt'+((!isWork||isHol)?' off':'');
-    tab.textContent=t.days[dow]+' '+d.getDate()+' '+t.months[d.getMonth()];
-    const iso=dateToISO(d);
-    if(isWork&&!isHol){
-      const label=tab.textContent, isoC=iso;
-      tab.onclick=()=>{
-        document.querySelectorAll('.dt').forEach(x=>x.classList.remove('sel'));
-        tab.classList.add('sel');
-        selDay=label; selDayISO=isoC; buildSlots();
-      };
+  const container = document.getElementById('cal-container');
+  container.innerHTML = '';
+  selDay = null; selDayISO = null; selTime = null;
+  document.getElementById('btn-n2').disabled = true;
+  document.getElementById('time-grid').innerHTML = '';
+
+  const t = T[curLang];
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  const monthNames = {
+    it: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno',
+         'Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'],
+    ar: ['جانفي','فيفري','مارس','أفريل','ماي','جوان',
+         'جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر']
+  };
+
+  // Controlla se un mese ha almeno un giorno prenotabile
+  function monthHasOpenDays(year, month){
+    const days = new Date(year, month + 1, 0).getDate();
+    for(let d = 1; d <= days; d++){
+      const date = new Date(year, month, d);
+      date.setHours(0,0,0,0);
+      if(date > today && cfg.workdays.includes(date.getDay()) && !isHoliday(date))
+        return true;
     }
-    tabs.appendChild(tab);
-    count++;
-    d.setDate(d.getDate()+1);
+    return false;
   }
+
+  // Determina il mese di partenza: se il mese corrente non ha più giorni aperti, salta al prossimo
+  let startMonth = today.getMonth();
+  let startYear = today.getFullYear();
+  if(!monthHasOpenDays(startYear, startMonth)){
+    startMonth++;
+    if(startMonth > 11){ startMonth = 0; startYear++; }
+  }
+
+  // Mostra 2 mesi a partire dal mese di partenza
+  for(let m = 0; m < 2; m++){
+    const firstDay = new Date(startYear, startMonth + m, 1);
+    const year = firstDay.getFullYear();
+    const month = firstDay.getMonth();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const wrap = document.createElement('div');
+    wrap.className = 'cal-wrap';
+
+    const title = document.createElement('div');
+    title.className = 'cal-month-title';
+    title.textContent = monthNames[curLang][month] + ' ' + year;
+    wrap.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'cal-grid';
+
+    t.days.forEach(dh => {
+      const h = document.createElement('div');
+      h.className = 'cal-head';
+      h.textContent = dh;
+      grid.appendChild(h);
+    });
+
+    const startDow = firstDay.getDay();
+    for(let i = 0; i < startDow; i++){
+      const empty = document.createElement('div');
+      empty.className = 'cal-day empty';
+      grid.appendChild(empty);
+    }
+
+    for(let d = 1; d <= daysInMonth; d++){
+      const date = new Date(year, month, d);
+      date.setHours(0,0,0,0);
+      const iso = dateToISO(date);
+      const dow = date.getDay();
+      const isWork = cfg.workdays.includes(dow);
+      const isHol = isHoliday(date);
+      const isPast = date <= today;
+
+      const cell = document.createElement('div');
+      cell.className = 'cal-day';
+      cell.textContent = d;
+
+      if(isPast){
+        cell.classList.add('past');
+      } else if(!isWork || isHol){
+        cell.classList.add('closed');
+      } else {
+        cell.classList.add('open');
+        const isoC = iso;
+        const label = d + ' ' + monthNames[curLang][month] + ' ' + year;
+        cell.onclick = () => {
+          document.querySelectorAll('.cal-day').forEach(x => x.classList.remove('sel'));
+          cell.classList.add('sel');
+          selDay = label;
+          selDayISO = isoC;
+          buildSlots();
+        };
+      }
+      grid.appendChild(cell);
+    }
+
+    wrap.appendChild(grid);
+    container.appendChild(wrap);
+  }
+
   updateDurInfo();
 }
 
+
 function timeToMins(s){const [h,m]=s.split(':').map(Number);return h*60+m;}
 function minsToTime(m){return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
-function isSlotTaken(sp,iso,time){ const key=sp+'|'+iso+'|'+time; return bookedSlots[key]&&bookedSlots[key].length>0; }
+function isSlotTaken(sp,iso,time){
+  const key=sp+'|'+iso+'|'+time;
+  const spObj = cfg.sportelli.find(s=>s.id===sp);
+  if(spObj && spObj.dual){
+    // Per sportelli dual: uno slot è pieno solo se TUTTI i dual sono pieni
+    const duals = cfg.sportelli.filter(s=>s.open && s.dual);
+    return duals.every(ds=>{
+      const k=ds.id+'|'+iso+'|'+time;
+      return bookedSlots[k]&&bookedSlots[k].length>0;
+    });
+  }
+  return bookedSlots[key]&&bookedSlots[key].length>0;
+}
 
 function buildSlots(){
   const grid=document.getElementById('time-grid'); grid.innerHTML='';
@@ -1311,7 +1807,11 @@ function buildSlots(){
   const slots=[];
   const amS=timeToMins(cfg.amStart), amE=timeToMins(cfg.amEnd);
   for(let t=amS;t+dur<=amE;t+=dur) slots.push(minsToTime(t));
-  if(!slots.length){grid.innerHTML='<div style="font-size:14px;color:var(--color-text-tertiary);padding:8px 0;font-family:var(--font-calibri);">'+T[curLang].admin.noSlots+'</div>'; return;}
+  if(!slots.length){
+    const msg = curLang==='ar' ? 'لا توجد فترات متاحة بهذا الإعداد.' : 'Nessuno slot disponibile per questo servizio.';
+    grid.innerHTML='<div style="font-size:14px;color:var(--color-text-tertiary);padding:8px 0;font-family:var(--font-calibri);">'+msg+'</div>';
+    return;
+  }
   slots.forEach(s=>{
     const taken=isSlotTaken(selSp,selDayISO,s);
     const el=document.createElement('div'); el.className='ts'+(taken?' taken':'');
@@ -1342,12 +1842,15 @@ function goStep(n){
     if(parseInt(i)<n) el.classList.add('done');
     else if(parseInt(i)===n) el.classList.add('active');
   });
+  // Nasconde la freccia guida quando si lascia lo step 1
+  hideScrollHint();
   if(n===2){buildDays();updateDurInfo();}
   if(n===3) fillSummary();
 }
 
 function fillSummary(){
-  document.getElementById('sum-svc').textContent=selSvc||'';
+  const svcDisplay = selSvcAR ? selSvc+' / '+selSvcAR : (selSvc||'');
+  document.getElementById('sum-svc').textContent=svcDisplay;
   document.getElementById('sum-day').textContent=selDay||'';
   document.getElementById('sum-time').textContent=selTime||'';
 }
@@ -1356,6 +1859,11 @@ function genCode(){
   const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code='';
   for(let i=0;i<8;i++){if(i===4)code+='-';code+=chars[Math.floor(Math.random()*chars.length)];}
+  // Assegna sportello dinamicamente — per dual (passaporto) bilancia tra sp3 e sp4
+  const assignedSp = getSportelloForSvc(selSvc, selDayISO, selTime);
+  selSp = assignedSp.id;
+  const t = T[curLang];
+  selSpLabel = (assignedSp.label || t.sportelloLabel+' '+selSp);
   const dur=getDur(selSp, selSvc);
   const key=selSp+'|'+selDayISO+'|'+selTime;
   if(!bookedSlots[key]) bookedSlots[key]=[];
@@ -1366,19 +1874,63 @@ function genCode(){
   document.getElementById('bk-code').textContent=code;
   document.getElementById('bk-detail').textContent=selDay+' · '+selTime;
   document.getElementById('sp-box-num').textContent=selSpLabel;
-  document.getElementById('rcpt-svc').textContent=selSvc;
+  // Mostra nome servizio bilingue nella ricevuta
+  const svcDisplay = selSvcAR ? selSvc+' / '+selSvcAR : selSvc;
+  document.getElementById('rcpt-svc').textContent=svcDisplay;
   document.getElementById('rcpt-sp').textContent=selSpLabel;
   document.getElementById('rcpt-day').textContent=selDay;
   document.getElementById('rcpt-time').textContent=selTime;
-  // Mostra documenti
-  const docs = documentiRequisiti[curLang][selSvc] || ["Verificare i documenti necessari presso il consolato."];
-  const docsList = document.getElementById('docs-list');
-  docsList.innerHTML = '';
-  docs.forEach(doc => {
+  // Mostra documenti — IT + AR uniti
+  const docsIT = documentiRequisiti['it'][selSvc] || [];
+  const docsAR = selSvcAR ? (documentiRequisiti['ar'][selSvcAR] || []) : [];
+  const docsListAR = document.getElementById('docs-list-ar');
+  const docsListIT = document.getElementById('docs-list-it');
+  docsListAR.innerHTML = '';
+  docsListIT.innerHTML = '';
+  // Elenco arabo prima
+  docsAR.forEach(doc => {
+    const li = document.createElement('li');
+    li.style.direction = 'rtl';
+    li.style.textAlign = 'right';
+    li.innerHTML = '<i class="ti ti-check"></i><span>' + doc + '</span>';
+    docsListAR.appendChild(li);
+  });
+  // Poi elenco italiano
+  docsIT.forEach(doc => {
     const li = document.createElement('li');
     li.innerHTML = '<i class="ti ti-check"></i><span>' + doc + '</span>';
-    docsList.appendChild(li);
+    docsListIT.appendChild(li);
   });
+  // Nascondi separatore se manca uno dei due
+  docsListIT.style.borderTop = docsAR.length && docsIT.length ? '1px dashed #eee' : 'none';
+  docsListIT.style.paddingTop = docsAR.length && docsIT.length ? '6px' : '0';
+  docsListIT.style.marginTop = docsAR.length && docsIT.length ? '6px' : '0';
+  if(!docsIT.length && !docsAR.length){
+    const li = document.createElement('li');
+    li.innerHTML = '<i class="ti ti-check"></i><span>Verificare i documenti presso il consolato / يرجى مراجعة القنصلية</span>';
+    docsListIT.appendChild(li);
+  }
+  // Mostra moduli da scaricare — prendi IT o AR (stesso link)
+  const moduli = (moduliLinks['it'] && moduliLinks['it'][selSvc]) ||
+                 (moduliLinks['ar'] && selSvcAR && moduliLinks['ar'][selSvcAR]) || [];
+  const moduliSection = document.getElementById('moduli-section');
+  const moduliList = document.getElementById('moduli-list');
+  moduliList.innerHTML = '';
+
+  if(moduli.length > 0){
+    moduliSection.style.display = 'block';
+    moduli.forEach(m => {
+      const a = document.createElement('a');
+      a.className = 'btn-modulo';
+      a.href = m.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.innerHTML = '<i class="ti ti-file-download"></i><span>' + m.label + '</span>';
+      moduliList.appendChild(a);
+    });
+  } else {
+    moduliSection.style.display = 'none';
+  }
   goStep(4);
   document.querySelectorAll('.si').forEach(el=>{el.className='si done';});
 }
@@ -1392,6 +1944,12 @@ function restart(){
   document.getElementById('p1').style.display='block'; curStep=1;
   buildSvcs();
   ['1','2','3'].forEach(i=>{const el=document.getElementById('si'+i);el.className='si';if(i==='1')el.classList.add('active');});
+  // Resetta lookup
+  _lookupOpen=false;
+  document.getElementById('lookup-panel').style.display='none';
+  document.getElementById('lookup-chevron').style.transform='';
+  document.getElementById('lookup-code-input').value='';
+  document.getElementById('lookup-result').innerHTML='';
 }
 
 // ADMIN (stessa logica, adattata per gestire durata per servizio)
@@ -1430,16 +1988,16 @@ async function checkPwd(){
       document.getElementById('admin-panel').style.display='block';
       buildAdminPanel();
     } else {
-      errEl.textContent = curLang==='ar' ? 'كلمة المرور خاطئة. حاول مجدداً.' : 'Password errata. Riprova.';
+      errEl.textContent = 'Password errata. Riprova.';
       errEl.style.display='block';
       document.getElementById('pwd-input').value='';
     }
   } catch(e){
-    errEl.textContent = curLang==='ar' ? 'خطأ في الاتصال بالخادم.' : 'Errore di connessione al server. Riprova.';
+    errEl.textContent = 'Errore di connessione al server. Riprova.';
     errEl.style.display='block';
     console.error('checkPwd error:', e);
   } finally {
-    if(btn){ btn.disabled=false; btn.textContent= curLang==='ar'?'دخول':'Accedi'; }
+    if(btn){ btn.disabled=false; btn.textContent='Accedi'; }
   }
 }
 
@@ -1450,7 +2008,7 @@ function closeAdmin(){
 }
 function showTab(id,btn){ document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active')); document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); btn.classList.add('active'); }
 function buildAdminPanel(){
-  const wdNames=T[curLang].days;
+  const wdNames=T.it.days; // admin sempre IT
   const wg=document.getElementById('weekday-grid'); wg.innerHTML='';
   [0,1,2,3,4,5,6].forEach(d=>{
     const el=document.createElement('div'); el.className='day-toggle'+(cfg.workdays.includes(d)?' on':'');
@@ -1463,29 +2021,354 @@ function buildAdminPanel(){
   document.getElementById('am-start').value=cfg.amStart;
   document.getElementById('am-end').value=cfg.amEnd;
   renderAppts();
-  const fd=document.getElementById('filter-day'); fd.innerHTML='<option value="">'+T[curLang].admin.allDays+'</option>';
-  const days=[...new Set(appointments.map(a=>a.day))]; days.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;fd.appendChild(o);});
+  const fd=document.getElementById('filter-day');
+  fd.innerHTML='<option value="">'+T.it.admin.allDays+'</option>';
+  const days=[...new Set(appointments.map(a=>a.day))];
+  days.forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;fd.appendChild(o);});
+  // Popola filtro sportello
+  const fs=document.getElementById('filter-sp');
+  fs.innerHTML='<option value="">Tutti gli sportelli</option>';
+  cfg.sportelli.forEach(sp=>{
+    const o=document.createElement('option');
+    o.value=sp.id;
+    o.textContent=sp.label;
+    fs.appendChild(o);
+  });
 }
-function renderHolidays(){ const list=document.getElementById('holidays-list'); list.innerHTML=''; const placeholder=curLang==='ar'?'وصف':'Descrizione'; cfg.holidays.forEach((h,i)=>{ const row=document.createElement('div'); row.className='holiday-row'; row.innerHTML='<input type="date" value="'+h.date+'" onchange="cfg.holidays['+i+'].date=this.value"><input type="text" value="'+h.label+'" placeholder="'+placeholder+'" onchange="cfg.holidays['+i+'].label=this.value"><button class="del-btn" onclick="cfg.holidays.splice('+i+',1);renderHolidays()"><i class="ti ti-trash"></i></button>'; list.appendChild(row); }); }
+function renderHolidays(){
+  const list=document.getElementById('holidays-list'); list.innerHTML='';
+  cfg.holidays.forEach((h,i)=>{
+    const row=document.createElement('div'); row.className='holiday-row';
+    row.innerHTML='<input type="date" value="'+h.date+'" onchange="cfg.holidays['+i+'].date=this.value"><input type="text" value="'+h.label+'" placeholder="Descrizione" onchange="cfg.holidays['+i+'].label=this.value"><button class="del-btn" onclick="cfg.holidays.splice('+i+',1);renderHolidays()"><i class="ti ti-trash"></i></button>';
+    list.appendChild(row);
+  });
+}
 function addHoliday(){ cfg.holidays.push({date:new Date().toISOString().split('T')[0],label:''}); renderHolidays(); }
 function buildDurList(){
   const list=document.getElementById('svc-dur-list'); list.innerHTML='';
-  const t=T[curLang];
-  serviziList[curLang].forEach(svcName => {
-    const sp = sportelloPerServizio[curLang][svcName] || 1;
-    const k='sp'+sp+'-'+svcName;
-    const dur=cfg.durations[k]||(defaultDurBySp[sp]||20);
+  // Usa sempre IT come riferimento nell'admin (i servizi IT e AR condividono la stessa durata per sportello)
+  serviziList.it.forEach(svcName => {
+    const sp = cfg.sportelli.find(s => s.open && s.svcs.includes(svcName));
+    const spId = sp ? sp.id : (cfg.sportelli.find(s=>s.open)||cfg.sportelli[0]).id;
+    const k='sp'+spId+'-'+svcName;
+    const dur=cfg.durations[k]||(defaultDurBySp[spId]||20);
     const row=document.createElement('div'); row.className='svc-config-row';
-    row.innerHTML='<span class="svc-config-name">'+svcName+'</span><select class="dur-select" onchange="cfg.durations[\''+k+'\']= parseInt(this.value)">'+[10,15,20,30,45,60,90,120].map(v=>'<option value="'+v+'"'+( v===dur?' selected':'')+'>'+v+' min</option>').join('')+'</select>';
+    row.innerHTML='<span class="svc-config-name">'+svcName+'</span><select class="dur-select" onchange="cfg.durations[\''+k+'\']= parseInt(this.value)">'+[10,15,20,30,45,60,90,120].map(v=>'<option value="'+v+'"'+(v===dur?' selected':'')+'>'+v+' min</option>').join('')+'</select>';
     list.appendChild(row);
   });
 }
 function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
-function renderAppts(){ const list=document.getElementById('appts-list'); const a=T[curLang].admin; const search=(document.getElementById('filter-search').value||'').toLowerCase(); const dayFilter=document.getElementById('filter-day').value; const filtered=appointments.filter(ap=>{ const matchSearch=!search||(ap.code.toLowerCase().includes(search)||ap.svc.toLowerCase().includes(search)); const matchDay=!dayFilter||ap.day===dayFilter; return matchSearch&&matchDay&&ap.status!=='deleted'; }); if(!filtered.length){ list.innerHTML='<div class="empty-state"><i class="ti ti-calendar-off" style="font-size:28px;display:block;margin-bottom:8px;"></i>'+a.noAppts+'</div>'; return; } list.innerHTML=''; filtered.forEach(appt=>{ const row=document.createElement('div'); row.className='appt-row'; const statusBadge=appt.status==='cancelled'?'<span class="badge-status badge-cancel">'+a.cancelStatus+'</span>':'<span class="badge-status badge-ok">'+a.confirmStatus+'</span>'; row.innerHTML='<span class="appt-code">'+appt.code+'</span><div class="appt-info"><div>'+appt.svc+'</div><div class="appt-meta">'+appt.day+' · '+appt.time+' · '+appt.dur+' '+T[curLang].min+' · '+( appt.spLabel||'Sp.'+appt.sp)+' '+statusBadge+'</div></div><div class="appt-actions"><button class="appt-btn" onclick="openEdit(\''+appt.code+'\')"><i class="ti ti-edit"></i></button><button class="appt-btn danger" onclick="cancelAppt(\''+appt.code+'\')"><i class="ti ti-trash"></i></button></div>'; list.appendChild(row); }); }
+function renderAppts(){
+  const list = document.getElementById('appts-list');
+  const a = T.it.admin; // admin sempre IT
+  const search = (document.getElementById('filter-search').value||'').toLowerCase();
+  const dayFilter = document.getElementById('filter-day').value;
+  const spFilter = document.getElementById('filter-sp').value;
+
+  // Calcola statistiche su TUTTI gli appuntamenti (non filtrati)
+  const todayISO = new Date().toISOString().split('T')[0];
+  const active = appointments.filter(ap => ap.status !== 'deleted');
+  const todayCount = active.filter(ap => ap.dayISO === todayISO).length;
+  const confirmedCount = active.filter(ap => ap.status === 'confirmed').length;
+  const cancelledCount = active.filter(ap => ap.status === 'cancelled').length;
+
+  const statsEl = document.getElementById('appts-stats');
+  if(statsEl){
+    statsEl.className = 'appts-stats';
+    statsEl.innerHTML = `
+      <div class="stat-chip">
+        <div class="stat-num">${active.length}</div>
+        <div class="stat-lbl">Totale</div>
+      </div>
+      <div class="stat-chip today">
+        <div class="stat-num">${todayCount}</div>
+        <div class="stat-lbl">Oggi</div>
+      </div>
+      <div class="stat-chip confirmed">
+        <div class="stat-num">${confirmedCount}</div>
+        <div class="stat-lbl">Confermati</div>
+      </div>
+      <div class="stat-chip cancelled">
+        <div class="stat-num">${cancelledCount}</div>
+        <div class="stat-lbl">Annullati</div>
+      </div>`;
+  }
+
+  // Filtra per ricerca, giorno e sportello
+  const filtered = active.filter(ap => {
+    const matchSearch = !search || (ap.code.toLowerCase().includes(search) || ap.svc.toLowerCase().includes(search));
+    const matchDay = !dayFilter || ap.day === dayFilter;
+    const matchSp = !spFilter || String(ap.sp) === String(spFilter);
+    return matchSearch && matchDay && matchSp;
+  });
+
+  if(!filtered.length){
+    list.innerHTML = '<div class="empty-state"><i class="ti ti-calendar-off" style="font-size:28px;display:block;margin-bottom:8px;"></i>'+a.noAppts+'</div>';
+    return;
+  }
+  list.innerHTML = '';
+  filtered.forEach(appt => {
+    const row = document.createElement('div'); row.className = 'appt-row';
+    const statusBadge = appt.status === 'cancelled'
+      ? '<span class="badge-status badge-cancel">'+a.cancelStatus+'</span>'
+      : '<span class="badge-status badge-ok">'+a.confirmStatus+'</span>';
+    row.innerHTML = '<span class="appt-code">'+appt.code+'</span>'
+      +'<div class="appt-info"><div>'+appt.svc+'</div>'
+      +'<div class="appt-meta">'+appt.day+' · '+appt.time+' · '+appt.dur+' min · '+(appt.spLabel||'Sp.'+appt.sp)+' '+statusBadge+'</div></div>'
+      +'<div class="appt-actions">'
+      +'<button class="appt-btn" onclick="openEdit(\''+appt.code+'\')"><i class="ti ti-edit"></i></button>'
+      +'<button class="appt-btn" onclick="cancelAppt(\''+appt.code+'\')"><i class="ti ti-trash"></i></button>'
+      +'</div>';
+    list.appendChild(row);
+  });
+}
 function cancelAppt(code){ const a=appointments.find(x=>x.code===code); if(!a) return; if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';} const key=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[key]) bookedSlots[key]=bookedSlots[key].filter(x=>x.code!==code); saveData(); renderAppts(); }
-function openEdit(code){ const a=appointments.find(x=>x.code===code); if(!a) return; document.getElementById('edit-code').value=code; document.getElementById('edit-svc').value=a.svc; document.getElementById('edit-day').value=a.day; document.getElementById('edit-time').value=a.time; document.getElementById('admin-panel').style.display='none'; document.getElementById('edit-modal').style.display='flex'; }
-function closeEdit(){ document.getElementById('edit-modal').style.display='none'; document.getElementById('admin-panel').style.display='block'; }
-function saveEdit(){ const code=document.getElementById('edit-code').value; const a=appointments.find(x=>x.code===code); if(!a) return; const oldKey=a.sp+'|'+a.dayISO+'|'+a.time; if(bookedSlots[oldKey]) bookedSlots[oldKey]=bookedSlots[oldKey].filter(x=>x.code!==code); a.svc=document.getElementById('edit-svc').value; a.day=document.getElementById('edit-day').value; const newTime=document.getElementById('edit-time').value; a.time=newTime; const newKey=a.sp+'|'+a.dayISO+'|'+newTime; if(!bookedSlots[newKey]) bookedSlots[newKey]=[]; bookedSlots[newKey].push(a); saveData(); closeEdit(); renderAppts(); }
+function openEdit(code){
+  const a=appointments.find(x=>x.code===code);
+  if(!a) return;
+  document.getElementById('edit-code').value=code;
+  document.getElementById('edit-svc').value=a.svc;
+  document.getElementById('edit-day').value=a.dayISO||a.day; // usa ISO per il campo date
+  document.getElementById('edit-time').value=a.time;
+  document.getElementById('admin-panel').style.display='none';
+  document.getElementById('edit-modal').style.display='flex';
+}
+function closeEdit(){
+  document.getElementById('edit-modal').style.display='none';
+  document.getElementById('admin-panel').style.display='block';
+}
+function saveEdit(){
+  const code=document.getElementById('edit-code').value;
+  const a=appointments.find(x=>x.code===code);
+  if(!a) return;
+  // Rimuovi dal vecchio slot
+  const oldKey=a.sp+'|'+a.dayISO+'|'+a.time;
+  if(bookedSlots[oldKey]) bookedSlots[oldKey]=bookedSlots[oldKey].filter(x=>x.code!==code);
+  // Aggiorna dati — incluso dayISO
+  a.svc=document.getElementById('edit-svc').value;
+  const newDateISO=document.getElementById('edit-day').value; // YYYY-MM-DD
+  a.dayISO=newDateISO;
+  // Ricostruisce label leggibile dalla ISO
+  const dp=newDateISO.split('-');
+  const dateObj=new Date(parseInt(dp[0]),parseInt(dp[1])-1,parseInt(dp[2]));
+  const mn={it:['gen','feb','mar','apr','mag','giu','lug','ago','set','ott','nov','dic'],ar:T.ar.months};
+  a.day=dateObj.getDate()+' '+mn.it[dateObj.getMonth()]+' '+dateObj.getFullYear();
+  const newTime=document.getElementById('edit-time').value;
+  a.time=newTime;
+  // Inserisci nel nuovo slot
+  const newKey=a.sp+'|'+a.dayISO+'|'+newTime;
+  if(!bookedSlots[newKey]) bookedSlots[newKey]=[];
+  bookedSlots[newKey].push(a);
+  saveData();
+  closeEdit();
+  renderAppts();
+}
+
+// ─── FRECCIA GUIDA SCROLL ────────────────────────────────────────────────────
+let _scrollHintObserver = null;
+
+function showScrollHint(){
+  const btn = document.getElementById('btn-n1');
+  const hint = document.getElementById('scroll-hint');
+  if(!btn || !hint) return;
+
+  // Se il bottone è già visibile non mostrare la freccia
+  const rect = btn.getBoundingClientRect();
+  const alreadyVisible = rect.top < window.innerHeight && rect.bottom > 0;
+  if(alreadyVisible){ hint.classList.remove('visible'); return; }
+
+  hint.classList.add('visible');
+
+  // IntersectionObserver: nasconde la freccia quando il bottone entra nel viewport
+  if(_scrollHintObserver) _scrollHintObserver.disconnect();
+  _scrollHintObserver = new IntersectionObserver((entries)=>{
+    if(entries[0].isIntersecting){ hint.classList.remove('visible'); }
+  }, {threshold:0.5});
+  _scrollHintObserver.observe(btn);
+}
+
+function hideScrollHint(){
+  document.getElementById('scroll-hint').classList.remove('visible');
+  if(_scrollHintObserver){ _scrollHintObserver.disconnect(); _scrollHintObserver=null; }
+}
+
+function scrollToContinue(){
+  document.getElementById('btn-n1').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// Aggiorna testo hint in base alla lingua
+function updateScrollHintLang(t){
+  const lbl = document.getElementById('scroll-hint-lbl');
+  if(lbl) lbl.textContent = t.next || 'Continua';
+}
+// ─────────────────────────────────────────────────────────────────────────────
+// ─── RICERCA APPUNTAMENTO ────────────────────────────────────────────────────
+let _lookupOpen = false;
+
+function toggleLookup(){
+  _lookupOpen = !_lookupOpen;
+  document.getElementById('lookup-panel').style.display = _lookupOpen ? 'block' : 'none';
+  document.getElementById('lookup-chevron').style.transform = _lookupOpen ? 'rotate(180deg)' : '';
+  if(_lookupOpen) setTimeout(()=>document.getElementById('lookup-code-input').focus(), 100);
+}
+
+function lookupCode(silent){
+  const input = document.getElementById('lookup-code-input');
+  const code = (input ? input.value : '').trim().toUpperCase();
+  const result = document.getElementById('lookup-result');
+  const l = T[curLang].lookup;
+  const isRTL = curLang === 'ar';
+  if(!code && !silent){ result.innerHTML=''; return; }
+  const appt = appointments.find(a => a.code === code && a.status !== 'deleted');
+  if(!appt){
+    if(!silent || code){
+      result.innerHTML = `<div class="lookup-error"><i class="ti ti-alert-circle"></i> ${l.notFound}</div>`;
+    }
+    return;
+  }
+  const isCancelled = appt.status === 'cancelled';
+  const statusLabel = isCancelled ? l.cancelled : l.confirmed;
+  const statusClass = isCancelled ? 'cancelled' : 'ok';
+  const dir = isRTL ? 'rtl' : 'ltr';
+  result.innerHTML = `
+    <div class="lookup-result-card${isCancelled?' cancelled':''}" dir="${dir}">
+      <div class="lrc-header">
+        <span class="lrc-code">${appt.code}</span>
+        <span class="lrc-status ${statusClass}">${statusLabel}</span>
+      </div>
+      <div class="lrc-body">
+        <div class="lrc-row"><span>${l.svc}</span><span>${appt.svc}</span></div>
+        <div class="lrc-row"><span>${l.sp}</span><span>${appt.spLabel||appt.sp}</span></div>
+        <div class="lrc-row"><span>${l.day}</span><span>${appt.day}</span></div>
+        <div class="lrc-row"><span>${l.time}</span><span>${appt.time}</span></div>
+        ${!isCancelled ? `<button class="lookup-cancel-btn" onclick="lookupCancel('${appt.code}')"><i class="ti ti-x"></i> ${l.cancelBtn}</button>` : ''}
+      </div>
+    </div>`;
+}
+
+function lookupCancel(code){
+  const l = T[curLang].lookup;
+  const appt = appointments.find(a => a.code === code);
+  if(!appt || appt.status === 'cancelled') return;
+  if(!confirm(l.cancelConfirm)) return;
+  appt.status = 'cancelled';
+  const key = appt.sp+'|'+appt.dayISO+'|'+appt.time;
+  if(bookedSlots[key]) bookedSlots[key] = bookedSlots[key].filter(x=>x.code!==code);
+  saveData();
+  document.getElementById('lookup-result').innerHTML =
+    `<div class="lookup-success-msg"><i class="ti ti-check"></i> ${l.cancelDone}</div>`;
+  setTimeout(()=>{ lookupCode(); }, 2200);
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+function getAllSvcs(){
+  // Admin sempre in italiano — mostra solo i servizi IT
+  return serviziList.it;
+}
+
+function initSportelliTab(){
+  renderSportelliAdmin();
+}
+
+function renderSportelliAdmin(){
+  const container = document.getElementById('sp-list-admin');
+  container.innerHTML = '';
+  cfg.sportelli.forEach((sp, idx) => {
+    const card = document.createElement('div');
+    card.className = 'sp-admin-card' + (sp.open ? '' : ' closed');
+    card.id = 'sp-card-'+sp.id;
+
+    card.innerHTML = `
+      <div class="sp-admin-header">
+        <div class="sp-admin-num">${sp.id}</div>
+        <input class="sp-admin-name" value="${sp.label}"
+          oninput="cfg.sportelli[${idx}].label=this.value"
+          title="Modifica nome sportello"
+          placeholder="Nome sportello">
+        <i class="ti ti-pencil sp-edit-hint" title="Clicca sul nome per modificare"></i>
+        <label class="sp-dual-toggle${sp.dual?' active':''}" title="Modalità multi-slot: più prenotazioni per lo stesso orario">
+          <input type="checkbox" ${sp.dual?'checked':''} onchange="toggleDual(${idx},this.checked)">
+          <i class="ti ti-users" style="font-size:12px;"></i> Multi-slot
+        </label>
+        <label class="sp-toggle">
+          <input type="checkbox" ${sp.open?'checked':''} onchange="toggleSportello(${idx},this.checked)">
+          ${sp.open ? '<span style="color:#2d8a4e;">Aperto</span>' : '<span style="color:#999;">Chiuso</span>'}
+        </label>
+        <button class="sp-remove-btn" onclick="removeSportello(${idx})" title="Elimina sportello"><i class="ti ti-trash"></i></button>
+      </div>
+      <div class="sp-svcs-label">Servizi assegnati</div>
+      <div class="sp-svcs-grid" id="sp-chips-${sp.id}"></div>
+    `;
+    container.appendChild(card);
+
+    // Render chips — solo IT, con sincronizzazione automatica AR
+    const grid = card.querySelector('#sp-chips-'+sp.id);
+    serviziList.it.forEach((svcIT, svcIdx) => {
+      // Servizio AR corrispondente (stesso indice)
+      const svcAR = serviziList.ar[svcIdx] || null;
+      // Chip attivo se il servizio IT (o AR) è già assegnato
+      const isActive = sp.svcs.includes(svcIT) || (svcAR && sp.svcs.includes(svcAR));
+      const chip = document.createElement('span');
+      chip.className = 'sp-svc-chip' + (isActive ? ' active' : '');
+      chip.textContent = svcIT;
+      chip.onclick = () => {
+        const iIT = cfg.sportelli[idx].svcs.indexOf(svcIT);
+        const iAR = svcAR ? cfg.sportelli[idx].svcs.indexOf(svcAR) : -1;
+        if(iIT >= 0 || iAR >= 0){
+          // Rimuovi entrambi
+          if(iIT >= 0) cfg.sportelli[idx].svcs.splice(cfg.sportelli[idx].svcs.indexOf(svcIT), 1);
+          if(svcAR && cfg.sportelli[idx].svcs.includes(svcAR))
+            cfg.sportelli[idx].svcs.splice(cfg.sportelli[idx].svcs.indexOf(svcAR), 1);
+          chip.classList.remove('active');
+        } else {
+          // Aggiungi entrambi
+          cfg.sportelli[idx].svcs.push(svcIT);
+          if(svcAR) cfg.sportelli[idx].svcs.push(svcAR);
+          chip.classList.add('active');
+        }
+      };
+      grid.appendChild(chip);
+    });
+  });
+}
+
+function toggleSportello(idx, open){
+  cfg.sportelli[idx].open = open;
+  renderSportelliAdmin();
+  buildSvcs();
+}
+
+function toggleDual(idx, dual){
+  cfg.sportelli[idx].dual = dual;
+  // Aggiorna visivamente il badge del toggle
+  const card = document.getElementById('sp-card-'+cfg.sportelli[idx].id);
+  if(card){
+    const label = card.querySelector('.sp-dual-toggle');
+    if(label) label.className = 'sp-dual-toggle' + (dual ? ' active' : '');
+  }
+}
+
+function addSportello(){
+  const newId = Math.max(...cfg.sportelli.map(s=>s.id)) + 1;
+  cfg.sportelli.push({id:newId, label:'Sportello '+newId, open:true, dual:false, svcs:[]});
+  renderSportelliAdmin();
+}
+
+function removeSportello(idx){
+  if(cfg.sportelli.length <= 1) return;
+  if(!confirm('Eliminare questo sportello?')) return;
+  cfg.sportelli.splice(idx, 1);
+  renderSportelliAdmin();
+}
+
+function saveSportelliCfg(){
+  saveData();
+  buildSvcs();
+  const sb = document.getElementById('sb-sp');
+  sb.style.display='flex';
+  setTimeout(()=>sb.style.display='none', 2500);
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 loadData();
 buildSvcs(); applyT();
