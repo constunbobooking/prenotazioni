@@ -87,10 +87,10 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 [dir="rtl"] .cal-grid{direction:rtl;}
 [dir="rtl"] .cal-month-title{direction:rtl;}
 .time-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(82px,1fr));gap:8px;}
-.ts{padding:10px 4px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:14px;text-align:center;cursor:pointer;color:var(--color-text-primary);background:var(--color-background-primary);font-family:var(--font-calibri);}
+.ts{padding:10px 4px;border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:14px;text-align:center;cursor:pointer;color:var(--color-text-primary);background:var(--color-background-primary);font-family:var(--font-calibri);transition:all .15s;}
 .ts:hover{border-color:#C8102E;color:#C8102E;}
-.ts.sel{background:#C8102E;color:#fff;border-color:#C8102E;font-weight:600;}
-.ts.taken{color:var(--color-text-tertiary);cursor:not-allowed;background:var(--color-background-secondary);text-decoration:line-through;}
+.ts.sel{background:#C8102E;color:#fff !important;border-color:#C8102E;font-weight:600;}
+.ts.taken{color:var(--color-text-tertiary);cursor:not-allowed;background:var(--color-background-secondary);text-decoration:line-through;border-color:var(--color-border-tertiary) !important;}
 .confirm-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);overflow:hidden;}
 .cc-hdr{background:#C8102E;padding:13px 18px;color:#fff;font-size:15px;font-weight:600;display:flex;align-items:center;gap:8px;font-family:var(--font-calibri);}
 .cc-body{padding:18px;}
@@ -449,7 +449,6 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
     <div class="sec-title bi-title"><span>Scegli un giorno</span><span class="ar-lbl">اختر اليوم</span></div>
     <div id="cal-container"></div>
     <div class="sec-title bi-title" style="margin-top:16px;"><span>Scegli un orario</span><span class="ar-lbl">اختر الوقت</span></div>
-    <div style="font-size:14px;color:var(--color-text-tertiary);margin-bottom:10px;font-family:var(--font-calibri);" id="dur-info"></div>
     <div class="time-grid" id="time-grid"></div>
     <div class="nav no-print">
       <button class="btn-s" onclick="goStep(1)" id="btn-b2"><span>← Indietro</span></button>
@@ -1884,8 +1883,13 @@ function buildSlots(){
     const el=document.createElement('div'); el.className='ts'+(taken?' taken':'');
     el.textContent=s;
     if(!taken) el.onclick=()=>{
-      document.querySelectorAll('.ts').forEach(x=>x.classList.remove('sel'));
-      el.classList.add('sel'); selTime=s;
+      document.querySelectorAll('.ts').forEach(x=>{
+        x.classList.remove('sel');
+        x.style.borderColor='';
+        x.style.color='';
+      });
+      el.classList.add('sel');
+      selTime=s;
       document.getElementById('btn-n2').disabled=false;
     };
     grid.appendChild(el);
