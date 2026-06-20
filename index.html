@@ -625,6 +625,7 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
         <input type="text" id="filter-search" placeholder="Cerca codice o servizio..." oninput="renderAppts()" style="flex:1;min-width:120px;">
         <select id="filter-day" onchange="renderAppts()"><option value="">Tutti i giorni</option></select>
         <select id="filter-sp" onchange="renderAppts()"><option value="">Tutti gli sportelli</option></select>
+        <button onclick="deleteCancelled()" style="background:#ffeef0;border:1.5px solid #C8102E;color:#C8102E;border-radius:var(--border-radius-md);padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-calibri);white-space:nowrap;display:flex;align-items:center;gap:5px;" title="Elimina tutte le prenotazioni cancellate"><i class="ti ti-trash"></i> Elimina cancellate</button>
       </div>
       <div id="appts-list"></div>
     </div>
@@ -2148,7 +2149,23 @@ function renderAppts(){
     list.appendChild(row);
   });
 }
-function cancelAppt(code){
+function deleteCancelled(){
+  const count = appointments.filter(a => a.status === 'cancelled' || a.status === 'deleted').length;
+  if(count === 0){ alert('Nessuna prenotazione cancellata da eliminare.'); return; }
+  if(!confirm('Eliminare definitivamente ' + count + ' prenotazione/i cancellata/e?\nQuesta operazione non è reversibile.')){ return; }
+  // Rimuovi da appointments
+  appointments = appointments.filter(a => a.status !== 'cancelled' && a.status !== 'deleted');
+  // Rimuovi anche da bookedSlots
+  Object.keys(bookedSlots).forEach(key => {
+    bookedSlots[key] = bookedSlots[key].filter(a => a.status !== 'cancelled' && a.status !== 'deleted');
+    if(bookedSlots[key].length === 0) delete bookedSlots[key];
+  });
+  saveData();
+  // Invia al server per ogni prenotazione eliminata (già marcate come cancelled sul server)
+  // Il server le mantiene come cancelled — per ora la pulizia è solo locale
+  renderAppts();
+  alert('✅ Prenotazioni cancellate eliminate con successo.');
+}
   const a=appointments.find(x=>x.code===code);
   if(!a) return;
   if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';}
