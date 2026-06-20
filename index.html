@@ -486,17 +486,38 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
   <!-- STEP 4: confirmed + receipt -->
   <div class="panel" id="p4" style="display:none;text-align:center;">
     <div class="ok-icon no-print"><i class="ti ti-check"></i></div>
-    <div style="font-size:19px;font-weight:600;margin-bottom:5px;font-family:var(--font-calibri);" id="lbl-ok"><span>Appuntamento confermato!</span> <span class="ar-lbl">تم تأكيد الموعد</span></div>
-    <div style="font-size:15px;color:var(--color-text-secondary);margin-bottom:18px;font-family:var(--font-calibri);" id="lbl-ok2"><span>Mostra questo codice alla reception</span> <span class="ar-lbl">| قدّم هذا الرمز عند الاستقبال</span></div>
+    <div class="rcpt-data-row no-print" style="border-bottom:none;justify-content:center;margin-bottom:5px;">
+      <span style="font-size:16px;font-weight:600;font-family:var(--font-calibri);">Appuntamento confermato!</span>
+      <span></span>
+      <span style="font-size:16px;font-weight:600;font-family:var(--font-calibri);direction:rtl;text-align:right;">تم تأكيد الموعد</span>
+    </div>
+    <div class="rcpt-data-row no-print" style="border-bottom:none;margin-bottom:18px;">
+      <span style="font-size:13px;color:var(--color-text-secondary);font-family:var(--font-calibri);">Mostra questo codice alla reception</span>
+      <span></span>
+      <span style="font-size:13px;color:var(--color-text-secondary);font-family:var(--font-calibri);direction:rtl;text-align:right;">قدّم هذا الرمز عند الاستقبال</span>
+    </div>
 
     <!-- Receipt box -->
     <div class="code-box" id="receipt-area">
-      <div class="code-lbl bi-lbl"><span>Il tuo codice</span><span class="ar-lbl">رمزك</span></div>
-      <div class="code-val" id="bk-code">----</div>
-      <div class="code-sub" id="bk-detail"></div>
+      <!-- Codice IT | valore | AR -->
+      <div class="rcpt-data-row" style="border-bottom:none;padding-bottom:4px;">
+        <span class="rcpt-it-lbl">Il tuo codice</span>
+        <div class="code-val" id="bk-code">----</div>
+        <span class="rcpt-ar-lbl">رمزك</span>
+      </div>
+      <!-- Data+ora IT | valore | AR -->
+      <div class="rcpt-data-row" style="border-bottom:none;padding-top:0;">
+        <span class="rcpt-it-lbl">Data e ora</span>
+        <div class="code-sub" id="bk-detail"></div>
+        <span class="rcpt-ar-lbl">التاريخ والوقت</span>
+      </div>
+      <!-- Sportello IT | valore | AR -->
       <div class="sportello-box" id="sp-box" style="margin-top:14px;">
-        <div class="sp-label bi-lbl"><span>Sportello</span><span class="ar-lbl"> / الشباك</span></div>
-        <div class="sp-num" id="sp-box-num">—</div>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;">
+          <span style="font-size:12px;opacity:.8;text-align:left;font-family:var(--font-calibri);">Sportello</span>
+          <div class="sp-num" id="sp-box-num">—</div>
+          <span style="font-size:12px;opacity:.8;text-align:right;direction:rtl;font-family:var(--font-calibri);">الشباك</span>
+        </div>
       </div>
       <!-- Full receipt details for print -->
       <div id="receipt-details" style="margin-top:16px;border-top:1px dashed #ccc;padding-top:14px;">
@@ -562,8 +583,8 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
     </div>
 
     <div class="alert-i no-print"><i class="ti ti-info-circle" style="flex-shrink:0;margin-top:1px;"></i><span style="font-size:12px;display:flex;justify-content:space-between;align-items:center;width:100%;"><span>Annota o stampa il codice.</span><span class="ar-lbl">احتفظ بالرمز أو اطبعه.</span></span></div>
-    <button class="btn-print no-print" onclick="printReceipt()"><i class="ti ti-printer"></i> <span class="bi-lbl"><span>Stampa ricevuta</span><span class="ar-lbl">طباعة الوصل</span></span></button>
-    <button class="btn-p no-print" onclick="restart()" id="btn-new" style="margin-top:8px;"><span>Nuovo appuntamento</span> <span class="ar-lbl">| موعد جديد</span></button>
+    <button class="btn-print no-print" onclick="printReceipt()"><i class="ti ti-printer"></i> <span style="flex:1;text-align:left;">Stampa ricevuta</span><span style="text-align:right;direction:rtl;font-family:var(--font-calibri);font-size:13px;">طباعة الوصل</span></button>
+    <button class="btn-p no-print" onclick="restart()" id="btn-new" style="margin-top:8px;display:flex;justify-content:space-between;"><span>Nuovo appuntamento</span><span class="ar-lbl" style="direction:rtl;">موعد جديد</span></button>
   </div>
 </div>
 
