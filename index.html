@@ -36,9 +36,6 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 .hdr-admin-btn{position:absolute;right:14px;top:14px;background:rgba(255,255,255,0.15);border:0.5px solid rgba(255,255,255,0.3);color:#fff;border-radius:var(--border-radius-md);padding:6px 14px;font-size:13px;cursor:pointer;font-family:var(--font-calibri);z-index:10;}
 .hdr-admin-btn:hover{background:rgba(255,255,255,0.25);}
 .hdr-wrap{position:relative;width:100%;background:#C8102E;}
-.lang-bar{background:#a00d25;display:flex;padding:0 20px;}
-.lb{background:none;border:none;color:rgba(255,255,255,0.7);font-size:14px;padding:8px 14px;cursor:pointer;font-family:var(--font-calibri);border-bottom:2px solid transparent;}
-.lb.active{color:#fff;border-bottom:2px solid #fff;}
 .steps{display:flex;background:var(--color-background-secondary);border-bottom:0.5px solid var(--color-border-tertiary);padding:0 20px;}
 .si{display:flex;align-items:center;gap:7px;padding:12px 0;margin-right:20px;font-size:14px;color:var(--color-text-tertiary);font-family:var(--font-calibri);}
 .si.active{color:#C8102E;font-weight:600;}
@@ -98,7 +95,6 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 .cc-row:last-child{border-bottom:none;}
 .cc-lbl{color:var(--color-text-secondary);font-size:14px;font-family:var(--font-calibri);}
 .cc-val{font-weight:600;color:var(--color-text-primary);text-align:right;max-width:60%;font-family:var(--font-calibri);}
-.code-box{background:var(--color-background-secondary);border:1.5px dashed var(--color-border-secondary);border-radius:var(--border-radius-lg);padding:22px;text-align:center;margin:14px 0;}
 .warn-sign{background:#C8102E;border:2px solid #8c0c1f;border-radius:var(--border-radius-lg);padding:16px 18px;margin:14px 0;text-align:center;color:#fff;}
 .warn-sign .warn-icon{font-size:26px;margin-bottom:8px;}
 .warn-sign .warn-line{font-size:13.5px;line-height:1.6;font-weight:600;}
@@ -554,8 +550,8 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
         <!-- AVVERTIMENTO: AR prima, poi IT -->
         <div class="warn-sign" style="margin:14px 0 0;">
           <div class="warn-icon"><i class="ti ti-alert-triangle"></i></div>
-          <div class="warn-line ar">الرجاء إعداد ملفّاتكم قبل التحوّل الى مقر القنصلية. كل ملف منقوص يؤدّي غلى إلغاء هذا الموعد.</div>
-          <div class="warn-line">Si prega di preparare i documenti al completo prima di recarsi presso la sede consolare. Ogni fascicolo incompleto comporterà l'annullamento di questo appuntamento.</div>
+          <div class="warn-line ar">يرجى التأكد من إعداد الملفات قبل التوجّه إلى القنصلية وإحضارها كاملة يوم الموعد. أي ملف غير مكتمل سيؤدي إلى إلغاء الموعد.</div>
+          <div class="warn-line">Si invita a presentarsi esclusivamente con tutta la documentazione completa. Ogni pratica incompleta comporterà l'annullamento automatico dell'appuntamento.</div>
         </div>
         <!-- DOCUMENTI SECTION: titolo IT sinistra | AR destra, elenco AR prima poi IT -->
         <div class="docs-section">
@@ -772,8 +768,6 @@ function isSpClosed(spId){
   return sp && !sp.open;
 }
 
-
-
 // --- LISTA COMPLETA SERVIZI (da mostrare nella selezione) ---
 const serviziList = {
   it: [
@@ -924,10 +918,7 @@ const documentiRequisiti = {
       "Ritiro del passaporto/carta d'identità del defunto",
       "⚠ Il decesso deve avvenire nelle province di competenza del consolato (Emilia Romagna e Marche)"
     ],
-    "Rilascio atti di stato civile": [
-      "Presentare un documento d'identità valido (Carta d'Identità Nazionale o passaporto)",
-    ],
-    "Certificato di cittadinanza": [
+        "Certificato di cittadinanza": [
       "Atto di nascita tunisino originale recente (non oltre 3 mesi dalla data di rilascio)",
       "Carta d'identità nazionale originale di uno dei genitori + copia",
       "Copia del passaporto tunisino del richiedente",
@@ -937,66 +928,11 @@ const documentiRequisiti = {
       "Atto di nascita originale in arabo (non oltre 20 giorni dalla data di rilascio) emesso dal comune di nascita con annotazione 'en vue de mariage' o 'بغرض الزّواج'",
       "Copia del passaporto dell'interessato/a"
     ],
-    "Richiesta contratto di matrimonio": [
-      "Atto di nascita originale in lingua araba con annotazione 'en vue de mariage' (non più di 20 giorni), oppure atto di nascita con certificato di celibato (non più di 20 giorni)",
-      "Certificato medico prematrimoniale per ciascun coniuge",
-      "Copia documento d'identità dei coniugi",
-      "Copia documento d'identità dei testimoni",
-      "Autorizzazione del tribunale per i minorenni",
-      "Consenso scritto del tutore se il coniuge è assente",
-      "Atto di decesso del coniuge (per i vedovi)",
-      "Copia sentenza definitiva di divorzio (per i divorziati)"
-    ],
-    "Iscrizione consolare": [
-      "Modulo carta consolare da compilare e firmare",
-      "Passaporto originale + copia",
-      "Copia del permesso di soggiorno o carta d'identità (se cittadino italiano)",
-      "2 foto con sfondo bianco",
-    ],
-    "Autentica della firma": [
+            "Autentica della firma": [
       "Documento di identità tunisino valido",
       "⚠ Il contenuto del documento non deve essere contrario alla pubblica decenza o violare l'ordine pubblico"
     ],
-    "Copia conforme": [
-      "Documento di identità valido (carta d'identità nazionale o passaporto)",
-      "Documento originale",
-      "⚠ Il contenuto del documento non deve essere contrario alla pubblica decenza o violare l'ordine pubblico"
-    ],
-    "Autenticazione documenti": [
-      "Documento di identità tunisino valido",
-      "Documento originale da autenticare",
-    ],
-    "Traduzione documenti": [
-      "Documento originale da tradurre",
-      "⚠ Non sono accettate fotocopie realizzate con smartphone o scanner"
-    ],
-    "Esonero servizio militare": [
-      "Aver compiuto 28 anni o più ed essere residente in Emilia Romagna o Marche",
-      "Modulo domanda di esonero compilata e firmata (intestata al Ministro della Difesa Nazionale)",
-      "Atto di nascita originale recente (non più di 3 mesi)",
-      "Copia della carta d'identità tunisina",
-      "2 foto tessera (formato 3x2,5 cm)",
-      "Copia del passaporto tunisino",
-      "Copia conforme della carta consolare valida",
-      "Copia conforme del permesso di soggiorno valido o carta d'identità italiana",
-      "Attestato di lavoro originale (non più di 3 mesi) o certificato di iscrizione universitaria/scolastica",
-      "Per lavoratori autonomi: certificato recente della Camera di Commercio e Industria italiana",
-      "Ricevuta vaglia postale di 5 dinari tunisini intestato al Tesoriere del Ministero della Difesa"
-    ],
-    "Rinvio servizio militare": [
-      "Aver compiuto 20 anni o più ed essere residente in Emilia Romagna o Marche",
-      "Modulo domanda di rinvio compilata e firmata (intestata al Ministro della Difesa Nazionale)",
-      "Atto di nascita tunisino originale recente (non più di 3 mesi)",
-      "Copia della carta d'identità tunisina",
-      "2 foto tessera (formato 3x2,5 cm)",
-      "Copia del passaporto tunisino",
-      "Copia conforme della carta consolare valida",
-      "Copia conforme del permesso di soggiorno valido o carta d'identità italiana",
-      "Attestato di lavoro originale (non più di 3 mesi) o certificato di iscrizione universitaria/scolastica",
-      "Per lavoratori autonomi: certificato recente della Camera di Commercio e Industria italiana",
-      "Ricevuta vaglia postale di 5 dinari tunisini intestato al Tesoriere del Ministero della Difesa"
-    ],
-    "Visto": [
+                        "Visto": [
       "Modulo domanda di visto compilato e firmato",
       "Copia del passaporto valido (almeno 6 mesi di validità residua)",
       "Copia del permesso di soggiorno valido (almeno 6 mesi di validità residua)",
@@ -1010,12 +946,7 @@ const documentiRequisiti = {
       "Atto di nascita se non è in possesso della C.I.N.",
       "ℹ È possibile richiedere il certificato online su: https://b3.interieur.gov.tn/"
     ],
-    "Scheda movimenti frontiera": [
-      "Modulo 'Scheda Movimenti di Frontiera' compilato e firmato",
-      "Copia del passaporto valido",
-      "Copia della carta d'identità nazionale"
-    ],
-    "Lasciapassare": [
+        "Lasciapassare": [
       "Scheda informativa da compilare e firmare",
       "Domanda di lasciapassare da compilare e firmare",
       "Documento che attesti l'identità tunisina (copia passaporto o carta d'identità)",
@@ -1245,29 +1176,15 @@ const documentiRequisiti = {
   }
 };;
 // Fallback per servizi senza documenti specifici
-documentiRequisiti.it["Legalizzazione dei documenti"] = documentiRequisiti.it["Legalizzazione dei documenti"] || documentiRequisiti.it["Autentica della firma"];
-documentiRequisiti.it["Copia conforme all'originale"] = documentiRequisiti.it["Copia conforme all'originale"] || documentiRequisiti.it["Copia conforme"];
-documentiRequisiti.it["Rilascio degli atti dello stato civile"] = documentiRequisiti.it["Rilascio degli atti dello stato civile"] || documentiRequisiti.it["Rilascio atti di stato civile"];
-documentiRequisiti.it["Richiesta di celebrazione del matrimonio"] = documentiRequisiti.it["Richiesta di celebrazione del matrimonio"] || documentiRequisiti.it["Richiesta contratto di matrimonio"];
 documentiRequisiti.it["Carta consolare"] = [
       "Modulo di richiesta di iscrizione consolare compilato e firmato",
       "Passaporto originale con copia",
       "Copia del permesso di soggiorno o della carta d'identità italiana (per i cittadini italiani)",
       "2 foto recenti con sfondo bianco"
     ];
-documentiRequisiti.it["Scheda di movimenti di frontiera"] = documentiRequisiti.it["Scheda di movimenti di frontiera"] || documentiRequisiti.it["Scheda movimenti frontiera"];
-documentiRequisiti.it["Esonero dal servizio militare"] = documentiRequisiti.it["Esonero dal servizio militare"] || documentiRequisiti.it["Esonero servizio militare"];
-documentiRequisiti.it["Rinvio del servizio militare"] = documentiRequisiti.it["Rinvio del servizio militare"] || documentiRequisiti.it["Rinvio servizio militare"];
-documentiRequisiti.it["Traduzione dei documenti rilasciati dalle amministrazioni Tunisine"] = documentiRequisiti.it["Traduzione dei documenti rilasciati dalle amministrazioni Tunisine"] || documentiRequisiti.it["Traduzione documenti"];
 documentiRequisiti.it["Traduzione della patente di guida e certificato di autenticità"] = documentiRequisiti.it["Traduzione della patente di guida e certificato di autenticità"] || ["Patente di guida originale (copia fronte/retro)", "Documento di identità valido"];
 documentiRequisiti.it["Certificato del casellario giudiziale"] = documentiRequisiti.it["Certificato del casellario giudiziale"] || ["Modulo", "Copia CIN", "Atto di nascita"];
-// Arabo — nuovi nomi
-documentiRequisiti.ar["ترجمة الوثائق الصادرة عن الإدارات التونسية"] = documentiRequisiti.ar["ترجمة الوثائق الصادرة عن الإدارات التونسية"] || documentiRequisiti.ar["ترجمة الوثائق"];
 documentiRequisiti.ar["ترجمة رخصة السياقة وشهادة الثبوت"] = documentiRequisiti.ar["ترجمة رخصة السياقة وشهادة الثبوت"] || ["الاستظهار برخصة السياقة الأصلية (نسخة وجه وظهر)", "وثيقة هوية سارية المفعول"];
-documentiRequisiti.ar["تقديم ملف لإبرام عقد الزواج"] = documentiRequisiti.ar["تقديم ملف لإبرام عقد الزواج"] || documentiRequisiti.ar["طلب إبرام عقد الزواج"];
-
-// Default durations per sportello (minutes)
-const defaultDurBySp = {1:30,2:20,3:30,4:30,5:20,6:15};
 
 // --- MODULI DA SCARICARE PER SERVIZIO ---
 const moduliLinks = {
@@ -1338,7 +1255,7 @@ const moduliLinks = {
       { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1DO-WMPq4jkwb_IZ7uStUvIPFxiKStN11/view?usp=sharing" }
     ],
     "Passaporto minorenni — Duplicato": [
-      { label: "Modulo sostituzione passaporto", url: "https://drive.google.com/file/d/1CFZd1tkFiPgfQtw-ITEDIVJq0pNghcYr/view?usp=sharing" }
+      { label: "Modulo duplicato passaporto", url: "https://drive.google.com/file/d/1CFZd1tkFiPgfQtw-ITEDIVJq0pNghcYr/view?usp=sharing" }
     ],
     "Passaporto maggiorenni — Primo rilascio": [
       { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1XKBSL5gra7styoLIAxDUNjl48SjEJq3D/view?usp=sharing" }
@@ -1347,17 +1264,17 @@ const moduliLinks = {
       { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1XKBSL5gra7styoLIAxDUNjl48SjEJq3D/view?usp=sharing" }
     ],
     "Passaporto maggiorenni — Duplicato": [
-      { label: "Modulo sostituzione passaporto", url: "https://drive.google.com/file/d/1DD1mDh-5bU9zseBEdIRgJHzYAkvEe9Mr/view?usp=sharing" }
+      { label: "Modulo duplicato passaporto", url: "https://drive.google.com/file/d/1DD1mDh-5bU9zseBEdIRgJHzYAkvEe9Mr/view?usp=sharing" }
     ],
     "Passaporto per neonati": [
       { label: "Modulo richiesta passaporto", url: "https://drive.google.com/file/d/1DO-WMPq4jkwb_IZ7uStUvIPFxiKStN11/view?usp=sharing" },
-      { label: "Modulo iscrizione nascita", url: "https://drive.google.com/file/d/1h85xGjZf_yqwZwRbRmruJlthsGNMgjg2/view?usp=sharing" }
+      { label: "Modulo trascrizione nascita", url: "https://drive.google.com/file/d/1h85xGjZf_yqwZwRbRmruJlthsGNMgjg2/view?usp=sharing" }
     ],
     "Trascrizione della nascita": [
-      { label: "Modulo iscrizione nascita", url: "https://drive.google.com/file/d/1h85xGjZf_yqwZwRbRmruJlthsGNMgjg2/view?usp=sharing" }
+      { label: "Modulo trascrizione nascita", url: "https://drive.google.com/file/d/1h85xGjZf_yqwZwRbRmruJlthsGNMgjg2/view?usp=sharing" }
     ],
     "Trascrizione del matrimonio": [
-      { label: "Modulo iscrizione matrimonio", url: "https://drive.google.com/file/d/19b-1zOMbb-oRuBznpr1eplJF1Cj9jswF/view?usp=sharing" }
+      { label: "Modulo trascrizione matrimonio", url: "https://drive.google.com/file/d/19b-1zOMbb-oRuBznpr1eplJF1Cj9jswF/view?usp=sharing" }
     ],
     "Certificato di cittadinanza": [
       { label: "Modulo certificato di cittadinanza", url: "https://drive.google.com/file/d/1YALa6FFOJQAUaoNnCsopVSlBJYAwZYj3/view?usp=sharing" }
@@ -1850,7 +1767,6 @@ function buildDays(){
 
   updateDurInfo();
 }
-
 
 function timeToMins(s){const [h,m]=s.split(':').map(Number);return h*60+m;}
 function minsToTime(m){return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
