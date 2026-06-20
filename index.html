@@ -586,7 +586,7 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
       <div class="tab active" id="tab-appts" onclick="showTab('t-appts',this)"><i class="ti ti-list"></i> Appuntamenti</div>
       <div class="tab" id="tab-sp" onclick="showTab('t-sp',this);initSportelliTab()"><i class="ti ti-building-store"></i> Sportelli</div>
       <div class="tab" id="tab-days" onclick="showTab('t-days',this)"><i class="ti ti-calendar"></i> Giorni/Festività</div>
-      <div class="tab" id="tab-svcs" onclick="showTab('t-svcs',this)"><i class="ti ti-clock"></i> Durata servizi</div>
+      <div class="tab" id="tab-svcs" onclick="showTab('t-svcs',this);buildSpDurList()"><i class="ti ti-clock"></i> Durata sportelli</div>
       <div class="tab" id="tab-hours" onclick="showTab('t-hours',this)"><i class="ti ti-adjustments"></i> Orari</div>
       <div class="tab" id="tab-logo" onclick="showTab('t-logo',this)"><i class="ti ti-photo"></i> Logo</div>
     </div>
@@ -629,10 +629,11 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 
     <div class="admin-wrap tab-panel" id="t-svcs">
       <div class="admin-section">
-        <div class="admin-title" id="admin-dur-title"><i class="ti ti-list"></i> Durata per servizio</div>
-        <div id="svc-dur-list"></div>
+        <div class="admin-title"><i class="ti ti-clock"></i> Durata per sportello</div>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;font-family:var(--font-calibri);">Imposta la durata in minuti per ogni appuntamento. Tutti i servizi dello stesso sportello useranno questa durata per generare gli slot.</p>
+        <div id="sp-dur-list"></div>
       </div>
-      <button class="btn-p" id="save-btn-svcs" onclick="saveAll()">Salva</button>
+      <button class="btn-p" id="save-btn-svcs" onclick="saveSpDur()">Salva</button>
       <div class="save-banner" id="sb2"><i class="ti ti-check"></i> Salvato!</div>
     </div>
 
@@ -1378,7 +1379,7 @@ const T={
 };
 
 // --- DATI GLOBALI (devono stare PRIMA di saveData/loadData) ---
-let cfg={workdays:[2,3,4,5,6],holidays:[],amStart:'09:00',amEnd:'13:00',durations:{},
+let cfg={workdays:[2,3,4,5,6],holidays:[],amStart:'09:00',amEnd:'13:00',durations:{},spDurations:{},
   sportelli:[
     {id:1, label:'Sportello 1', open:true,  dual:false, svcs:["Passaporto per neonati","Trascrizione della nascita","Trascrizione del matrimonio","Trascrizione del decesso","Rilascio degli atti dello stato civile","Certificato di cittadinanza","Richiesta di celebrazione del matrimonio","جواز السفر للمولودين الجدد","إدراج الولادة","إدراج الزواج","إدراج الوفاة","استخراج مضامين الحالة المدنية","شهادة في الجنسية","تقديم ملف لإبرام عقد الزواج"]},
     {id:2, label:'Sportello 2', open:true,  dual:false, svcs:["Autentica della firma","Copia conforme all'originale","Legalizzazione dei documenti","Carta consolare","التعريف بالإمضاء","النسخ المطابقة للأصل","المصادقة على الوثائق","بطاقة الترسيم القنصلي"]},
@@ -1448,10 +1449,9 @@ function svcToIT(svcName){
   return svcName; // già IT o non trovato
 }
 
-function getDur(spNum, svcName){
-  const svcKey = svcToIT(svcName); // normalizza sempre a IT per la chiave durata
-  const k='sp'+spNum+'-'+svcKey;
-  return cfg.durations[k]||(defaultDurBySp[spNum]||20);
+function getDur(spNum){
+  if(cfg.spDurations && cfg.spDurations[spNum]) return cfg.spDurations[spNum];
+  return null; // nessuna durata impostata
 }
 
 function setLang(l){
@@ -1846,13 +1846,16 @@ function isSlotTaken(sp,iso,time){
 function buildSlots(){
   const grid=document.getElementById('time-grid'); grid.innerHTML='';
   selTime=null; document.getElementById('btn-n2').disabled=true;
-  const dur=getDur(selSp, selSvc);
+  const dur=getDur(selSp);
+  if(!dur){
+    grid.innerHTML='<div style="font-size:14px;color:#C8102E;padding:8px 0;font-family:var(--font-calibri);"><i class="ti ti-alert-circle"></i> Durata non impostata per questo sportello. Contatta l\'amministratore. / مدة هذا الشباك غير محددة، يرجى التواصل مع الإدارة.</div>';
+    return;
+  }
   const slots=[];
   const amS=timeToMins(cfg.amStart), amE=timeToMins(cfg.amEnd);
   for(let t=amS;t+dur<=amE;t+=dur) slots.push(minsToTime(t));
   if(!slots.length){
-    const msg = curLang==='ar' ? 'لا توجد فترات متاحة بهذا الإعداد.' : 'Nessuno slot disponibile per questo servizio.';
-    grid.innerHTML='<div style="font-size:14px;color:var(--color-text-tertiary);padding:8px 0;font-family:var(--font-calibri);">'+msg+'</div>';
+    grid.innerHTML='<div style="font-size:14px;color:var(--color-text-tertiary);padding:8px 0;font-family:var(--font-calibri);">Nessuno slot disponibile / لا توجد فترات متاحة</div>';
     return;
   }
   slots.forEach(s=>{
@@ -1869,12 +1872,12 @@ function buildSlots(){
 }
 
 function updateDurInfo(){
-  if(selSp){
-    const dur=getDur(selSp, selSvc);
-    const t=T[curLang];
-    const txt=curLang==='ar'?'مدة الخدمة: '+dur+' '+t.min:'Durata appuntamento: '+dur+' '+t.min;
-    document.getElementById('dur-info').textContent='⏱ '+txt;
-  }
+  const el = document.getElementById('dur-info');
+  if(!selSp){ el.textContent=''; return; }
+  const dur=getDur(selSp);
+  if(!dur){ el.textContent='⚠️ Durata non impostata per questo sportello'; el.style.color='#C8102E'; return; }
+  el.style.color='';
+  el.textContent='⏱ Durata appuntamento: '+dur+' min / مدة الموعد: '+dur+' دقيقة';
 }
 
 function goStep(n){
@@ -1907,7 +1910,7 @@ function genCode(){
   selSp = assignedSp.id;
   const t = T[curLang];
   selSpLabel = (assignedSp.label || t.sportelloLabel+' '+selSp);
-  const dur=getDur(selSp, selSvc);
+  const dur=getDur(selSp);
   const key=selSp+'|'+selDayISO+'|'+selTime;
   if(!bookedSlots[key]) bookedSlots[key]=[];
   const appt={code,svc:selSvc,sp:selSp,spLabel:selSpLabel,day:selDay,dayISO:selDayISO,time:selTime,dur,status:'confirmed',ts:Date.now()};
@@ -2078,7 +2081,7 @@ function buildAdminPanel(){
     wg.appendChild(el);
   });
   renderHolidays();
-  buildDurList();
+  buildSpDurList();
   document.getElementById('am-start').value=cfg.amStart;
   document.getElementById('am-end').value=cfg.amEnd;
   renderAppts();
@@ -2105,18 +2108,38 @@ function renderHolidays(){
   });
 }
 function addHoliday(){ cfg.holidays.push({date:new Date().toISOString().split('T')[0],label:''}); renderHolidays(); }
-function buildDurList(){
-  const list=document.getElementById('svc-dur-list'); list.innerHTML='';
-  // Usa sempre IT come riferimento nell'admin (i servizi IT e AR condividono la stessa durata per sportello)
-  serviziList.it.forEach(svcName => {
-    const sp = cfg.sportelli.find(s => s.open && s.svcs.includes(svcName));
-    const spId = sp ? sp.id : (cfg.sportelli.find(s=>s.open)||cfg.sportelli[0]).id;
-    const k='sp'+spId+'-'+svcName;
-    const dur=cfg.durations[k]||(defaultDurBySp[spId]||20);
-    const row=document.createElement('div'); row.className='svc-config-row';
-    row.innerHTML='<span class="svc-config-name">'+svcName+'</span><select class="dur-select" onchange="cfg.durations[\''+k+'\']= parseInt(this.value)">'+[10,15,20,30,45,60,90,120].map(v=>'<option value="'+v+'"'+(v===dur?' selected':'')+'>'+v+' min</option>').join('')+'</select>';
+function buildSpDurList(){
+  const list = document.getElementById('sp-dur-list');
+  if(!list) return;
+  list.innerHTML = '';
+  if(!cfg.spDurations) cfg.spDurations = {};
+  cfg.sportelli.forEach(sp => {
+    const dur = cfg.spDurations[sp.id] || '';
+    const row = document.createElement('div');
+    row.className = 'svc-config-row';
+    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);';
+    row.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="background:#C8102E;color:#fff;border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">${sp.id}</div>
+        <span style="font-size:14px;font-weight:600;font-family:var(--font-calibri);color:var(--color-text-primary);">${sp.label}</span>
+        ${!sp.open ? '<span style="font-size:11px;background:#eee;color:#999;border-radius:10px;padding:2px 8px;">Chiuso</span>' : ''}
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <input type="number" min="5" max="180" step="5" value="${dur}"
+          placeholder="min"
+          style="width:80px;padding:7px 10px;border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:14px;font-family:var(--font-calibri);text-align:center;"
+          oninput="if(!cfg.spDurations)cfg.spDurations={};cfg.spDurations[${sp.id}]=parseInt(this.value)||null;">
+        <span style="font-size:13px;color:var(--color-text-secondary);font-family:var(--font-calibri);">min</span>
+      </div>`;
     list.appendChild(row);
   });
+}
+
+function saveSpDur(){
+  saveData();
+  const sb = document.getElementById('sb2');
+  sb.style.display = 'flex';
+  setTimeout(()=>sb.style.display='none', 2500);
 }
 function saveAll(){ cfg.amStart=document.getElementById('am-start').value; cfg.amEnd=document.getElementById('am-end').value; saveData(); ['sb1','sb2','sb3'].forEach(id=>{ const el=document.getElementById(id); el.style.display='flex'; setTimeout(()=>el.style.display='none',2500); }); buildSvcs(); }
 function renderAppts(){
