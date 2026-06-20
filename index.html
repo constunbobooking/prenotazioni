@@ -401,7 +401,8 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 <div id="lookup-bar" class="no-print">
   <button class="lookup-toggle" id="lookup-toggle-btn" onclick="toggleLookup()">
     <i class="ti ti-search"></i>
-    <span class="bi-lbl"><span>Hai già un appuntamento?</span><span class="ar-lbl">هل لديك موعد مسبق؟</span></span>
+    <span style="flex:1;text-align:left;">Hai già un appuntamento?</span>
+    <span class="ar-lbl" style="text-align:right;direction:rtl;">هل لديك موعد مسبق؟</span>
     <i class="ti ti-chevron-down" id="lookup-chevron"></i>
   </button>
   <div id="lookup-panel" style="display:none;">
@@ -625,7 +626,6 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
         <input type="text" id="filter-search" placeholder="Cerca codice o servizio..." oninput="renderAppts()" style="flex:1;min-width:120px;">
         <select id="filter-day" onchange="renderAppts()"><option value="">Tutti i giorni</option></select>
         <select id="filter-sp" onchange="renderAppts()"><option value="">Tutti gli sportelli</option></select>
-        <button onclick="deleteCancelled()" style="background:#ffeef0;border:1.5px solid #C8102E;color:#C8102E;border-radius:var(--border-radius-md);padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-calibri);white-space:nowrap;display:flex;align-items:center;gap:5px;" title="Elimina tutte le prenotazioni cancellate"><i class="ti ti-trash"></i> Elimina cancellate</button>
       </div>
       <div id="appts-list"></div>
     </div>
@@ -768,6 +768,8 @@ function isSpClosed(spId){
   const sp = cfg.sportelli.find(s=>s.id===spId);
   return sp && !sp.open;
 }
+
+
 
 // --- LISTA COMPLETA SERVIZI (da mostrare nella selezione) ---
 const serviziList = {
@@ -919,7 +921,10 @@ const documentiRequisiti = {
       "Ritiro del passaporto/carta d'identità del defunto",
       "⚠ Il decesso deve avvenire nelle province di competenza del consolato (Emilia Romagna e Marche)"
     ],
-        "Certificato di cittadinanza": [
+    "Rilascio atti di stato civile": [
+      "Presentare un documento d'identità valido (Carta d'Identità Nazionale o passaporto)",
+    ],
+    "Certificato di cittadinanza": [
       "Atto di nascita tunisino originale recente (non oltre 3 mesi dalla data di rilascio)",
       "Carta d'identità nazionale originale di uno dei genitori + copia",
       "Copia del passaporto tunisino del richiedente",
@@ -929,11 +934,66 @@ const documentiRequisiti = {
       "Atto di nascita originale in arabo (non oltre 20 giorni dalla data di rilascio) emesso dal comune di nascita con annotazione 'en vue de mariage' o 'بغرض الزّواج'",
       "Copia del passaporto dell'interessato/a"
     ],
-            "Autentica della firma": [
+    "Richiesta contratto di matrimonio": [
+      "Atto di nascita originale in lingua araba con annotazione 'en vue de mariage' (non più di 20 giorni), oppure atto di nascita con certificato di celibato (non più di 20 giorni)",
+      "Certificato medico prematrimoniale per ciascun coniuge",
+      "Copia documento d'identità dei coniugi",
+      "Copia documento d'identità dei testimoni",
+      "Autorizzazione del tribunale per i minorenni",
+      "Consenso scritto del tutore se il coniuge è assente",
+      "Atto di decesso del coniuge (per i vedovi)",
+      "Copia sentenza definitiva di divorzio (per i divorziati)"
+    ],
+    "Iscrizione consolare": [
+      "Modulo carta consolare da compilare e firmare",
+      "Passaporto originale + copia",
+      "Copia del permesso di soggiorno o carta d'identità (se cittadino italiano)",
+      "2 foto con sfondo bianco",
+    ],
+    "Autentica della firma": [
       "Documento di identità tunisino valido",
       "⚠ Il contenuto del documento non deve essere contrario alla pubblica decenza o violare l'ordine pubblico"
     ],
-                        "Visto": [
+    "Copia conforme": [
+      "Documento di identità valido (carta d'identità nazionale o passaporto)",
+      "Documento originale",
+      "⚠ Il contenuto del documento non deve essere contrario alla pubblica decenza o violare l'ordine pubblico"
+    ],
+    "Autenticazione documenti": [
+      "Documento di identità tunisino valido",
+      "Documento originale da autenticare",
+    ],
+    "Traduzione documenti": [
+      "Documento originale da tradurre",
+      "⚠ Non sono accettate fotocopie realizzate con smartphone o scanner"
+    ],
+    "Esonero servizio militare": [
+      "Aver compiuto 28 anni o più ed essere residente in Emilia Romagna o Marche",
+      "Modulo domanda di esonero compilata e firmata (intestata al Ministro della Difesa Nazionale)",
+      "Atto di nascita originale recente (non più di 3 mesi)",
+      "Copia della carta d'identità tunisina",
+      "2 foto tessera (formato 3x2,5 cm)",
+      "Copia del passaporto tunisino",
+      "Copia conforme della carta consolare valida",
+      "Copia conforme del permesso di soggiorno valido o carta d'identità italiana",
+      "Attestato di lavoro originale (non più di 3 mesi) o certificato di iscrizione universitaria/scolastica",
+      "Per lavoratori autonomi: certificato recente della Camera di Commercio e Industria italiana",
+      "Ricevuta vaglia postale di 5 dinari tunisini intestato al Tesoriere del Ministero della Difesa"
+    ],
+    "Rinvio servizio militare": [
+      "Aver compiuto 20 anni o più ed essere residente in Emilia Romagna o Marche",
+      "Modulo domanda di rinvio compilata e firmata (intestata al Ministro della Difesa Nazionale)",
+      "Atto di nascita tunisino originale recente (non più di 3 mesi)",
+      "Copia della carta d'identità tunisina",
+      "2 foto tessera (formato 3x2,5 cm)",
+      "Copia del passaporto tunisino",
+      "Copia conforme della carta consolare valida",
+      "Copia conforme del permesso di soggiorno valido o carta d'identità italiana",
+      "Attestato di lavoro originale (non più di 3 mesi) o certificato di iscrizione universitaria/scolastica",
+      "Per lavoratori autonomi: certificato recente della Camera di Commercio e Industria italiana",
+      "Ricevuta vaglia postale di 5 dinari tunisini intestato al Tesoriere del Ministero della Difesa"
+    ],
+    "Visto": [
       "Modulo domanda di visto compilato e firmato",
       "Copia del passaporto valido (almeno 6 mesi di validità residua)",
       "Copia del permesso di soggiorno valido (almeno 6 mesi di validità residua)",
@@ -947,7 +1007,12 @@ const documentiRequisiti = {
       "Atto di nascita se non è in possesso della C.I.N.",
       "ℹ È possibile richiedere il certificato online su: https://b3.interieur.gov.tn/"
     ],
-        "Lasciapassare": [
+    "Scheda movimenti frontiera": [
+      "Modulo 'Scheda Movimenti di Frontiera' compilato e firmato",
+      "Copia del passaporto valido",
+      "Copia della carta d'identità nazionale"
+    ],
+    "Lasciapassare": [
       "Scheda informativa da compilare e firmare",
       "Domanda di lasciapassare da compilare e firmare",
       "Documento che attesti l'identità tunisina (copia passaporto o carta d'identità)",
@@ -1183,9 +1248,14 @@ documentiRequisiti.it["Carta consolare"] = [
       "Copia del permesso di soggiorno o della carta d'identità italiana (per i cittadini italiani)",
       "2 foto recenti con sfondo bianco"
     ];
+documentiRequisiti.it["Traduzione dei documenti rilasciati dalle amministrazioni Tunisine"] = documentiRequisiti.it["Traduzione dei documenti rilasciati dalle amministrazioni Tunisine"] || documentiRequisiti.it["Traduzione documenti"];
 documentiRequisiti.it["Traduzione della patente di guida e certificato di autenticità"] = documentiRequisiti.it["Traduzione della patente di guida e certificato di autenticità"] || ["Patente di guida originale (copia fronte/retro)", "Documento di identità valido"];
 documentiRequisiti.it["Certificato del casellario giudiziale"] = documentiRequisiti.it["Certificato del casellario giudiziale"] || ["Modulo", "Copia CIN", "Atto di nascita"];
+documentiRequisiti.ar["ترجمة الوثائق الصادرة عن الإدارات التونسية"] = documentiRequisiti.ar["ترجمة الوثائق الصادرة عن الإدارات التونسية"] || documentiRequisiti.ar["ترجمة الوثائق"];
 documentiRequisiti.ar["ترجمة رخصة السياقة وشهادة الثبوت"] = documentiRequisiti.ar["ترجمة رخصة السياقة وشهادة الثبوت"] || ["الاستظهار برخصة السياقة الأصلية (نسخة وجه وظهر)", "وثيقة هوية سارية المفعول"];
+
+// Default durations per sportello (minutes)
+const defaultDurBySp = {1:30,2:20,3:30,4:30,5:20,6:15};
 
 // --- MODULI DA SCARICARE PER SERVIZIO ---
 const moduliLinks = {
@@ -1769,6 +1839,7 @@ function buildDays(){
   updateDurInfo();
 }
 
+
 function timeToMins(s){const [h,m]=s.split(':').map(Number);return h*60+m;}
 function minsToTime(m){return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0');}
 function isSlotTaken(sp,iso,time){
@@ -2149,23 +2220,7 @@ function renderAppts(){
     list.appendChild(row);
   });
 }
-function deleteCancelled(){
-  const count = appointments.filter(a => a.status === 'cancelled' || a.status === 'deleted').length;
-  if(count === 0){ alert('Nessuna prenotazione cancellata da eliminare.'); return; }
-  if(!confirm('Eliminare definitivamente ' + count + ' prenotazione/i cancellata/e?\nQuesta operazione non è reversibile.')){ return; }
-  // Rimuovi da appointments
-  appointments = appointments.filter(a => a.status !== 'cancelled' && a.status !== 'deleted');
-  // Rimuovi anche da bookedSlots
-  Object.keys(bookedSlots).forEach(key => {
-    bookedSlots[key] = bookedSlots[key].filter(a => a.status !== 'cancelled' && a.status !== 'deleted');
-    if(bookedSlots[key].length === 0) delete bookedSlots[key];
-  });
-  saveData();
-  // Invia al server per ogni prenotazione eliminata (già marcate come cancelled sul server)
-  // Il server le mantiene come cancelled — per ora la pulizia è solo locale
-  renderAppts();
-  alert('✅ Prenotazioni cancellate eliminate con successo.');
-}
+function cancelAppt(code){
   const a=appointments.find(x=>x.code===code);
   if(!a) return;
   if(a.status==='cancelled'){a.status='deleted';} else{a.status='cancelled';}
