@@ -1476,7 +1476,7 @@ function svcToIT(svcName){
 
 function getDur(spNum){
   if(cfg.spDurations && cfg.spDurations[spNum]) return cfg.spDurations[spNum];
-  return null; // nessuna durata impostata
+  return 15; // default 15 minuti
 }
 
 function setLang(l){
@@ -1872,10 +1872,6 @@ function buildSlots(){
   const grid=document.getElementById('time-grid'); grid.innerHTML='';
   selTime=null; document.getElementById('btn-n2').disabled=true;
   const dur=getDur(selSp);
-  if(!dur){
-    grid.innerHTML='<div style="font-size:14px;color:#C8102E;padding:8px 0;font-family:var(--font-calibri);"><i class="ti ti-alert-circle"></i> Durata non impostata per questo sportello. Contatta l\'amministratore. / مدة هذا الشباك غير محددة، يرجى التواصل مع الإدارة.</div>';
-    return;
-  }
   const slots=[];
   const amS=timeToMins(cfg.amStart), amE=timeToMins(cfg.amEnd);
   for(let t=amS;t+dur<=amE;t+=dur) slots.push(minsToTime(t));
