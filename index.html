@@ -1224,21 +1224,24 @@ const documentiRequisiti = {
   }
 };;
 // Fallback per servizi senza documenti specifici
-documentiRequisiti.it["Legalizzazione dei documenti"] = documentiRequisiti.it["Legalizzazione dei documenti"] || documentiRequisiti.it["Autentica della firma"];
+documentiRequisiti.it["Legalizzazione dei documenti"] = documentiRequisiti.it["Legalizzazione dei documenti"] || documentiRequisiti.it["Autenticazione documenti"];
 documentiRequisiti.it["Copia conforme all'originale"] = documentiRequisiti.it["Copia conforme all'originale"] || documentiRequisiti.it["Copia conforme"];
 documentiRequisiti.it["Rilascio degli atti dello stato civile"] = documentiRequisiti.it["Rilascio degli atti dello stato civile"] || documentiRequisiti.it["Rilascio atti di stato civile"];
 documentiRequisiti.it["Richiesta di celebrazione del matrimonio"] = documentiRequisiti.it["Richiesta di celebrazione del matrimonio"] || documentiRequisiti.it["Richiesta contratto di matrimonio"];
-documentiRequisiti.it["Carta consolare"] = documentiRequisiti.it["Carta consolare"] || ["Documento identità valido"];
+documentiRequisiti.it["Carta consolare"] = documentiRequisiti.it["Carta consolare"] || documentiRequisiti.it["Iscrizione consolare"];
 documentiRequisiti.it["Scheda di movimenti di frontiera"] = documentiRequisiti.it["Scheda di movimenti di frontiera"] || documentiRequisiti.it["Scheda movimenti frontiera"];
 documentiRequisiti.it["Esonero dal servizio militare"] = documentiRequisiti.it["Esonero dal servizio militare"] || documentiRequisiti.it["Esonero servizio militare"];
 documentiRequisiti.it["Rinvio del servizio militare"] = documentiRequisiti.it["Rinvio del servizio militare"] || documentiRequisiti.it["Rinvio servizio militare"];
 documentiRequisiti.it["Traduzione dei documenti rilasciati dalle amministrazioni Tunisine"] = documentiRequisiti.it["Traduzione dei documenti rilasciati dalle amministrazioni Tunisine"] || documentiRequisiti.it["Traduzione documenti"];
 documentiRequisiti.it["Traduzione della patente di guida e certificato di autenticità"] = documentiRequisiti.it["Traduzione della patente di guida e certificato di autenticità"] || ["Patente di guida originale (copia fronte/retro)", "Documento di identità valido"];
-documentiRequisiti.it["Certificato del casellario giudiziale"] = documentiRequisiti.it["Certificato del casellario giudiziale"] || ["Modulo", "Copia CIN", "Atto di nascita"];
-// Arabo — nuovi nomi
+documentiRequisiti.it["Certificato del casellario giudiziale"] = documentiRequisiti.it["Certificato del casellario giudiziale"] || ["Modulo del certificato da compilare","Copia della carta d'identità nazionale","Atto di nascita se non è in possesso della C.I.N."];
+documentiRequisiti.it["Libretto di navigazione"] = documentiRequisiti.it["Libretto di navigazione"] || ["Modulo richiesta compilato e firmato","Copia carta d'identità nazionale","Casellario giudiziale recente","4 foto recenti sfondo bianco","2 copie conformi del certificato medico e del certificato di navigazione (min. 24 mesi)"];
+// Arabo — nuovi nomi e mancanti
 documentiRequisiti.ar["ترجمة الوثائق الصادرة عن الإدارات التونسية"] = documentiRequisiti.ar["ترجمة الوثائق الصادرة عن الإدارات التونسية"] || documentiRequisiti.ar["ترجمة الوثائق"];
 documentiRequisiti.ar["ترجمة رخصة السياقة وشهادة الثبوت"] = documentiRequisiti.ar["ترجمة رخصة السياقة وشهادة الثبوت"] || ["الاستظهار برخصة السياقة الأصلية (نسخة وجه وظهر)", "وثيقة هوية سارية المفعول"];
 documentiRequisiti.ar["تقديم ملف لإبرام عقد الزواج"] = documentiRequisiti.ar["تقديم ملف لإبرام عقد الزواج"] || documentiRequisiti.ar["طلب إبرام عقد الزواج"];
+documentiRequisiti.ar["جواز السفر للمولودين الجدد"] = documentiRequisiti.ar["جواز السفر للمولودين الجدد"] || ["استمارة مطلب جواز السفر ممضاة من قِبَل الولي","استمارة إدراج الولادة","مضمون ولادة أصلي باللغة الإيطالية (يتضمن اسم الوالدين)","نسخة بطاقة تعريف الوالدين أو جواز سفرهما","مضمون ولادة الوالد الأجنبي إن وجد","مطلب ترسيم قنصلي","إذن مصادق عليه من الولي","نسختان من وثيقة هوية الولي","02 نسخ من بطاقة الإقامة أو بطاقة التعريف الإيطالية لحاملي الجنسية الإيطالية","3 صور شمسية ذات خلفية بيضاء","⚠ يجب أن يكون مكان الولادة بإحدى الدوائر البلدية بمقاطعتي إيميليا رومانيا وماركي"];
+documentiRequisiti.ar["المصادقة على الوثائق"] = documentiRequisiti.ar["المصادقة على الوثائق"] || documentiRequisiti.ar["المصادقة على الوثائق"] || ["الاستظهار بوثيقة هوية تونسية سارية المفعول","الوثيقة الأصلية المراد المصادقة عليها"];
 
 // Default durations per sportello (minutes)
 const defaultDurBySp = {1:30,2:20,3:30,4:30,5:20,6:15};
