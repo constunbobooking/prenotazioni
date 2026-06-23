@@ -2170,7 +2170,7 @@ function buildAdminPanel(){
     wg.appendChild(el);
   });
   renderHolidays();
-  buildDurList();
+  buildSpDurList();
   document.getElementById('am-start').value=cfg.amStart;
   document.getElementById('am-end').value=cfg.amEnd;
   renderAppts();
@@ -2197,16 +2197,27 @@ function renderHolidays(){
   });
 }
 function addHoliday(){ cfg.holidays.push({date:new Date().toISOString().split('T')[0],label:''}); renderHolidays(); }
-function buildDurList(){
-  const list=document.getElementById('sp-dur-list');
-  // Usa sempre IT come riferimento nell'admin (i servizi IT e AR condividono la stessa durata per sportello)
-  serviziList.it.forEach(svcName => {
-    const sp = cfg.sportelli.find(s => s.open && s.svcs.includes(svcName));
-    const spId = sp ? sp.id : (cfg.sportelli.find(s=>s.open)||cfg.sportelli[0]).id;
-    const k='sp'+spId+'-'+svcName;
-    const dur=cfg.durations[k]||(defaultDurBySp[spId]||20);
-    const row=document.createElement('div'); row.className='svc-config-row';
-    row.innerHTML='<span class="svc-config-name">'+svcName+'</span><select class="dur-select" onchange="cfg.durations[\''+k+'\']= parseInt(this.value)">'+[10,15,20,30,45,60,90,120].map(v=>'<option value="'+v+'"'+(v===dur?' selected':'')+'>'+v+' min</option>').join('')+'</select>';
+function buildSpDurList(){
+  const list = document.getElementById('sp-dur-list');
+  if(!list) return;
+  list.innerHTML = '';
+  if(!cfg.spDurations) cfg.spDurations = {};
+  cfg.sportelli.forEach(sp => {
+    const dur = cfg.spDurations[sp.id] || '';
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--color-border-tertiary);';
+    row.innerHTML =
+      '<div style="display:flex;align-items:center;gap:10px;">'
+      +'<div style="background:#C8102E;color:#fff;border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">'+sp.id+'</div>'
+      +'<span style="font-size:14px;font-weight:600;font-family:var(--font-calibri);color:var(--color-text-primary);">'+sp.label+'</span>'
+      +(!sp.open ? '<span style="font-size:11px;background:#eee;color:#999;border-radius:10px;padding:2px 8px;">Chiuso</span>' : '')
+      +'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px;">'
+      +'<input type="number" min="5" max="180" step="5" value="'+(dur||'')+'" placeholder="min"'
+      +' style="width:80px;padding:7px 10px;border:1.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);font-size:14px;font-family:var(--font-calibri);text-align:center;"'
+      +' oninput="if(!cfg.spDurations)cfg.spDurations={};cfg.spDurations['+sp.id+']=parseInt(this.value)||null;">'
+      +'<span style="font-size:13px;color:var(--color-text-secondary);font-family:var(--font-calibri);">min</span>'
+      +'</div>';
     list.appendChild(row);
   });
 }
