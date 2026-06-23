@@ -631,9 +631,9 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
       <div class="admin-section">
         <div class="admin-title"><i class="ti ti-clock"></i> Durata per sportello</div>
         <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;font-family:var(--font-calibri);">Imposta la durata in minuti per ogni appuntamento. Tutti i servizi dello stesso sportello useranno questa durata per generare gli slot.</p>
-        <div id="svc-dur-list"></div>
+        <div id="sp-dur-list"></div>
       </div>
-      <button class="btn-p" id="save-btn-svcs" onclick="saveAll()">Salva</button>
+      <button class="btn-p" id="save-btn-svcs" onclick="saveSpDur()">Salva</button>
       <div class="save-banner" id="sb2"><i class="ti ti-check"></i> Salvato!</div>
     </div>
 
@@ -1522,7 +1522,7 @@ function applyT(){
   document.getElementById('add-holiday-btn').innerHTML='<i class="ti ti-plus"></i> '+a.addHoliday;
   document.getElementById('save-btn-days').textContent=a.save;
   document.getElementById('sb1').innerHTML='<i class="ti ti-check"></i> '+a.saved;
-  document.getElementById('admin-dur-title').innerHTML='<i class="ti ti-list"></i> '+a.durTitle;
+  if(document.getElementById('admin-dur-title')) document.getElementById('admin-dur-title').innerHTML='<i class="ti ti-clock"></i> '+a.durTitle;
   document.getElementById('save-btn-svcs').textContent=a.save;
   document.getElementById('sb2').innerHTML='<i class="ti ti-check"></i> '+a.saved;
   document.getElementById('admin-hours-title').innerHTML='<i class="ti ti-clock"></i> '+a.hoursTitle;
@@ -2198,7 +2198,7 @@ function renderHolidays(){
 }
 function addHoliday(){ cfg.holidays.push({date:new Date().toISOString().split('T')[0],label:''}); renderHolidays(); }
 function buildDurList(){
-  const list=document.getElementById('svc-dur-list'); list.innerHTML='';
+  const list=document.getElementById('sp-dur-list');
   // Usa sempre IT come riferimento nell'admin (i servizi IT e AR condividono la stessa durata per sportello)
   serviziList.it.forEach(svcName => {
     const sp = cfg.sportelli.find(s => s.open && s.svcs.includes(svcName));
