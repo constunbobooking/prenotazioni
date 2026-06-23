@@ -586,7 +586,7 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
       <div class="tab active" id="tab-appts" onclick="showTab('t-appts',this)"><i class="ti ti-list"></i> Appuntamenti</div>
       <div class="tab" id="tab-sp" onclick="showTab('t-sp',this);initSportelliTab()"><i class="ti ti-building-store"></i> Sportelli</div>
       <div class="tab" id="tab-days" onclick="showTab('t-days',this)"><i class="ti ti-calendar"></i> Giorni/Festività</div>
-      <div class="tab" id="tab-svcs" onclick="showTab('t-svcs',this)"><i class="ti ti-clock"></i> Durata servizi</div>
+      <div class="tab" id="tab-svcs" onclick="showTab('t-svcs',this);buildSpDurList()"><i class="ti ti-clock"></i> Durata sportelli</div>
       <div class="tab" id="tab-hours" onclick="showTab('t-hours',this)"><i class="ti ti-adjustments"></i> Orari</div>
       <div class="tab" id="tab-logo" onclick="showTab('t-logo',this)"><i class="ti ti-photo"></i> Logo</div>
     </div>
@@ -629,7 +629,8 @@ body{font-family:var(--font-calibri);background:#f0f0f0;min-height:100vh;display
 
     <div class="admin-wrap tab-panel" id="t-svcs">
       <div class="admin-section">
-        <div class="admin-title" id="admin-dur-title"><i class="ti ti-list"></i> Durata per servizio</div>
+        <div class="admin-title"><i class="ti ti-clock"></i> Durata per sportello</div>
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 14px;font-family:var(--font-calibri);">Imposta la durata in minuti per ogni appuntamento. Tutti i servizi dello stesso sportello useranno questa durata per generare gli slot.</p>
         <div id="svc-dur-list"></div>
       </div>
       <button class="btn-p" id="save-btn-svcs" onclick="saveAll()">Salva</button>
@@ -1491,10 +1492,9 @@ function svcToIT(svcName){
   return svcName; // già IT o non trovato
 }
 
-function getDur(spNum, svcName){
-  const svcKey = svcToIT(svcName); // normalizza sempre a IT per la chiave durata
-  const k='sp'+spNum+'-'+svcKey;
-  return cfg.durations[k]||(defaultDurBySp[spNum]||20);
+function getDur(spNum){
+  if(cfg.spDurations && cfg.spDurations[spNum]) return cfg.spDurations[spNum];
+  return 15;
 }
 
 function setLang(l){
@@ -1889,7 +1889,7 @@ function isSlotTaken(sp,iso,time){
 function buildSlots(){
   const grid=document.getElementById('time-grid'); grid.innerHTML='';
   selTime=null; document.getElementById('btn-n2').disabled=true;
-  const dur=getDur(selSp, selSvc);
+  const dur=getDur(selSp);
   const slots=[];
   const amS=timeToMins(cfg.amStart), amE=timeToMins(cfg.amEnd);
   for(let t=amS;t+dur<=amE;t+=dur) slots.push(minsToTime(t));
@@ -1913,10 +1913,10 @@ function buildSlots(){
 
 function updateDurInfo(){
   if(selSp){
-    const dur=getDur(selSp, selSvc);
+    const dur=getDur(selSp);
     const t=T[curLang];
-    const txt=curLang==='ar'?'مدة الخدمة: '+dur+' '+t.min:'Durata appuntamento: '+dur+' '+t.min;
-    document.getElementById('dur-info').textContent='⏱ '+txt;
+    document.getElementById('dur-info').textContent='⏱ Durata appuntamento: '+dur+' min / مدة الموعد: '+dur+' دقيقة';
+    
   }
 }
 
@@ -1992,7 +1992,7 @@ function genCode(){
   selSp = assignedSp.id;
   const t = T[curLang];
   selSpLabel = (assignedSp.label || t.sportelloLabel+' '+selSp);
-  const dur=getDur(selSp, selSvc);
+  const dur=getDur(selSp);
   const key=selSp+'|'+selDayISO+'|'+selTime;
   if(!bookedSlots[key]) bookedSlots[key]=[];
   const appt={code,svc:selSvc,sp:selSp,spLabel:selSpLabel,day:selDay,dayISO:selDayISO,time:selTime,dur,status:'confirmed',ts:Date.now()};
