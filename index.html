@@ -727,17 +727,45 @@ function getSportelloForSvc(svcName, dayISO, time){
   if(!candidates.length) return cfg.sportelli.find(s=>s.open)||cfg.sportelli[0];
   // Se è un servizio dual (passaporto), bilancia tra gli sportelli dual
   const duals = candidates.filter(sp => sp.dual);
-  if(duals.length >= 2 && dayISO && time){
-    // Conta le prenotazioni per ogni sportello dual in quel slot
+  if(duals.length >= 2 && dayISO){
+    // Conta le prenotazioni di OGGI (tutta la giornata) per ogni sportello dual,
+    // non solo nello slot orario specifico — evita squilibri cumulativi
+    // tipo "Sportello 3: 8 appuntamenti, Sportello 4: 2 appuntamenti" nello stesso giorno.
     let best = duals[0];
-    let bestCount = (bookedSlots[duals[0].id+'|'+dayISO+'|'+time]||[]).length;
+    let bestCount = countDailyBookings(duals[0].id, dayISO);
     for(let i=1;i<duals.length;i++){
-      const cnt = (bookedSlots[duals[i].id+'|'+dayISO+'|'+time]||[]).length;
+      const cnt = countDailyBookings(duals[i].id, dayISO);
       if(cnt < bestCount){ best=duals[i]; bestCount=cnt; }
+    }
+    // A parità di totale giornaliero, usa lo slot specifico come criterio secondario
+    if(time){
+      const tied = duals.filter(sp => countDailyBookings(sp.id, dayISO) === bestCount);
+      if(tied.length >= 2){
+        let bestSlot = tied[0];
+        let bestSlotCount = (bookedSlots[tied[0].id+'|'+dayISO+'|'+time]||[]).length;
+        for(let i=1;i<tied.length;i++){
+          const cnt = (bookedSlots[tied[i].id+'|'+dayISO+'|'+time]||[]).length;
+          if(cnt < bestSlotCount){ bestSlot=tied[i]; bestSlotCount=cnt; }
+        }
+        return bestSlot;
+      }
     }
     return best;
   }
   return candidates[0];
+}
+
+// Conta tutte le prenotazioni attive di uno sportello in una data specifica
+// (tutti gli orari sommati insieme), usato per il bilanciamento giornaliero.
+function countDailyBookings(spId, dayISO){
+  let count = 0;
+  for(const key in bookedSlots){
+    const parts = key.split('|');
+    if(parts[0] == spId && parts[1] === dayISO){
+      count += bookedSlots[key].length;
+    }
+  }
+  return count;
 }
 
 // Compatibilità: per buildSvcs che usa sportelloPerServizio[lang][svc]
